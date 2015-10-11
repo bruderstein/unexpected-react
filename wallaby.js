@@ -22,6 +22,10 @@ module.exports = function (wallaby) {
             {
                 pattern: 'src/react-devtools/frontend/**/*.js',
                 ignore: true
+            },
+            {
+                pattern: 'src/react-devtools/plugins/**/*.js',
+                ignore: true
             }],
 
         tests: ['src/**/*.spec.js'],

@@ -1,5 +1,5 @@
 const Backend = require('./react-devtools/backend/backend');
-const GlobalHook = require('./react-devtools/backend/GlobalHook');
+const GlobalHook = require('./react-devtools/backend/installGlobalHook');
 
 const ComponentMap = require('./componentMap');
 
