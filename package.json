@@ -1,0 +1,20 @@
+{
+  "name": "unexpected-react-deep",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "babel src -d lib"
+  },
+  "main": "lib/index.js",
+  "peerDependencies": {
+    "react": "^0.13.0 || ^0.14.0"
+  },
+  "devDependencies": {
+    "jsdom": "^6.5.1",
+    "magicpen": "^5.4.0",
+    "react": "^0.13.3",
+    "unexpected": "^10.0.1"
+  },
+  "dependencies": {
+    "magicpen-prism": "^2.2.1"
+  }
+}
