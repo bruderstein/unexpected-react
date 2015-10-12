@@ -11,10 +11,12 @@
   "devDependencies": {
     "jsdom": "^6.5.1",
     "magicpen": "^5.4.0",
+    "object-assign": "^4.0.1",
     "react": "^0.13.3",
     "unexpected": "^10.0.1"
   },
   "dependencies": {
+    "array-changes": "^1.0.3",
     "magicpen-prism": "^2.2.1"
   }
 }
