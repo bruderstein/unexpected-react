@@ -1,10 +1,16 @@
 
 
-function writeAttributes(output, attributes, externalInspector) {
+function writeAttributes(output, attributes, externalInspector, options) {
 
     if (attributes) {
+        let nextAttribute = o => o.text(' ');
+
+        if (options && options.splitLines) {
+            nextAttribute = o => o.nl().i();
+        }
+
         Object.keys(attributes).forEach(function (attrib) {
-            output.text(' ');
+            nextAttribute(output);
             writeAttribute(output, attrib, attributes[attrib], externalInspector);
         });
     }
@@ -74,7 +80,19 @@ function HtmlLikeUnexpected(adapter) {
                 .prismTag(adapter.getName(value));
 
             const attributes = adapter.getAttributes(value);
-            writeAttributes(output, attributes, externalInspector);
+            const measureOutput = output.clone();
+            writeAttributes(measureOutput, attributes, externalInspector);
+            const size = measureOutput.size();
+            const attributesOnSplitLines = size.width > 50;
+            if (!attributesOnSplitLines) {
+                output.append(measureOutput);
+            } else {
+                output.indentLines();
+                writeAttributes(output, attributes, externalInspector, { splitLines: true });
+                output.outdentLines();
+                output.nl().i();
+            }
+
 
             const children = adapter.getChildren(value);
             if (children.length) {
@@ -98,7 +116,7 @@ function HtmlLikeUnexpected(adapter) {
                     return width > 50 || o.height > 1;
                 });
 
-                if (multipleLines) {
+                if (multipleLines || attributesOnSplitLines) {
                     output.nl().indentLines();
                     inspectedChildren.forEach(inspectedChild => {
                         output.i().block(inspectedChild).nl();
@@ -113,7 +131,11 @@ function HtmlLikeUnexpected(adapter) {
                  output.i()
                      .prismPunctuation('</').prismTag(adapter.getName(value)).prismPunctuation('>');
             } else {
-                output.prismPunctuation(' />');
+
+                if (!attributesOnSplitLines) {
+                    output.text(' ');
+                }
+                output.prismPunctuation('/>');
             }
             return output;
         }

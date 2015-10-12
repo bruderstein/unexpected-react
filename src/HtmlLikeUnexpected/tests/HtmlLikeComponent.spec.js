@@ -77,6 +77,48 @@ describe('HtmlLikeComponent', () => {
             '<div id="foo" className="bar"><span>1</span><span>2</span></div>');
     });
 
+    it('outputs attributes on split lines if they are too long, with no content', () => {
+        htmlLikeUnexpected.inspect({
+            name: 'div', attribs: {
+                id: 'foo',
+                className: 'bar blah mcgar',
+                'aria-role': 'special-long-button',
+                'data-special': 'some other long attrib'
+            },
+            children: []
+        }, 0, pen);
+
+        expect(pen.toString(), 'to equal',
+            '<div\n' +
+            '  id="foo"\n' +
+            '  className="bar blah mcgar"\n' +
+            '  aria-role="special-long-button"\n' +
+            '  data-special="some other long attrib"\n' +
+            '/>');
+    });
+
+    it('outputs attributes on split lines if they are too long, with content', () => {
+        htmlLikeUnexpected.inspect({
+            name: 'div', attribs: {
+                id: 'foo',
+                className: 'bar blah mcgar',
+                'aria-role': 'special-long-button',
+                'data-special': 'some other long attrib'
+            },
+            children: ['some content']
+        }, 0, pen);
+
+        expect(pen.toString(), 'to equal',
+            '<div\n' +
+            '  id="foo"\n' +
+            '  className="bar blah mcgar"\n' +
+            '  aria-role="special-long-button"\n' +
+            '  data-special="some other long attrib"\n' +
+            '>\n' +
+            '  some content\n' +
+            '</div>');
+    });
+
     describe('with no external inspect function', () => {
 
         it('outputs an object attribute with ellipses', () => {
