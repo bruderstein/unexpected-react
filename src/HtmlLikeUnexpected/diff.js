@@ -28,89 +28,7 @@ function diffElements(adapter, actual, expected, output, diff, inspect, equal, o
     const actualAttributes = adapter.getAttributes(actual);
     const expectedAttributes = adapter.getAttributes(expected);
 
-    const attributes = [];
-
-    Object.keys(actualAttributes).forEach(attrib => {
-        if (expectedAttributes.hasOwnProperty(attrib)) {
-            if (!equal(actualAttributes[attrib], expectedAttributes[attrib])) {
-                const diffResult = diff(actualAttributes[attrib], expectedAttributes[attrib]);
-                const attribOutput = output.clone();
-                outputAttribute(attribOutput, attrib, actualAttributes[attrib], inspect);
-                attribOutput.sp().annotationBlock(function () {
-                    this.error('should be').sp();
-                    outputAttribute(this, attrib, expectedAttributes[attrib], inspect);
-                    this.sp().block(diffResult.diff);
-                });
-                attributes.push({ matches: false, output: attribOutput });
-                diffWeight = WEIGHT_ATTRIBUTE_MISMATCH;
-            } else {
-                const attribOutput = output.clone();
-                outputAttribute(attribOutput, attrib, actualAttributes[attrib], inspect);
-                attributes.push({ matches: true, output: attribOutput });
-            }
-        }
-    });
-
-    Object.keys(expectedAttributes).forEach(attrib => {
-        if (!actualAttributes.hasOwnProperty(attrib)) {
-            diffWeight = WEIGHT_ATTRIBUTE_MISSING;
-            const attributeOutput = output.clone();
-            attributeOutput.annotationBlock(function () {
-                this.error('missing').sp();
-                outputAttribute(this, attrib, expectedAttributes[attrib], inspect);
-            });
-
-            attributes.push({ matches: false, output: attributeOutput })
-        }
-    });
-
-
-    const hasMismatchingAttributes = attributes.some(attrib => {
-        return attrib.matching === false;
-    });
-
-    let multilineAttributes = false;
-    if (!hasMismatchingAttributes) {
-        let width = startPosition;
-        multilineAttributes = attributes.some(attrib => {
-            const size = attrib.output.size();
-            if (attrib.matching) {   // If the attributes don't match, they'll be split onto a separate line anyway
-                width += size.width;
-            }
-            return width >= 50;
-        });
-    }
-
-    const indentSize = actualName.length + 1;
-    let isMultiline = false;
-    if (multilineAttributes) {
-        attributes.forEach(attrib => {
-            diffOutput.nl().i().sp(indentSize).append(attrib.output);
-            isMultiline = true;
-        });
-    } else {
-        let width = startPosition;
-        let canContinueLine = true;
-        attributes.forEach(attrib => {
-            if (!canContinueLine) {
-                diffOutput.nl().i().sp(indentSize);
-                isMultiline = true;
-                canContinueLine = true;
-                width = 0;
-            }
-            diffOutput.sp().append(attrib.output);
-            width += attrib.output.size().width;
-            if (!attrib.matches || width > 50) {
-                canContinueLine = false;
-            }
-        });
-
-        if (!canContinueLine || isMultiline) {
-            diffOutput.nl();
-        } else {
-            diffOutput.sp();
-        }
-    }
+    diffWeight += diffAttributes(actualAttributes, expectedAttributes, diffOutput, startPosition, diff, inspect, equal, options);
 
     diffOutput.prismPunctuation('/>');
 
@@ -175,6 +93,93 @@ function diffElements(adapter, actual, expected, output, diff, inspect, equal, o
 
 }
 
+function diffAttributes(actualAttributes, expectedAttributes, diffOutput, nameLength, diff, inspect, equal, options) {
+
+    let diffWeight = 0;
+    const attributes = [];
+    Object.keys(actualAttributes).forEach(attrib => {
+        if (expectedAttributes.hasOwnProperty(attrib)) {
+            if (!equal(actualAttributes[attrib], expectedAttributes[attrib])) {
+                const diffResult = diff(actualAttributes[attrib], expectedAttributes[attrib]);
+                const attribOutput = diffOutput.clone();
+                outputAttribute(attribOutput, attrib, actualAttributes[attrib], inspect);
+                attribOutput.sp().annotationBlock(function () {
+                    this.error('should be').sp();
+                    outputAttribute(this, attrib, expectedAttributes[attrib], inspect);
+                    this.sp().block(diffResult.diff);
+                });
+                attributes.push({ matches: false, output: attribOutput });
+                diffWeight += WEIGHT_ATTRIBUTE_MISMATCH;
+            } else {
+                const attribOutput = diffOutput.clone();
+                outputAttribute(attribOutput, attrib, actualAttributes[attrib], inspect);
+                attributes.push({ matches: true, output: attribOutput });
+            }
+        }
+    });
+
+    Object.keys(expectedAttributes).forEach(attrib => {
+        if (!actualAttributes.hasOwnProperty(attrib)) {
+            diffWeight += WEIGHT_ATTRIBUTE_MISSING;
+            const attributeOutput = diffOutput.clone();
+            attributeOutput.annotationBlock(function () {
+                this.error('missing').sp();
+                outputAttribute(this, attrib, expectedAttributes[attrib], inspect);
+            });
+
+            attributes.push({ matches: false, output: attributeOutput })
+        }
+    });
+
+
+    const hasMismatchingAttributes = attributes.some(attrib => {
+        return attrib.matching === false;
+    });
+
+    let multilineAttributes = false;
+    if (!hasMismatchingAttributes) {
+        let width = nameLength + 1;
+        multilineAttributes = attributes.some(attrib => {
+            const size = attrib.output.size();
+            if (attrib.matching) {   // If the attributes don't match, they'll be split onto a separate line anyway
+                width += size.width;
+            }
+            return width >= 50;
+        });
+    }
+
+    const indentSize = nameLength + 1;
+    let isMultiline = false;
+    if (multilineAttributes) {
+        attributes.forEach(attrib => {
+            diffOutput.nl().i().sp(indentSize).append(attrib.output);
+            isMultiline = true;
+        });
+    } else {
+        let width = nameLength;
+        let canContinueLine = true;
+        attributes.forEach(attrib => {
+            if (!canContinueLine) {
+                diffOutput.nl().i().sp(indentSize);
+                isMultiline = true;
+                canContinueLine = true;
+                width = 0;
+            }
+            diffOutput.sp().append(attrib.output);
+            width += attrib.output.size().width;
+            if (!attrib.matches || width > 50) {
+                canContinueLine = false;
+            }
+        });
+
+        if (!canContinueLine || isMultiline) {
+            diffOutput.nl();
+        } else {
+            diffOutput.sp();
+        }
+    }
+    return diffWeight;
+}
 
 function outputAttribute(output, name, value, inspect) {
 

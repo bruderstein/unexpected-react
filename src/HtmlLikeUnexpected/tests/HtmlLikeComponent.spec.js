@@ -67,7 +67,16 @@ expect.addAssertion('<HtmlDiffResult> to output <magicpen>', (expect, subject, p
 });
 
 expect.addAssertion('<HtmlDiffResult> to output <string>', (expect, subject, value) => {
-    expect(subject.output.toString(), 'to equal', value);
+    expect(subject.output.toString(), 'to equal', value) /*, error => {
+       expect.fail({
+           diff: output => {
+               return {
+                   inline: false,
+                   diff: output.text('DIFF').append(expect.diff(subject.output.toString(), value))
+               }
+           }
+       })
+    }) */
 });
 
 expect.use(MagicPenPrism);
@@ -336,9 +345,8 @@ describe('HtmlLikeComponent', () => {
             );
         });
 
-        // TODO: children!
         /*
-        it('diffs a component with children', () => {
+        it('diffs a component with a single text child', () => {
 
             expect(
                 {
@@ -348,7 +356,7 @@ describe('HtmlLikeComponent', () => {
                 {
                     name: 'div', attribs: { id: 'foo' }, children: ['def']
                 },
-                'to equal',
+                'to output',
                 '<div id="foo">\n' +
                 '  -abc\n' +
                 '  +def\n' +
@@ -356,6 +364,8 @@ describe('HtmlLikeComponent', () => {
             );
         });
 
+*/
+        /*
         it('diffs a component with child components', () => {
 
             expect(
