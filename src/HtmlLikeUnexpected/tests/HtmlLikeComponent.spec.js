@@ -22,12 +22,12 @@ expect.addType({
     identify: value => value && value.name && value.attribs && value.children,
     inspect: (value, depth, output, inspect) => {
 
-        const htmlLikeUnexpected = new HtmlLikeUnexpected(TestAdapter);
+        const htmlLikeUnexpected = new HtmlLikeUnexpected(TestAdapter, TestAdapter);
         return htmlLikeUnexpected.inspect(value, depth, output, inspect);
     },
 
     diff: (actual, expected, output, diff, inspect, equal) => {
-        const htmlLikeUnexpected = new HtmlLikeUnexpected(TestAdapter);
+        const htmlLikeUnexpected = new HtmlLikeUnexpected(TestAdapter, TestAdapter);
         return htmlLikeUnexpected.inspect(value, depth, output, inspect);
     }
 });
@@ -38,7 +38,7 @@ expect.addAssertion('<any> to inspect as <string>', (expect, subject, value) => 
 
 expect.addAssertion('<TestHtmlLike> when diffed against <TestHtmlLike> <assertion>', (expect, subject, value) => {
 
-    const htmlLikeUnexpected = new HtmlLikeUnexpected(TestAdapter);
+    const htmlLikeUnexpected = new HtmlLikeUnexpected(TestAdapter, TestAdapter);
     const pen = expect.output.clone();
     const result = htmlLikeUnexpected.diff(subject, value, pen, expect.diff.bind(expect), expect.inspect.bind(expect), expect.equal.bind(expect));
     return expect.shift(result);
@@ -488,6 +488,109 @@ describe('HtmlLikeComponent', () => {
             );
         });
 
+        it('diffs a component with a child that is an element and should be a string', () => {
+
+            expect(
+                {
+                    name: 'div', attribs: { id: 'foo' }, children: [
+                    { name: 'span', attribs: { id: 'childfoo'}, children: ['one'] },
+                    { name: 'span', attribs: {}, children: ['two'] }
+                ]
+                },
+                'when diffed against',
+                {
+                    name: 'div', attribs: { id: 'foo' }, children: [
+                    { name: 'span', attribs: { id: 'childfoo' }, children: ['one'] },
+                    'some text'
+                ]
+                },
+                'to output with weight',
+                '<div id="foo">\n' +
+                '  <span id="childfoo">one</span>\n' +
+                "  <span>two</span> // should be 'some text'\n" +
+                '</div>', HtmlLikeUnexpected.Weights.NATIVE_NONNATIVE_MISMATCH
+            );
+        });
+
+        it('diffs a component with a child that is an deep element and should be a string', () => {
+
+            expect(
+                {
+                    name: 'div', attribs: { id: 'foo' }, children: [
+                    { name: 'span', attribs: { id: 'childfoo'}, children: ['one'] },
+                    { name: 'span', attribs: {}, children: [
+                        { name: 'span', attribs: { className: 'deep'}, children: ['nested and broken over many lines']}
+                    ] }
+                ]
+                },
+                'when diffed against',
+                {
+                    name: 'div', attribs: { id: 'foo' }, children: [
+                    { name: 'span', attribs: { id: 'childfoo' }, children: ['one'] },
+                    'some text'
+                ]
+                },
+                'to output with weight',
+                '<div id="foo">\n' +
+                '  <span id="childfoo">one</span>\n' +
+                '  <span>                                                            // \n' +
+                '    <span className="deep">nested and broken over many lines</span> //\n' +
+                "  </span>                                                           // should be 'some text'\n" +
+                '</div>', HtmlLikeUnexpected.Weights.NATIVE_NONNATIVE_MISMATCH
+            );
+        });
+
+        it('diffs a component with a child that is a string and should be an element', () => {
+
+            expect(
+                {
+                    name: 'div', attribs: { id: 'foo' }, children: [
+                    { name: 'span', attribs: { id: 'childfoo'}, children: ['one'] },
+                    'some text'
+                ]
+                },
+                'when diffed against',
+                {
+                    name: 'div', attribs: { id: 'foo' }, children: [
+                    { name: 'span', attribs: { id: 'childfoo' }, children: ['one'] },
+                    { name: 'span', attribs: {}, children: ['two'] }
+                ]
+                },
+                'to output with weight',
+                '<div id="foo">\n' +
+                '  <span id="childfoo">one</span>\n' +
+                '  some text // should be <span>two</span>\n' +
+                '</div>', HtmlLikeUnexpected.Weights.NATIVE_NONNATIVE_MISMATCH
+            );
+        });
+
+        it('diffs a component with a child that is a string and should be a deep multiline element', () => {
+
+            expect(
+                {
+                    name: 'div', attribs: { id: 'foo' }, children: [
+                    { name: 'span', attribs: { id: 'childfoo'}, children: ['one'] },
+                    'some text'
+                ]
+                },
+                'when diffed against',
+                {
+                    name: 'div', attribs: { id: 'foo' }, children: [
+                    { name: 'span', attribs: { id: 'childfoo' }, children: ['one'] },
+                    { name: 'span', attribs: {}, children: [
+                        { name: 'span', attribs: { className: 'deep'}, children: ['nested and broken over many lines']}
+                    ] }
+                ]
+                },
+                'to output with weight',
+                '<div id="foo">\n' +
+                '  <span id="childfoo">one</span>\n' +
+                '  some text // should be <span>\n' +
+                '            //             <span className="deep">nested and broken over many lines</span>\n' +
+                '            //           </span>\n' +
+                '</div>', HtmlLikeUnexpected.Weights.NATIVE_NONNATIVE_MISMATCH
+            );
+        });
 
     });
 });

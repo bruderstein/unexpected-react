@@ -14,16 +14,53 @@ const Weights = {
     CHILD_INSERTED: 2
 };
 
-function diffElements(adapter, actual, expected, output, diff, inspect, equal, options) {
+function diffElements(actualAdapter, expectedAdapter, actual, expected, output, diff, inspect, equal, options) {
 
     let diffWeight = 0;
 
     let startPosition = 0;
 
-    const actualName = adapter.getName(actual);
-    const expectedName = adapter.getName(expected);
-
     const diffOutput = output.clone();
+
+    if (isNativeType(actual) && isNativeType(expected)) {
+        if (('' + actual).trim() !== ('' + expected).trim()) {
+            const diffResult = diff(actual, expected);
+            return {
+                weight: Weights.STRING_CONTENT_MISMATCH,
+                output: diffResult.diff
+            }
+        } else {
+            diffOutput.text(actual);
+            return {
+                weight: Weights.OK,
+                output: diffOutput
+            };
+        }
+    } else if (isNativeType(actual) && !isNativeType(expected)) {
+        diffOutput.block('' + actual).sp().annotationBlock(function () {
+            this.error('should be ').block(inspect(expected));
+        });
+        return {
+            weight: Weights.NATIVE_NONNATIVE_MISMATCH,
+            output: diffOutput
+        };
+    } else if (!isNativeType(actual) && isNativeType(expected)) {
+
+        const actualOutput = inspect(actual);
+        diffOutput.block(actualOutput).sp().annotationBlock(function () {
+
+            this.nl(actualOutput.size().height - 1).error('should be ').block(inspect(expected))
+        });
+        return {
+            weight: Weights.NATIVE_NONNATIVE_MISMATCH,
+            output: diffOutput
+        }
+
+    }
+
+    const actualName = actualAdapter.getName(actual);
+    const expectedName = expectedAdapter.getName(expected);
+
 
 
     diffOutput.prismPunctuation('<');
@@ -39,17 +76,17 @@ function diffElements(adapter, actual, expected, output, diff, inspect, equal, o
         .nl();
     }
 
-    const actualAttributes = adapter.getAttributes(actual);
-    const expectedAttributes = adapter.getAttributes(expected);
+    const actualAttributes = actualAdapter.getAttributes(actual);
+    const expectedAttributes = expectedAdapter.getAttributes(expected);
 
     diffWeight += diffAttributes(actualAttributes, expectedAttributes, diffOutput, startPosition, diff, inspect, equal, options);
 
-    const actualChildren = adapter.getChildren(actual);
-    const expectedChildren = adapter.getChildren(expected);
+    const actualChildren = actualAdapter.getChildren(actual);
+    const expectedChildren = expectedAdapter.getChildren(expected);
     if (actualChildren.length || expectedChildren.length) {
         diffOutput.prismPunctuation('>').nl();
         const childrenOutput = diffOutput.clone();
-        diffWeight += diffChildren(adapter, actualChildren, expectedChildren, childrenOutput, diff, inspect, equal, options);
+        diffWeight += diffChildren(actualAdapter, expectedAdapter, actualChildren, expectedChildren, childrenOutput, diff, inspect, equal, options);
 
         diffOutput.indentLines();
         diffOutput.i().block(childrenOutput);
@@ -58,58 +95,6 @@ function diffElements(adapter, actual, expected, output, diff, inspect, equal, o
     } else {
         diffOutput.prismPunctuation('/>');
     }
-
-    /*
-
-    const actualIsNative = isNativeType(actual);
-    const expectedIsNative = isNativeType(expected);
-
-    const actualAttributes = adapter.getAttributes(actual);
-    const expectedAttributes = adapter.getAttributes(expected);
-
-    if (actualIsNative !== expectedIsNative) {
-        diffWeight += WEIGHT_NATIVE_NONNATIVE_MISMATCH;
-
-        const thisDiffOutput = output.clone();
-        if (actualIsNative) {
-            thisDiffOutput.text('' + actual)
-                .sp()
-                .annotationBlock(function () {
-                    this.error('should be').sp().block(inspect(expected))
-                });
-        } else if (expectedIsNative) {
-            var actualOutput = inspect(actual);
-            thisDiffOutput.block(actualOutput)
-                .annotationBlock(function () {
-                    this.nl(actualOutput.size().height - 1);
-                    this.error('should be').sp().append(inspect(expected));
-                });
-        }
-
-        // TODO: Need to check if one level down returns a lower weight
-        return {
-            weight: diffWeight,
-            output: thisDiffOutput
-        };
-    }
-
-
-    let canContinueLine = true;
-    const thisDiffOutput = output.clone();
-    if (adapter.getName(actual) !== adapter.getName(expected)) {
-        diffWeight += WEIGHT_NAME_MISMATCH;
-
-        thisDiffOutput
-            .prismPunctuation('<')
-            .prismTag(adapter.getName(actual))
-            .sp()
-            .annotationBlock(function () {
-                this.error('should be').sp().prismTag(adapter.getName(expected))
-            })
-            .nl();
-        canContinueLine = false;
-    }
-*/
 
     return {
         weight: diffWeight,
@@ -206,26 +191,13 @@ function diffAttributes(actualAttributes, expectedAttributes, diffOutput, nameLe
     return diffWeight;
 }
 
-function diffChildren(adapter, actualChildren, expectedChildren, output, diff, inspect, equal, options) {
+function diffChildren(actualAdapter, expectedAdapter, actualChildren, expectedChildren, output, diff, inspect, equal, options) {
 
     let diffWeight = 0;
-    if (actualChildren.length === 1 && expectedChildren.length === 1 &&
-        isNativeType(actualChildren[0]) && isNativeType(expectedChildren[0])) {
-
-        if (actualChildren[0] !== expectedChildren[0]) {
-            var stringDiff = diff(('' + actualChildren[0]).trim(), ('' + expectedChildren[0]).trim());
-            output.block(stringDiff.diff);
-            return Weights.STRING_CONTENT_MISMATCH;
-        } else {
-            output.text(actualChildren[0]);
-            return Weights.OK;
-        }
-    }
-
 
     var changes = ArrayChanges(actualChildren, expectedChildren,
         function (a, b) {
-            const elementDiff = diffElements(adapter, a, b, output, diff, inspect, equal, options);
+            const elementDiff = diffElements(actualAdapter, expectedAdapter, a, b, output, diff, inspect, equal, options);
             return elementDiff.weight === Weights.OK;
         },
 
@@ -243,7 +215,7 @@ function diffChildren(adapter, actualChildren, expectedChildren, output, diff, i
 
 
             return (
-                adapter.getName(a)  === adapter.getName(b)
+                actualAdapter.getName(a)  === expectedAdapter.getName(b)
             );
         } );
 
@@ -291,9 +263,12 @@ function diffChildren(adapter, actualChildren, expectedChildren, output, diff, i
                     break;
 
                 default:
-                    const elementDiffResult = diffElements(adapter, diffItem.value, diffItem.expected, output, diff, inspect, equal, options);
+                    const elementDiffResult = diffElements(actualAdapter, expectedAdapter, diffItem.value, diffItem.expected, output, diff, inspect, equal, options);
                     diffWeight += elementDiffResult.weight;
 
+                    if (!elementDiffResult.output) {
+                        console.log(elementDiffResult)
+                    }
                     this.block(elementDiffResult.output);
                     break;
             }
@@ -318,7 +293,7 @@ function outputAttribute(output, name, value, inspect) {
     }
 }
 
-module.exports = {
+export default {
     diffElements,
     Weights
 };

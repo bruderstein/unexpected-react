@@ -414,14 +414,14 @@ function elementsMatch(adapter, actual, expected, equal, options) {
 
 
 
-function HtmlLikeUnexpected(adapter) {
+function HtmlLikeUnexpected(actualAdapter, expectedAdapter) {
 
     return {
-        inspect: inspect.bind(null, adapter),
-        diff: diff.diffElements.bind(null, adapter)
+        inspect: inspect.bind(null, actualAdapter),
+        diff: diff.diffElements.bind(null, actualAdapter, expectedAdapter)
     };
 }
 
 HtmlLikeUnexpected.Weights = diff.Weights;
 
-module.exports = HtmlLikeUnexpected;
+export default HtmlLikeUnexpected;
