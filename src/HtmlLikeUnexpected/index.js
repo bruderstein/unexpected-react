@@ -422,4 +422,6 @@ function HtmlLikeUnexpected(adapter) {
     };
 }
 
+HtmlLikeUnexpected.Weights = diff.Weights;
+
 module.exports = HtmlLikeUnexpected;

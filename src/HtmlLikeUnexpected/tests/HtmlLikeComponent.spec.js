@@ -67,17 +67,14 @@ expect.addAssertion('<HtmlDiffResult> to output <magicpen>', (expect, subject, p
 });
 
 expect.addAssertion('<HtmlDiffResult> to output <string>', (expect, subject, value) => {
-    expect(subject.output.toString(), 'to equal', value) /*, error => {
-       expect.fail({
-           diff: output => {
-               return {
-                   inline: false,
-                   diff: output.text('DIFF').append(expect.diff(subject.output.toString(), value))
-               }
-           }
-       })
-    }) */
+    expect(subject.output.toString(), 'to equal', value);
 });
+
+expect.addAssertion('<HtmlDiffResult> to output with weight <string> <number>', (expect, subject, value, weight) => {
+    expect(subject.output.toString(), 'to equal', value);
+    expect(subject, 'to have weight', weight);
+});
+
 
 expect.use(MagicPenPrism);
 
@@ -221,7 +218,7 @@ describe('HtmlLikeComponent', () => {
                {
                    name: 'div', attribs: { id: 'bar' }, children: []
                },
-               'to have weight', 1
+               'to have weight', HtmlLikeUnexpected.Weights.ATTRIBUTE_MISMATCH
            );
 
        });
@@ -355,11 +352,11 @@ describe('HtmlLikeComponent', () => {
                 {
                     name: 'div', attribs: { id: 'foo' }, children: ['def']
                 },
-                'to output',
+                'to output with weight',
                 '<div id="foo">\n' +
                 '  -abc\n' +
                 '  +def\n' +
-                '</div>'
+                '</div>', HtmlLikeUnexpected.Weights.STRING_CONTENT_MISMATCH
             );
         });
 
@@ -379,14 +376,14 @@ describe('HtmlLikeComponent', () => {
                     { name: 'span', attribs: {}, children: ['updated'] }
                 ]
                 },
-                'to output',
+                'to output with weight',
                 '<div id="foo">\n' +
                 '  <span>one</span>\n' +
                 '  <span>\n' +
                 '    -two\n' +
                 '    +updated\n' +
                 '  </span>\n' +
-                '</div>'
+                '</div>', HtmlLikeUnexpected.Weights.STRING_CONTENT_MISMATCH
             );
         });
 
@@ -406,14 +403,14 @@ describe('HtmlLikeComponent', () => {
                     { name: 'span', attribs: {}, children: ['two'] }
                 ]
                 },
-                'to output',
+                'to output with weight',
                 '<div id="foo">\n' +
                 '  <div // should be <span>\n' +
                 '  >\n' +
                 '    one\n' +
                 '  </div>\n' +
                 '  <span>two</span>\n' +
-                '</div>'
+                '</div>', HtmlLikeUnexpected.Weights.NAME_MISMATCH
             );
         });
 
@@ -433,7 +430,7 @@ describe('HtmlLikeComponent', () => {
                     { name: 'span', attribs: {}, children: ['two'] }
                 ]
                 },
-                'to output',
+                'to output with weight',
                 '<div id="foo">\n' +
                 '  <span id="childfoo" // should be id="childbar" -childfoo\n' +
                 '                      //                         +childbar\n' +
@@ -441,7 +438,7 @@ describe('HtmlLikeComponent', () => {
                 '    one\n' +
                 '  </span>\n' +
                 '  <span>two</span>\n' +
-                '</div>'
+                '</div>', HtmlLikeUnexpected.Weights.ATTRIBUTE_MISMATCH
             );
         });
 
@@ -460,11 +457,11 @@ describe('HtmlLikeComponent', () => {
                     { name: 'span', attribs: {}, children: ['two'] }
                 ]
                 },
-                'to output',
+                'to output with weight',
                 '<div id="foo">\n' +
                 '  <span id="childfoo">one</span>\n' +
                 '  // missing <span>two</span>\n' +
-                '</div>'
+                '</div>', HtmlLikeUnexpected.Weights.CHILD_MISSING
             );
         });
 
@@ -483,11 +480,11 @@ describe('HtmlLikeComponent', () => {
                     { name: 'span', attribs: { id: 'childfoo' }, children: ['one'] }
                 ]
                 },
-                'to output',
+                'to output with weight',
                 '<div id="foo">\n' +
                 '  <span id="childfoo">one</span>\n' +
                 '  <span>two</span> // should be removed\n' +
-                '</div>'
+                '</div>', HtmlLikeUnexpected.Weights.CHILD_INSERTED
             );
         });
 

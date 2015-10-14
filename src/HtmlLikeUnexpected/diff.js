@@ -2,15 +2,17 @@ import ArrayChanges from 'array-changes';
 import isNativeType from './isNativeType';
 
 // Weightings for diff heuristics
-const WEIGHT_OK = 0;
-const WEIGHT_NATIVE_NONNATIVE_MISMATCH = 10;
-const WEIGHT_NAME_MISMATCH = 8;
-const WEIGHT_ATTRIBUTE_MISMATCH = 1;
-const WEIGHT_ATTRIBUTE_MISSING = 1;
-const WEIGHT_STRING_CONTENT_MISMATCH = 3;
-const WEIGHT_CHILD_MISSING = 2;
-const WEIGHT_CHILD_INSERTED = 2;
 
+const Weights = {
+    OK: 0,
+    NATIVE_NONNATIVE_MISMATCH: 10,
+    NAME_MISMATCH: 8,
+    ATTRIBUTE_MISMATCH: 1,
+    ATTRIBUTE_MISSING: 1,
+    STRING_CONTENT_MISMATCH: 3,
+    CHILD_MISSING: 2,
+    CHILD_INSERTED: 2
+};
 
 function diffElements(adapter, actual, expected, output, diff, inspect, equal, options) {
 
@@ -29,7 +31,7 @@ function diffElements(adapter, actual, expected, output, diff, inspect, equal, o
         diffOutput.prismTag(actualName);
         startPosition = actualName.length;
     } else {
-        diffWeight += WEIGHT_NAME_MISMATCH;
+        diffWeight += Weights.NAME_MISMATCH;
         diffOutput.prismTag(actualName)
             .sp().annotationBlock(function () {
                 this.error('should be ').prismPunctuation('<').prismTag(expectedName).prismPunctuation('>')
@@ -134,7 +136,7 @@ function diffAttributes(actualAttributes, expectedAttributes, diffOutput, nameLe
                     this.sp().block(diffResult.diff);
                 });
                 attributes.push({ matches: false, output: attribOutput });
-                diffWeight += WEIGHT_ATTRIBUTE_MISMATCH;
+                diffWeight += Weights.ATTRIBUTE_MISMATCH;
             } else {
                 const attribOutput = diffOutput.clone();
                 outputAttribute(attribOutput, attrib, actualAttributes[attrib], inspect);
@@ -145,7 +147,7 @@ function diffAttributes(actualAttributes, expectedAttributes, diffOutput, nameLe
 
     Object.keys(expectedAttributes).forEach(attrib => {
         if (!actualAttributes.hasOwnProperty(attrib)) {
-            diffWeight += WEIGHT_ATTRIBUTE_MISSING;
+            diffWeight += Weights.ATTRIBUTE_MISSING;
             const attributeOutput = diffOutput.clone();
             attributeOutput.annotationBlock(function () {
                 this.error('missing').sp();
@@ -213,10 +215,10 @@ function diffChildren(adapter, actualChildren, expectedChildren, output, diff, i
         if (actualChildren[0] !== expectedChildren[0]) {
             var stringDiff = diff(('' + actualChildren[0]).trim(), ('' + expectedChildren[0]).trim());
             output.block(stringDiff.diff);
-            return WEIGHT_STRING_CONTENT_MISMATCH;
+            return Weights.STRING_CONTENT_MISMATCH;
         } else {
             output.text(actualChildren[0]);
-            return WEIGHT_OK;
+            return Weights.OK;
         }
     }
 
@@ -224,7 +226,7 @@ function diffChildren(adapter, actualChildren, expectedChildren, output, diff, i
     var changes = ArrayChanges(actualChildren, expectedChildren,
         function (a, b) {
             const elementDiff = diffElements(adapter, a, b, output, diff, inspect, equal, options);
-            return elementDiff.weight === WEIGHT_OK;
+            return elementDiff.weight === Weights.OK;
         },
 
         function (a, b) {
@@ -250,7 +252,7 @@ function diffChildren(adapter, actualChildren, expectedChildren, output, diff, i
 
             switch(diffItem.type) {
                 case 'insert':
-                    diffWeight += WEIGHT_CHILD_MISSING;
+                    diffWeight += Weights.CHILD_MISSING;
                     this.annotationBlock(function () {
                         this.error('missing ');
                         if (typeof diffItem.value === 'string') {
@@ -264,7 +266,7 @@ function diffChildren(adapter, actualChildren, expectedChildren, output, diff, i
                     break;
 
                 case 'remove':
-                    diffWeight += WEIGHT_CHILD_INSERTED;
+                    diffWeight += Weights.CHILD_INSERTED;
                     if (typeof diffItem.value === 'string') {
                         this.block(function () {
                             this.text(diffItem.value).sp().error('// should be removed');
@@ -317,5 +319,6 @@ function outputAttribute(output, name, value, inspect) {
 }
 
 module.exports = {
-    diffElements
+    diffElements,
+    Weights
 };
