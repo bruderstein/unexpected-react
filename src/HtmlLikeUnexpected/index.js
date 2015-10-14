@@ -418,6 +418,7 @@ function HtmlLikeUnexpected(actualAdapter, expectedAdapter) {
 
     return {
         inspect: inspect.bind(null, actualAdapter),
+        inspectExpected: inspect.bind(null, expectedAdapter),
         diff: diff.diffElements.bind(null, actualAdapter, expectedAdapter)
     };
 }

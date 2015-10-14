@@ -109,5 +109,26 @@ describe('unexpected-react-deep', () => {
             '  <CustomComp className="bar"><div className="bar" /></CustomComp>\n' +
             '</WrapperComp>');
         });
+
     });
+
+    describe('to render as', () => {
+
+        it('matches a rendered simple component', () => {
+
+            const component = TestUtils.renderIntoDocument(<CustomComp className="bar" />);
+            expect(component, 'to render as', <CustomComp className="bar"><div className="bar" /></CustomComp>);
+        });
+
+        it('matches a rendered deeper component', () => {
+
+            const component = TestUtils.renderIntoDocument(<WrapperComp className="bar" />);
+            expect(component, 'to render as',
+                <WrapperComp className="bar">
+                    <CustomComp className="bar">
+                        <div className="bar" />
+                    </CustomComp>
+                </WrapperComp>);
+        });
+    })
 });

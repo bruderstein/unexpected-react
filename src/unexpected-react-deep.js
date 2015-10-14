@@ -2,6 +2,7 @@ import GlobalHook from './globalHook';
 import React from 'react';
 import HtmlLikeUnexpected from './HtmlLikeUnexpected';
 import RenderedReactElementAdapter from './Adapters/renderedReactElementAdapter';
+import ReactElementAdapter from './Adapters/reactElementAdapter';
 
 
 export default {
@@ -11,7 +12,7 @@ export default {
 
         expect.installPlugin(require('magicpen-prism'));
 
-        const htmlLikeRenderedReactElement = HtmlLikeUnexpected(RenderedReactElementAdapter);
+        const htmlLikeRenderedReactElement = HtmlLikeUnexpected(RenderedReactElementAdapter, ReactElementAdapter);
 
         expect.addType({
 
@@ -32,6 +33,22 @@ export default {
         });
 
         expect.addType({
+            name: 'RenderedReactElementData',
+
+            identify(value) {
+                return (typeof value === 'object' &&
+                    value !== null &&
+                    value.hasOwnProperty('element') &&
+                    value.data &&
+                    value.data.type &&
+                    value.data.nodeType);
+            },
+            inspect(value, depth, output, inspect) {
+                return htmlLikeRenderedReactElement.inspect(value, depth, output, inspect);
+            }
+        });
+
+        expect.addType({
             name: 'ReactElement',
 
             identify: function (value) {
@@ -46,7 +63,7 @@ export default {
 
             inspect: function (value, depth, output, inspect) {
 
-                output.text('TODO - ReactElement inspect');
+                return htmlLikeRenderedReactElement.inspectExpected(value, depth, output, inspect);
             }
         });
 
@@ -77,5 +94,20 @@ export default {
             return expect(GlobalHook.isAttached, 'to equal', true);
         });
 
+        expect.addAssertion('<RenderedReactElement> to render as <ReactElement>', function (expect, subject, element) {
+
+            const data = GlobalHook.findComponent(subject);
+            const result = htmlLikeRenderedReactElement.diff(data, element, expect.output.clone(), expect.diff.bind(expect), expect.inspect.bind(expect), expect.equal.bind(expect));
+            expect.withError(() => expect(result.weight, 'to equal', 0), () => {
+                expect.fail({
+                    diff: function (output, diff, inspect, equal) {
+                        return {
+                            diff: result.output
+                        };
+                    }
+                });
+            });
+
+        });
     }
 }

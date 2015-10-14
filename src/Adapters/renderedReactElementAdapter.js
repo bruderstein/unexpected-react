@@ -11,7 +11,9 @@ function isRawType(value) {
 }
 
 const RenderedReactElementAdapter = {
-    getName(comp) { return comp.data.name; },
+    getName(comp) {
+        return comp.data.name;
+    },
 
     getAttributes(comp) {
         // TODO: skip / remove 'children'
