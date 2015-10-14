@@ -345,7 +345,6 @@ describe('HtmlLikeComponent', () => {
             );
         });
 
-        /*
         it('diffs a component with a single text child', () => {
 
             expect(
@@ -364,9 +363,7 @@ describe('HtmlLikeComponent', () => {
             );
         });
 
-*/
-        /*
-        it('diffs a component with child components', () => {
+        it('diffs a component with child components with different content', () => {
 
             expect(
                 {
@@ -379,19 +376,121 @@ describe('HtmlLikeComponent', () => {
                 {
                     name: 'div', attribs: { id: 'foo' }, children: [
                     { name: 'span', attribs: {}, children: ['one'] },
-                    { name: 'span', attribs: {}, children: ['two'] },
-                    { name: 'span', attribs: {}, children: ['three'] }
+                    { name: 'span', attribs: {}, children: ['updated'] }
                 ]
                 },
-                'to equal',
+                'to output',
                 '<div id="foo">\n' +
                 '  <span>one</span>\n' +
-                '  <span>two</span>\n' +
-                '  // missing <span>three</span>\n' +
+                '  <span>\n' +
+                '    -two\n' +
+                '    +updated\n' +
+                '  </span>\n' +
                 '</div>'
             );
         });
-        */
+
+        it('diffs a component with child components with different tags', () => {
+
+            expect(
+                {
+                    name: 'div', attribs: { id: 'foo' }, children: [
+                    { name: 'div', attribs: {}, children: ['one'] },
+                    { name: 'span', attribs: {}, children: ['two'] }
+                ]
+                },
+                'when diffed against',
+                {
+                    name: 'div', attribs: { id: 'foo' }, children: [
+                    { name: 'span', attribs: {}, children: ['one'] },
+                    { name: 'span', attribs: {}, children: ['two'] }
+                ]
+                },
+                'to output',
+                '<div id="foo">\n' +
+                '  <div // should be <span>\n' +
+                '  >\n' +
+                '    one\n' +
+                '  </div>\n' +
+                '  <span>two</span>\n' +
+                '</div>'
+            );
+        });
+
+        it('diffs a component with child components with different attributes', () => {
+
+            expect(
+                {
+                    name: 'div', attribs: { id: 'foo' }, children: [
+                    { name: 'span', attribs: { id: 'childfoo'}, children: ['one'] },
+                    { name: 'span', attribs: {}, children: ['two'] }
+                ]
+                },
+                'when diffed against',
+                {
+                    name: 'div', attribs: { id: 'foo' }, children: [
+                    { name: 'span', attribs: { id: 'childbar' }, children: ['one'] },
+                    { name: 'span', attribs: {}, children: ['two'] }
+                ]
+                },
+                'to output',
+                '<div id="foo">\n' +
+                '  <span id="childfoo" // should be id="childbar" -childfoo\n' +
+                '                      //                         +childbar\n' +
+                '  >\n' +
+                '    one\n' +
+                '  </span>\n' +
+                '  <span>two</span>\n' +
+                '</div>'
+            );
+        });
+
+        it('diffs a component with a missing child', () => {
+
+            expect(
+                {
+                    name: 'div', attribs: { id: 'foo' }, children: [
+                    { name: 'span', attribs: { id: 'childfoo'}, children: ['one'] }
+                ]
+                },
+                'when diffed against',
+                {
+                    name: 'div', attribs: { id: 'foo' }, children: [
+                    { name: 'span', attribs: { id: 'childfoo' }, children: ['one'] },
+                    { name: 'span', attribs: {}, children: ['two'] }
+                ]
+                },
+                'to output',
+                '<div id="foo">\n' +
+                '  <span id="childfoo">one</span>\n' +
+                '  // missing <span>two</span>\n' +
+                '</div>'
+            );
+        });
+
+        it('diffs a component with an extra child', () => {
+
+            expect(
+                {
+                    name: 'div', attribs: { id: 'foo' }, children: [
+                    { name: 'span', attribs: { id: 'childfoo'}, children: ['one'] },
+                    { name: 'span', attribs: {}, children: ['two'] }
+                ]
+                },
+                'when diffed against',
+                {
+                    name: 'div', attribs: { id: 'foo' }, children: [
+                    { name: 'span', attribs: { id: 'childfoo' }, children: ['one'] }
+                ]
+                },
+                'to output',
+                '<div id="foo">\n' +
+                '  <span id="childfoo">one</span>\n' +
+                '  <span>two</span> // should be removed\n' +
+                '</div>'
+            );
+        });
+
 
     });
 });
