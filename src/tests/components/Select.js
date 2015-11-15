@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import SelectOption from './SelectOption';
 
-export default class Select extends Component {
+class Select extends Component {
 
     constructor() {
         super();
@@ -38,3 +38,5 @@ export default class Select extends Component {
         );
     }
 }
+
+module.exports = Select;

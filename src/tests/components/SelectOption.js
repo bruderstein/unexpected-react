@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 
-export default class SelectOption extends Component {
+class SelectOption extends Component {
 
     render() {
         return (
@@ -10,3 +10,5 @@ export default class SelectOption extends Component {
             </li>);
     }
 }
+
+module.exports = SelectOption;

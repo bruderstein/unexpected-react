@@ -4,7 +4,7 @@ import types from './types';
 import assertions from './assertions';
 
 
-export default {
+module.exports = {
     name: 'unexpected-react',
 
     installInto(expect) {
@@ -14,4 +14,4 @@ export default {
         types.installInto(expect);
         assertions.installInto(expect);
     }
-}
+};

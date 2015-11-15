@@ -1,16 +1,30 @@
 {
-  "name": "unexpected-react-deep",
-  "version": "1.0.0",
+  "name": "unexpected-react",
+  "version": "0.3.0",
+  "description": "Plugin for unexpected, to allow for assertions on the React.js virtual DOM, and the shallow renderer",
   "scripts": {
-    "build": "babel src -d lib --source-maps true",
-    "test": "mocha --compilers js:babel/register src/tests/*.spec.js"
+    "build": "babel src -d lib --source-maps true --presets es2015 --presets react",
+    "prepublish": "npm run build && npm test",
+    "test": "mocha --compilers js:babel-core/register src/tests/*.spec.js"
   },
   "main": "lib/unexpected-react.js",
+  "repository": "https://github.com/bruderstein/unexpected-react.git",
+  "license": "MIT",
+  "keywords": [
+    "unexpected-plugin",
+    "unexpected",
+    "testing",
+    "react",
+    "reactjs",
+    "unit-test",
+    "virtualDOM"
+  ],
   "peerDependencies": {
     "react": "^0.13.0 || ^0.14.0"
   },
   "devDependencies": {
-    "babel": "^6.1.18",
+    "babel-cli": "^6.1.18",
+    "babel-core": "^6.1.21",
     "babel-preset-es2015": "^6.1.18",
     "babel-preset-react": "^6.1.18",
     "eslint": "^1.9.0",
@@ -26,6 +40,7 @@
     "array-changes": "^1.0.3",
     "magicpen-prism": "^2.2.1",
     "unexpected-htmllike": "^0.3.0",
-    "unexpected-htmllike-jsx-adapter": "^0.1.0"
+    "unexpected-htmllike-jsx-adapter": "^0.3.0",
+    "unexpected-htmllike-reactrendered-adapter": "^0.1.0"
   }
 }
