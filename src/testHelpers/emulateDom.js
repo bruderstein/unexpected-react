@@ -1,11 +1,7 @@
-
-module.exports = function (html) {
-    if (typeof document !== 'undefined') {
-        return;
-    }
+if (typeof document === 'undefined') {
 
     const jsdom = require('jsdom').jsdom;
-    global.document = jsdom(html || '');
+    global.document = jsdom('');
     global.window = global.document.defaultView;
 
     for (let key in global.window) {

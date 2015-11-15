@@ -2,21 +2,30 @@
   "name": "unexpected-react-deep",
   "version": "1.0.0",
   "scripts": {
-    "build": "babel src -d lib"
+    "build": "babel src -d lib --source-maps true",
+    "test": "mocha --compilers js:babel/register src/tests/*.spec.js"
   },
-  "main": "lib/index.js",
+  "main": "lib/unexpected-react.js",
   "peerDependencies": {
     "react": "^0.13.0 || ^0.14.0"
   },
   "devDependencies": {
+    "babel": "^6.1.18",
+    "babel-preset-es2015": "^6.1.18",
+    "babel-preset-react": "^6.1.18",
+    "eslint": "^1.9.0",
+    "eslint-plugin-react": "^3.8.0",
     "jsdom": "^6.5.1",
     "magicpen": "^5.4.0",
+    "mocha": "^2.3.3",
     "object-assign": "^4.0.1",
     "react": "^0.13.3",
     "unexpected": "^10.0.1"
   },
   "dependencies": {
     "array-changes": "^1.0.3",
-    "magicpen-prism": "^2.2.1"
+    "magicpen-prism": "^2.2.1",
+    "unexpected-htmllike": "^0.3.0",
+    "unexpected-htmllike-jsx-adapter": "^0.1.0"
   }
 }
