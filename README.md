@@ -3,7 +3,7 @@
 Plugin for [unexpected](https://unexpected.js.org) to allow for testing the full virtual DOM, and 
 against the shallow renderer (replaces [unexpected-react-shallow](https://github.com/bruderstein/unexpected-react-shallow))
 
-TODO: Image
+!![output_demo](https://cloud.githubusercontent.com/assets/91716/11253997/c5d2a9b4-8e3e-11e5-8da5-2df95598865c.png)
 
 See the blog post for an introduction: https://medium.com/@bruderstein/the-missing-piece-to-the-react-testing-puzzle-c51cd30df7a0
 
@@ -100,12 +100,117 @@ it('renders with content', function () {
 
 If this fails for some reason, you get a nicely formatted error, with the differences highlighted:
 
-**TODO: Image of the error**
+![shallow_simple](https://cloud.githubusercontent.com/assets/91716/11193811/fde1eadc-8ca8-11e5-918a-45bc7c1e0efd.png)
+
+
+If you've emulated the DOM, you can write a similar test, but using `ReactDOM.render()` (or `TestUtils.renderIntoDocument()`)
+
+```js
+it('renders with content', function () {
+
+    var component = TestUtils.renderIntoDocument(<SomeComponent id={125} />);
+
+    return expect(component, 'to have rendered',
+       <div id={125}>
+          Some simple content
+       </div>
+    );
+});
+```
+
+![deeprender_simple](https://cloud.githubusercontent.com/assets/91716/11193714/8028b224-8ca8-11e5-9d34-65532b06417f.png)
+
+Note the major difference between the shallow renderer and the "normal" renderer, is that child components are also
+rendered.  That is easier to see with these example components:
+
+```js
+
+var Text = React.createClass({
+   render() {
+       return <span>{this.props.content}</span>;
+   }
+});
+
+var App = React.createClass({
+   render() {
+        return (
+            <div className="testing-is-fun">
+              <Text content="hello" />
+              <Text content="world" />
+            </div>
+        );
+   }
+});
+
+```
+
+Rendering the `App` component with the shallow renderer will not render the `span`s, only the 
+`Text` component with the props.  If you wanted to test for the content of the span elements, you'd 
+need to use `TestUtils.renderIntoDocument(...)`, or `ReactDOM.render(...)`
+
+Because `unexpected-react` be default ignores wrapper elements, and also "extra" children (child
+nodes that appear in the actual render, but are not in the expected result), it is possible to test both scenarios 
+with the full renderer. To demonstrate, all the following tests will pass:
+
+```js
+
+it('renders the Text components with the spans with the full renderer', function () {
+
+   var component = TestUtils.renderIntoDocument(<App />);
+   
+   return expect(component, 'to have rendered', 
+      <App>
+        <div className="testing-is-fun">
+          <Text content="hello">
+            <span>hello</span>
+          </Text>
+          <Text content="world">
+            <span>world</span>
+          </Text>
+        </div>
+      </App>
+   );
+});
+
+it('renders the Text nodes with the full renderer', function () {
+
+   var component = TestUtils.renderIntoDocument(<App />);
+   
+   return expect(component, 'to have rendered', 
+      <div className="testing-is-fun">
+         <Text content="hello" />
+         <Text content="world" />
+      </div>
+   );
+});
+
+it('renders the spans with the full renderer', function () {
+
+   var component = TestUtils.renderIntoDocument(<App />);
+   
+   return expect(component, 'to have rendered', 
+      <div className="testing-is-fun">
+         <span>hello</span>
+         <span>world</span>
+      </div>
+   );
+});
+
+```
+
+The first test shows the full virtual DOM that gets rendered. The second test skips the `<App>` "wrapper" component,
+and leaves out the `<span>` children of the `<Text>` components. The third tests skips both the `<App>` wrapper component,
+and the `<Text>` wrapper component.
+
+Notice that the result from `expect` is returned from the `it` block. The `unexpected-react` assertions are currently
+asynchronous, and *can* therefore return a promise.  When using [mocha](https://npmjs.com/package/mocha), you can return
+ the promise from the `it` block, and `mocha` will wait for the promise to be resolved.
+
 # Assertions
 
 All the assertions can be used with an instance of the shallow renderer, a shallow rendered component 
 (i.e. the return value from `renderer.getRenderOutput()`), or a normally rendered component (i.e. the return
-value from `React.render()`, or `TestUtils.renderIntoDocument()`). 
+value from `ReactDOM.render()` (`React.render()` in React <= 0.13.x), or `TestUtils.renderIntoDocument()`). 
 
 You can make the following assertions:
 ## `to have [exactly] rendered [with all children] [with all wrappers]`
@@ -140,7 +245,6 @@ Normally wrappers (elements that simply wrap other components) are ignored. This
 components wrapping your components, you can simply ignore them in your tests (they will be shown greyed out 
 if there is a "real" error).  If you want to test that there are no extra wrappers, simply add `with all wrappers` to the
 assertion.
-
 
 
 ```js
@@ -249,7 +353,7 @@ as you believe it should, or where the output isn't as good as it could be, rais
 ## Thanks
 
 Huge thanks to [@Munter](https://github.com/munter) for [unexpected-dom](https://github.com/munter/unexpected-dom),
-and along with [@dmatteo](https://github.com/dmatteo) for handing over the unexpected-react name. 
+and along with [@dmatteo](https://github.com/dmatteo) from Podio for handing over the unexpected-react name. 
 
 [Unexpected](http://unexpected.js.org) is a great library to work with, and I offer my sincere thanks to [@sunesimonsen](https://github.com/sunesimonsen)
 and [@papandreou](https://github.com/papandreou), who have created an assertion library that makes testing JavaScript a joy.
