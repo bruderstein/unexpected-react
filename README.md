@@ -340,6 +340,14 @@ expect(renderer, 'to have exactly rendered',
     </div>);
 ```
 
+## Cleaning up
+
+When using the normal renderer, unexpected-react makes use of [`react-render-hook`](https://npmjs.org/package/react-render-hook),
+which utilises the code from the [React devtools](https://github.com/facebook/react-devtools). As there is no way for `react-render-hook` 
+to know when a test is completed, it has to keep a reference to every rendered component. Whilst this shouldn't normally be an issue,
+if you use a test runner that keeps the process alive (such as [wallaby.js](http://wallabyjs.com)), it is a good idea to call
+`unexpectedReact.clearAll()` in a global `beforeEach()` or `afterEach()` block. This clears the cache of rendered nodes.
+
 ## Roadmap / Plans
 
 * There are some performance optimisations to do. The performance suffers a bit due to the possible asynchronous nature of the inline assertions. Most of the time these will be synchronous, and hence we don't need to pay the price.

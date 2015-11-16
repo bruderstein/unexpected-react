@@ -13,5 +13,9 @@ module.exports = {
 
         types.installInto(expect);
         assertions.installInto(expect);
+    },
+
+    clearAll() {
+        RenderHook.clearAll();
     }
 };

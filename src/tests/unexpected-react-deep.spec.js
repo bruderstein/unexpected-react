@@ -73,6 +73,10 @@ class WrapperComp extends React.Component {
 
 describe('unexpected-react (deep rendering)', () => {
 
+    beforeEach(() => {
+        UnexpectedReact.clearAll();
+    });
+
     describe('identify', () => {
 
         it('identifies a rendered component', () => {
