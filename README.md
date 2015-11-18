@@ -5,7 +5,7 @@ against the shallow renderer (replaces [unexpected-react-shallow](https://github
 
 TODO: Image
 
-See the blog post for an introduction: https://medium.com/@bruderstein/unittesting-react-virtual-dom
+See the blog post for an introduction: https://medium.com/@bruderstein/the-missing-piece-to-the-react-testing-puzzle-c51cd30df7a0
 
 # Usage
 
