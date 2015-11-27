@@ -1,6 +1,6 @@
 {
   "name": "unexpected-react",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Plugin for unexpected, to allow for assertions on the React.js virtual DOM, and the shallow renderer",
   "scripts": {
     "build": "babel src -d lib --source-maps true --presets es2015 --presets react",
@@ -17,7 +17,8 @@
     "react",
     "reactjs",
     "unit-test",
-    "virtualDOM"
+    "virtualDOM",
+    "test"
   ],
   "peerDependencies": {
     "react": "^0.13.0 || ^0.14.0"
@@ -39,6 +40,7 @@
   "dependencies": {
     "array-changes": "^1.0.3",
     "magicpen-prism": "^2.2.1",
+    "react-render-hook": "^0.1.1",
     "unexpected-htmllike": "^0.3.0",
     "unexpected-htmllike-jsx-adapter": "^0.3.0",
     "unexpected-htmllike-reactrendered-adapter": "^0.1.0"
