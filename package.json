@@ -5,7 +5,9 @@
   "scripts": {
     "build": "babel src -d lib --source-maps true --presets es2015 --presets react",
     "prepublish": "npm run build && npm test",
-    "test": "mocha --compilers js:babel-core/register src/tests/*.spec.js"
+    "test-main": "mocha --compilers js:babel-core/register src/tests/*.spec.js",
+    "test-error": "mocha --compilers js:babel-core/register src/error-tests/*.spec.js",
+    "test": "npm run test-main && npm run test-error"
   },
   "main": "lib/unexpected-react.js",
   "repository": "https://github.com/bruderstein/unexpected-react.git",

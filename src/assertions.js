@@ -6,6 +6,7 @@ import ReactElementAdapter from 'unexpected-htmllike-jsx-adapter';
 
 function checkAttached(expect) {
     if (!RenderHook.isAttached) {
+        expect.errorMode = 'bubble';
         expect.fail(output => {
             return output.error('The global rendering hook is not attached')
                 .nl().text('This probably means React was required before unexpected-react. Check that unexpected-react is required first')
