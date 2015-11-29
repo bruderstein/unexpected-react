@@ -4,7 +4,7 @@ import RenderedReactElementAdapter from 'unexpected-htmllike-reactrendered-adapt
 import ReactElementAdapter from 'unexpected-htmllike-jsx-adapter';
 
 
-function checkAttached() {
+function checkAttached(expect) {
     if (!RenderHook.isAttached) {
         expect.fail(output => {
             return output.error('The global rendering hook is not attached')
@@ -23,7 +23,7 @@ function installInto(expect) {
     expect.addAssertion(['<RenderedReactElement> to have [exactly] rendered <ReactElement>',
         '<RenderedReactElement> to have rendered [with all children] [with all wrappers] <ReactElement>'], function (expect, subject, element) {
 
-            checkAttached();
+            checkAttached(expect);
 
             var exactly = this.flags.exactly;
             var withAllChildren = this.flags['with all children'];
@@ -58,7 +58,7 @@ function installInto(expect) {
     expect.addAssertion(['<RenderedReactElement> [not] to contain [exactly] <ReactElement|string>',
         '<RenderedReactElement> [not] to contain [with all children] [with all wrappers] <ReactElement|string>'], function (expect, subject, element) {
 
-        checkAttached();
+        checkAttached(expect);
 
         var not = this.flags.not;
         var exactly = this.flags.exactly;
@@ -212,7 +212,7 @@ function installInto(expect) {
     });
 
     expect.addAssertion('<ReactModule> to have been injected', function (expect, subject) {
-        checkAttached();
+        checkAttached(expect);
     });
 }
 
