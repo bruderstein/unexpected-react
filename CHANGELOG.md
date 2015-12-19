@@ -17,3 +17,8 @@ Fix dependencies - issue seen when using npm 2.x (thanks to @faceyspacey for rep
 ## v0.3.2
 
 Fix error handling when react-render-hook was not injected
+
+## v0.4.0
+
+Update to v0.4.1 of unexpected-htmllike-jsx-adapter, to add support for iterators as children
+Thanks to @jkimbo for the failing test, and @Lugribossk for reporting
