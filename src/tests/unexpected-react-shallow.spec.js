@@ -143,7 +143,7 @@ describe('unexpected-react-shallow', () => {
 
             var fn = function (a, b) { return a + b; };
             renderer.render(<MyDiv onClick={fn} />);
-            expect(renderer, 'to inspect as', /<div onClick=\{function (fn)?\(a, b\) \{[^]+}} ?\/>/m);
+            expect(renderer, 'to inspect as', /<div onClick=\{function (fn)?\(a, b\) \{[^}]+}}( |\n)?\/>/m);
         });
 
         it('outputs a tag with a single string child', () => {
@@ -377,8 +377,7 @@ describe('unexpected-react-shallow', () => {
                 '\n' +
                 '<div>\n' +
                 '  <ClassComponent test={true} // should be test={false}\n' +
-                '     className="foo"\n' +
-                '  >\n' +
+                '     className="foo">\n' +
                 '    <span className="bar">foo</span>\n' +
                 '  </ClassComponent>\n' +
                 '</div>');
