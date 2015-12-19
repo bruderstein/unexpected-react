@@ -570,7 +570,8 @@ describe('unexpected-react-shallow', () => {
             return expect(renderer, 'to have exactly rendered',
                 <div>
                     <ClassComponent className="foo" test={true}>
-                        <span className="three">3</span>
+                        <span className="one">1</span>
+                        <span className="two">2</span>
                     </ClassComponent>
                 </div>);
         });
