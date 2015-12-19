@@ -22,3 +22,8 @@ Fix error handling when react-render-hook was not injected
 
 Update to v0.4.1 of unexpected-htmllike-jsx-adapter, to add support for iterators as children
 Thanks to @jkimbo for the failing test, and @Lugribossk for reporting
+
+## v0.4.1
+
+Force dependency update to unexpected-htmllike 0.3.2 - important bugfix for 'to contain', when a child element 
+is not identical, but actually matches with the `to contain` flags that are in place.

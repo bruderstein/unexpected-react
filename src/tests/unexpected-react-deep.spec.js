@@ -264,4 +264,20 @@ describe('unexpected-react (deep rendering)', () => {
                 '</CustomComp>');
         });
     });
+
+    describe('contains', () => {
+
+        it('finds a deep nested component', () => {
+
+            const component = TestUtils.renderIntoDocument(<CustomComp className="bar" childCount={3} />);
+            return expect(component, 'to contain',
+               <CustomComp>
+                   <div>
+                       <span>2</span>
+                   </div>
+               </CustomComp>
+            );
+
+        });
+    });
 });
