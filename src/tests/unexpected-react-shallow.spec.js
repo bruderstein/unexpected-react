@@ -2,6 +2,7 @@ var Unexpected = require('unexpected');
 var UnexpectedReact = require('../unexpected-react');
 
 var React = require('react/addons');
+var Immutable = require('immutable');
 
 var expect = Unexpected.clone()
     .installPlugin(UnexpectedReact);
@@ -549,6 +550,29 @@ describe('unexpected-react-shallow', () => {
                 '  </ClassComponent>\n' +
                 '</div>');
 
+        });
+
+        it('matches immutable array of children in a custom component', function () {
+
+            const items = new Immutable.List([
+                <span className="one">1</span>,
+                <span className="two">2</span>
+            ]);
+
+            renderer.render(
+                <MyDiv>
+                    <ClassComponent test={true} className="foo">
+                        {items.map((item) => item)}
+                    </ClassComponent>
+                </MyDiv>
+            );
+
+            return expect(renderer, 'to have exactly rendered',
+                <div>
+                    <ClassComponent className="foo" test={true}>
+                        <span className="three">3</span>
+                    </ClassComponent>
+                </div>);
         });
 
         it('accepts added children at the end of an array when not using `exactly`', function () {
