@@ -27,3 +27,8 @@ Thanks to @jkimbo for the failing test, and @Lugribossk for reporting
 
 Force dependency update to unexpected-htmllike 0.3.2 - important bugfix for 'to contain', when a child element 
 is not identical, but actually matches with the `to contain` flags that are in place.
+
+## v0.5.0
+
+Update to unexpected-htmllike 0.4.0, and add className diffing, using class semantics. i.e. order does not matter,
+extra classes are ignored by default (not with `exactly` style assertions).
