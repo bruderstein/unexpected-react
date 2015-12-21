@@ -196,6 +196,21 @@ describe('unexpected-react (deep rendering)', () => {
                 </WrapperComp>);
         });
 
+        it('identifies a missing class', () => {
+
+            const component = TestUtils.renderIntoDocument(<CustomComp className="bar foo" />);
+
+            return expect(() => expect(component, 'to have rendered', <CustomComp className="blah foo bar" />),
+                'to error',
+                'expected <CustomComp className="bar foo"><div className="bar foo" /></CustomComp>\n' +
+                'to have rendered <CustomComp className="blah foo bar" />\n' +
+                '\n' +
+                '<CustomComp className="bar foo" // missing class \'blah\'\n' +
+                '>\n' +
+                '  <div className="bar foo" />\n' +
+                '</CustomComp>');
+        });
+
         it('identifies a wrapper', () => {
             const component = TestUtils.renderIntoDocument(<WrapperComp className="bar" childCount={3} />);
             return expect(component, 'to have rendered',

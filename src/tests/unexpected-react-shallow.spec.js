@@ -259,9 +259,7 @@ describe('unexpected-react-shallow', () => {
                 'expected <div className="actual">Some simple content</div>\n' +
                 'to have rendered <div className="expected">Some simple content</div>\n' +
                 '\n' +
-	            '<div className="actual" // should be className="expected"\n' +
-                '                        // -actual\n' +
-                '                        // +expected\n' +
+	            '<div className="actual" // missing class \'expected\'\n' +
                 '>\n' +
                 '  Some simple content\n' +
                 '</div>');
@@ -329,6 +327,13 @@ describe('unexpected-react-shallow', () => {
                         <span className="bar">foo</span>
                     </ClassComponent>
                 </div>);
+        });
+
+        it('matches className in a different order with different spacing', () => {
+
+            renderer.render(<MyDiv className="two one  three " />);
+
+            return expect(renderer, 'to have rendered', <div className="one two three" />);
         });
 
         it('matches content rendered as a number', function () {
@@ -1242,9 +1247,8 @@ describe('unexpected-react-shallow', () => {
                 'to equal <div><ClassComponent className="foobar" /></div>\n' +
                 '\n' +
                 '<div>\n' +
-                '  <ClassComponent className="foo" // should be className="foobar"\n' +
-                '                                  // -foo\n' +
-                '                                  // +foobar\n' +
+                '  <ClassComponent className="foo" // missing class \'foobar\'\n' +
+                '                                  // extra class \'foo\'\n' +
                 '  />\n' +
                 '</div>');
         });

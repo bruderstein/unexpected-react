@@ -85,5 +85,14 @@ describe('Select', () => {
             <li>{ expect.it('to match', /th/) }</li>
         );
     });
+
+    it('renders with the right class', () => {
+
+        TestUtils.Simulate.click(React.findDOMNode(component));
+
+        return expect(component, 'to contain',
+            <li className="Select__item--unselected" />
+        );
+    })
 });
 

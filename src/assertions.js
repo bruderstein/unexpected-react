@@ -38,7 +38,9 @@ function installInto(expect) {
             var options = {
                 diffWrappers: exactly || withAllWrappers,
                 diffExtraChildren: exactly || withAllChildren,
-                diffExtraAttributes: exactly
+                diffExtraAttributes: exactly,
+                diffExactClasses: false,
+                diffExtraClasses: exactly
             };
             const data = RenderHook.findComponent(subject);
             return htmlLikeRenderedReactElement.diff(jsxAdapter, data, element, expect.output.clone(), expect, options).then(result => {
@@ -74,7 +76,9 @@ function installInto(expect) {
         var options = {
             diffWrappers: exactly || withAllWrappers,
             diffExtraChildren: exactly || withAllChildren,
-            diffExtraAttributes: exactly
+            diffExtraAttributes: exactly,
+            diffExactClasses: false,
+            diffExtraClasses: exactly
         };
 
         const data = RenderHook.findComponent(subject);
@@ -123,7 +127,9 @@ function installInto(expect) {
         var options = {
             diffWrappers: exactly || withAllWrappers,
             diffExtraChildren: exactly || withAllChildren,
-            diffExtraAttributes: exactly
+            diffExtraAttributes: exactly,
+            diffExactClasses: false,
+            diffExtraClasses: exactly
         };
 
         return jsxHtmlLike.diff(adapter, subject, expected, expect.output.clone(), expect, options).then(function (diffResult) {
