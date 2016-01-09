@@ -37,6 +37,17 @@ class MyDiv extends React.Component {
     }
 }
 
+class Section extends React.Component {
+    render () {
+        return (
+            <p>
+                <h1>{ this.props.title }</h1>
+                { this.props.children }
+            </p>
+        )
+    }
+}
+
 const FunctionComp = function (props) {
     return (<div {...props} />);
 };
@@ -1773,6 +1784,53 @@ describe('unexpected-react-shallow', () => {
                     <span>bar</span>
                 </div>);
             });
+
+            it('should satisfy matching output even with components passed as props', () => {
+                renderer.render(
+                    <Section title={ <span>Section heading</span> }>
+                        Lorem ipsum dolor sit amet,
+                        consectetuer adipiscing elit.
+                    </Section>
+                );
+
+                return expect(renderer.getRenderOutput(), 'to satisfy',
+                <p>
+                    <h1><span>Section heading</span></h1>
+                    Lorem ipsum dolor sit amet,
+                    consectetuer adipiscing elit.
+                </p>);
+            });
         });
+
+        describe('on two components', () => {
+            it.skip('should match the subject component against the expected component', () => {
+                return expect(
+                    <MyDiv className="one">
+                        <span className="two" style={{ color: 'red', background: 'green' }}>foo</span>
+                        <span className="three">bar</span>
+                    </MyDiv>,
+                    'to satisfy',
+                    <MyDiv className="one">
+                        <span className="two" style={{ color: 'red' }}>foo</span>
+                        <span className={ expect.it('to match', /.+/) }>bar</span>
+                    </MyDiv>
+                );
+            })
+
+            describe('that contains components in the props', () => {
+                it.skip('should match the subject component against the expected component', () => {
+                    return expect(
+                        <Section title={ <MyDiv className="one">title</MyDiv> }>
+                            <span className="two" style={{ color: 'red', background: 'green' }}>foo</span>
+                            <span className="three">bar</span>
+                        </Section>,
+                        'to satisfy',
+                        <Section title={ <MyDiv className={ expect.it('to match', /one|two/) }>title</MyDiv> }>
+                            <span className="two" style={{ background: 'green' }}>foo</span>
+                        </Section>
+                    );
+                })
+            })
+        })
     });
 });
