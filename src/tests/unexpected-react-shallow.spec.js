@@ -1073,7 +1073,7 @@ describe('unexpected-react-shallow', () => {
                 '</div>');
         });
 
-        it.skip('highlights the block removal when mixing hardcoded elements add generated lists', function () {
+        it('highlights the block removal when mixing hardcoded elements add generated lists', function () {
             var numbers = [
                 <span>one</span>,
                 <span>two</span>,
