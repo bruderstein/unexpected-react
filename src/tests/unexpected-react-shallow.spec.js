@@ -1073,6 +1073,40 @@ describe('unexpected-react-shallow', () => {
                 '</div>');
         });
 
+        it.skip('highlights the block removal when mixing hardcoded elements add generated lists', function () {
+            var numbers = [
+                <span>one</span>,
+                <span>two</span>,
+                <span>three</span>
+            ];
+
+            renderer.render(
+                <MyDiv>
+                    <h1>My numbers</h1>
+                    { numbers }
+                </MyDiv>
+            );
+
+            return expect(expect(renderer, 'to have rendered with all children',
+                <div>
+                    <h1>My numbers</h1>
+                    <span>one</span>
+                    <span>two</span>
+                </div>),
+                'to be rejected with',
+                'expected <div><h1>My numbers</h1><span>one</span><span>two</span><span>three</span></div>\n' +
+                'to have rendered with all children <div><h1>My numbers</h1><span>one</span><span>two</span></div>\n' +
+                '\n' +
+                '<div>\n' +
+                '  <h1>My numbers</h1>\n' +
+                '  <span>one</span>\n' +
+                '  <span>two</span>\n' +
+                '  <span>three</span> // should be removed\n' +
+                '</div>');
+        });
+
+
+
         it('identifies when a string element should be a real element', function () {
 
             renderer.render(
@@ -1116,8 +1150,6 @@ describe('unexpected-react-shallow', () => {
                 '  </span> // wrapper should be removed\n' +
                 '</div>');
         });
-
-
 
         it('identifies when a real element should be a string element', function () {
 
