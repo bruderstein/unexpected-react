@@ -32,3 +32,7 @@ is not identical, but actually matches with the `to contain` flags that are in p
 
 Update to unexpected-htmllike 0.4.0, and add className diffing, using class semantics. i.e. order does not matter,
 extra classes are ignored by default (not with `exactly` style assertions).
+
+## v0.5.1
+
+Patch version of unexpected-htmllike-jsx-adapter to support flattening children (only a package.json update)
