@@ -36,3 +36,7 @@ extra classes are ignored by default (not with `exactly` style assertions).
 ## v0.5.1
 
 Patch version of unexpected-htmllike-jsx-adapter to support flattening children (only a package.json update)
+
+## v0.5.2
+
+Patch version of unexpected-htmllike to ^0.5.0 to fix issue with reordered children
