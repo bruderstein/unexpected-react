@@ -11,6 +11,8 @@ const expect = Unexpected
     .clone()
     .use(UnexpectedReact);
 
+expect.output.preferredWidth = 80;
+
 /**
  * This is a regression test for bruderstein/unexpected-react#9
  * Unit tests for the issue added in unexpected-htmllike
