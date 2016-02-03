@@ -38,7 +38,7 @@
     "mocha": "^2.3.3",
     "object-assign": "^4.0.1",
     "react": "^0.13.3",
-    "unexpected": "^10.0.1"
+    "unexpected": "^10.8.1"
   },
   "dependencies": {
     "magicpen-prism": "^2.2.1",
