@@ -54,6 +54,24 @@ expect.addAssertion('<any> to inspect as <regexp>', function (expect, subject, v
     expect(expect.inspect(subject).toString(), 'to match', value);
 });
 
+expect.addAssertion('<string> to eventually equal <string>', (expect, subject, value) => {
+
+    return expect.promise((resolve, reject) => {
+
+        setTimeout(() => {
+            if (subject === value) {
+                resolve();
+            } else {
+                try {
+                    expect.fail('Failed');
+                } catch (e) {
+                    reject(e); // Return the UnexpectedError object
+                }
+            }
+        }, 10);
+    });
+});
+
 // The tests assume a narrow terminal
 expect.output.preferredWidth = 80;
 
@@ -236,7 +254,8 @@ describe('unexpected-react-shallow', () => {
             renderer.render(<MyDiv>Some simple content</MyDiv>);
             var expected = <div>Different content</div>;
 
-            return expect(expect(renderer, 'to have rendered', expected), 'to be rejected with',
+            return expect(() => expect(renderer, 'to have rendered', expected),
+                'to throw',
              'expected <div>Some simple content</div>\n' +
              'to have rendered <div>Different content</div>\n' +
              '\n' +
@@ -252,10 +271,10 @@ describe('unexpected-react-shallow', () => {
 
             renderer.render(<MyDiv className="actual">Some simple content</MyDiv>);
 
-            return expect(expect(renderer, 'to have rendered',
+            return expect(() => expect(renderer, 'to have rendered',
                 <div className="expected">
                     Some simple content
-                </div>), 'to be rejected with',
+                </div>), 'to throw',
                 'expected <div className="actual">Some simple content</div>\n' +
                 'to have rendered <div className="expected">Some simple content</div>\n' +
                 '\n' +
@@ -269,10 +288,10 @@ describe('unexpected-react-shallow', () => {
 
             renderer.render(<MyDiv>Some simple content</MyDiv>);
 
-            return expect(expect(renderer, 'to have rendered',
+            return expect(() => expect(renderer, 'to have rendered',
                     <div className="expected" id="123">
                         Some simple content
-                    </div>), 'to be rejected with',
+                    </div>), 'to throw',
                 'expected <div>Some simple content</div>\n' +
                 'to have rendered <div className="expected" id="123">Some simple content</div>\n' +
                 '\n' +
@@ -297,11 +316,11 @@ describe('unexpected-react-shallow', () => {
 
             renderer.render(<MyDiv id="123" className="extra">Some simple content</MyDiv>);
             return expect(
-                expect(renderer, 'to have exactly rendered',
+                () => expect(renderer, 'to have exactly rendered',
                     <div id="123">
                       Some simple content
                     </div>),
-                'to be rejected with',
+                'to throw',
                 'expected <div id="123" className="extra">Some simple content</div>\n' +
                 'to have exactly rendered <div id="123">Some simple content</div>\n' +
                 '\n' +
@@ -364,13 +383,13 @@ describe('unexpected-react-shallow', () => {
                 </MyDiv>
             );
 
-            return expect(expect(renderer, 'to have exactly rendered',
+            return expect(() => expect(renderer, 'to have exactly rendered',
                 <div>
                     <ClassComponent className="foo" test={false}>
                         <span className="bar">foo</span>
                     </ClassComponent>
                 </div>),
-                'to be rejected with',
+                'to throw',
                 'expected\n' +
                 '<div>\n' +
                 '  <ClassComponent test={true} className="foo"><span className="bar">foo</span></ClassComponent>\n' +
@@ -418,13 +437,13 @@ describe('unexpected-react-shallow', () => {
                 </MyDiv>
             );
 
-            return expect(expect(renderer, 'to have exactly rendered',
+            return expect(() => expect(renderer, 'to have exactly rendered',
                 <div>
                     <ClassComponent className="foo" test={true}>
                         <span className="bar">foo</span>
                     </ClassComponent>
                 </div>),
-                'to be rejected with',
+                'to throw',
                 'expected\n' +
                 '<div>\n' +
                 '  <ClassComponent test={true} className="foo" extraProp="boo!">\n' +
@@ -477,7 +496,7 @@ describe('unexpected-react-shallow', () => {
                 </MyDiv>
             );
 
-            return expect(expect(renderer, 'to have exactly rendered',
+            return expect(() => expect(renderer, 'to have exactly rendered',
                 <div>
                     <ClassComponent className="foo" test={true}>
                         <span className="one">1</span>
@@ -485,7 +504,7 @@ describe('unexpected-react-shallow', () => {
                         <span className="three">3</span>
                     </ClassComponent>
                 </div>),
-                'to be rejected with',
+                'to throw',
                 'expected\n' +
                 '<div>\n' +
                 '  <ClassComponent test={true} className="foo">\n' +
@@ -522,7 +541,7 @@ describe('unexpected-react-shallow', () => {
                 </MyDiv>
             );
 
-            return expect(expect(renderer, 'to have exactly rendered',
+            return expect(() => expect(renderer, 'to have exactly rendered',
                 <div>
                     <ClassComponent className="foo" test={true}>
                         <span className="one">1</span>
@@ -530,7 +549,7 @@ describe('unexpected-react-shallow', () => {
                         <span className="three">3</span>
                     </ClassComponent>
                 </div>
-            ), 'to be rejected with',
+            ), 'to throw',
                 'expected\n' +
                 '<div>\n' +
                 '  <ClassComponent test={true} className="foo">\n' +
@@ -633,13 +652,13 @@ describe('unexpected-react-shallow', () => {
             );
 
 
-            return expect(expect(renderer, 'to have rendered',
+            return expect(() => expect(renderer, 'to have rendered',
                 <div>
                     <ClassComponent className="foo" test={true}>
                         <ES5Component child={true} />
                     </ClassComponent>
                 </div>),
-                'to be rejected with',
+                'to throw',
                 'expected\n' +
                 '<div>\n' +
                 '  <ClassComponent test={true} className="foo"><ClassComponent child={true} /></ClassComponent>\n' +
@@ -687,11 +706,11 @@ describe('unexpected-react-shallow', () => {
 
             // I don't understand the '...' here. This may change, it looks like an issue with inspect(),
             // or possibly just my understanding (or lack of), of how inspect() chooses the depth
-            return expect(expect(renderer, 'to have rendered',
+            return expect(() => expect(renderer, 'to have rendered',
                 <div>
                     <ClassComponent test={objectB} />
                 </div>),
-                'to be rejected with',
+                'to throw',
                 "expected <div><ClassComponent test={{ some: 'prop', arr: ... }} /></div>\n" +
                 "to have rendered <div><ClassComponent test={{ some: 'prop', arr: [ 1, 2, 4 ] }} /></div>\n" +
                 '\n' +
@@ -837,13 +856,13 @@ describe('unexpected-react-shallow', () => {
                 </MyDiv>
             );
 
-            return expect(expect(renderer, 'to have exactly rendered',
+            return expect(() => expect(renderer, 'to have exactly rendered',
                 <div>
                     <ClassComponent>
                         some text test
                     </ClassComponent>
                 </div>),
-                'to be rejected with',
+                'to throw',
                 'expected <div><ClassComponent>some text test</ClassComponent></div>\n' +
                 'to have exactly rendered <div><ClassComponent>some text test</ClassComponent></div>\n' +
                 '\n' +
@@ -868,13 +887,13 @@ describe('unexpected-react-shallow', () => {
                 </MyDiv>
             );
 
-            return expect(expect(renderer, 'to have rendered',
+            return expect(() => expect(renderer, 'to have rendered',
                 <div>
                     <ClassComponent>
                         some text {content2}
                     </ClassComponent>
                 </div>),
-                'to be rejected with',
+                'to throw',
                 'expected <div><ClassComponent>some text foo</ClassComponent></div>\n' +
                 'to have rendered <div><ClassComponent>some text bar</ClassComponent></div>\n' +
                 '\n' +
@@ -920,13 +939,13 @@ describe('unexpected-react-shallow', () => {
                 </MyDiv>
             );
 
-            return expect(expect(renderer, 'to have rendered',
+            return expect(() => expect(renderer, 'to have rendered',
                 <div>
                     <ClassComponent>
                         some text {content2}
                     </ClassComponent>
                 </div>),
-                'to be rejected with',
+                'to throw',
                 'expected <div><ClassComponent>some text <ES5Component foo="bar" /></ClassComponent></div>\n' +
                 'to have rendered <div><ClassComponent>some text <ES5Component foo="blah" /></ClassComponent></div>\n' +
                 '\n' +
@@ -951,13 +970,13 @@ describe('unexpected-react-shallow', () => {
                     </ClassComponent>
                 </MyDiv>
             );
-            return expect(expect(renderer, 'to have exactly rendered',
+            return expect(() => expect(renderer, 'to have exactly rendered',
                 <div>
                     <ClassComponent>
                         some text {content}
                     </ClassComponent>
                 </div>),
-                'to be rejected with',
+                'to throw',
                 'expected <div><ClassComponent>some text</ClassComponent></div>\n' +
                 'to have exactly rendered <div><ClassComponent>some text test</ClassComponent></div>\n' +
                 '\n' +
@@ -982,14 +1001,14 @@ describe('unexpected-react-shallow', () => {
                 </MyDiv>
             );
 
-            return expect(expect(renderer, 'to have exactly rendered',
+            return expect(() => expect(renderer, 'to have exactly rendered',
                 <div>
                     <ClassComponent>
                         <div className="one" />
                         <span>foo</span>
                     </ClassComponent>
                 </div>),
-                'to be rejected with',
+                'to throw',
                 'expected\n' +
                 '<div>\n' +
                 '  <ClassComponent>\n' +
@@ -1018,13 +1037,13 @@ describe('unexpected-react-shallow', () => {
                 </MyDiv>
             );
 
-            return expect(expect(renderer, 'to have rendered with all children',
+            return expect(() => expect(renderer, 'to have rendered with all children',
                 <div>
                     <ClassComponent>
                         <div className="one" />
                         <span>foo</span>
                     </ClassComponent>
-                </div>), 'to be rejected with',
+                </div>), 'to throw',
                 'expected\n' +
                 '<div>\n' +
                 '  <ClassComponent>\n' +
@@ -1053,14 +1072,14 @@ describe('unexpected-react-shallow', () => {
                 </MyDiv>
             );
 
-            return expect(expect(renderer, 'to have rendered with all children',
+            return expect(() => expect(renderer, 'to have rendered with all children',
                 <div>
                     <ul>
                         <li>one</li>
                         <li>two</li>
                     </ul>
                 </div>),
-                'to be rejected with',
+                'to throw',
                 'expected <div><ul><li>one</li><li>two</li><li>three</li></ul></div>\n' +
                 'to have rendered with all children <div><ul><li>one</li><li>two</li></ul></div>\n' +
                 '\n' +
@@ -1087,13 +1106,13 @@ describe('unexpected-react-shallow', () => {
                 </MyDiv>
             );
 
-            return expect(expect(renderer, 'to have rendered with all children',
+            return expect(() => expect(renderer, 'to have rendered with all children',
                 <div>
                     <h1>My numbers</h1>
                     <span>one</span>
                     <span>two</span>
                 </div>),
-                'to be rejected with',
+                'to throw',
                 'expected <div><h1>My numbers</h1><span>one</span><span>two</span><span>three</span></div>\n' +
                 'to have rendered with all children <div><h1>My numbers</h1><span>one</span><span>two</span></div>\n' +
                 '\n' +
@@ -1114,11 +1133,11 @@ describe('unexpected-react-shallow', () => {
                     <span>123</span>
                 </MyDiv>);
 
-            return expect(expect(renderer, 'to have rendered with all wrappers',
+            return expect(() => expect(renderer, 'to have rendered with all wrappers',
                 <div className="outer">
                     123
                 </div>),
-                'to be rejected with',
+                'to throw',
                 'expected <div className="outer"><span>123</span></div>\n' +
                 'to have rendered with all wrappers <div className="outer">123</div>\n' +
                 '\n' +
@@ -1136,11 +1155,11 @@ describe('unexpected-react-shallow', () => {
                     <span>{123}</span>
                 </MyDiv>);
 
-            return expect(expect(renderer, 'to have rendered with all wrappers',
+            return expect(() => expect(renderer, 'to have rendered with all wrappers',
                 <div className="outer">
                     {123}
                 </div>),
-                'to be rejected with',
+                'to throw',
                 'expected <div className="outer"><span>123</span></div>\n' +
                 'to have rendered with all wrappers <div className="outer">123</div>\n' +
                 '\n' +
@@ -1158,11 +1177,11 @@ describe('unexpected-react-shallow', () => {
                     123
                 </MyDiv>);
 
-            return expect(expect(renderer, 'to have rendered',
+            return expect(() => expect(renderer, 'to have rendered',
                 <div className="outer">
                     <span>123</span>
                 </div>),
-                'to be rejected with',
+                'to throw',
                 'expected <div className="outer">123</div>\n' +
                 'to have rendered <div className="outer"><span>123</span></div>\n' +
                 '\n' +
@@ -1178,11 +1197,11 @@ describe('unexpected-react-shallow', () => {
                     {123}
                 </MyDiv>);
 
-            return expect(expect(renderer, 'to have rendered',
+            return expect(() => expect(renderer, 'to have rendered',
                 <div className="outer">
                     <span>123</span>
                 </div>),
-                'to be rejected with',
+                'to throw',
                 'expected <div className="outer">123</div>\n' +
                 'to have rendered <div className="outer"><span>123</span></div>\n' +
                 '\n' +
@@ -1247,10 +1266,10 @@ describe('unexpected-react-shallow', () => {
             });
             renderer.render(<RenderNull />);
 
-            return expect(expect(renderer, 'to have rendered with all children',
+            return expect(() => expect(renderer, 'to have rendered with all children',
                 <div />
                 ),
-                'to be rejected with',
+                'to throw',
                 'expected <div><span /></div> to have rendered with all children <div />\n' +
                 '\n' +
                 '<div>\n' +
@@ -1272,9 +1291,9 @@ describe('unexpected-react-shallow', () => {
 
             renderer.render(<MyDiv><ClassComponent className="foo" /></MyDiv>);
 
-            return expect(expect(renderer.getRenderOutput(),
+            return expect(() => expect(renderer.getRenderOutput(),
                 'to equal', <div><ClassComponent className="foobar" /></div>),
-            'to be rejected with',
+            'to throw',
                 'expected <div><ClassComponent className="foo" /></div>\n' +
                 'to equal <div><ClassComponent className="foobar" /></div>\n' +
                 '\n' +
@@ -1402,8 +1421,8 @@ describe('unexpected-react-shallow', () => {
                     </span>
                 </MyDiv>);
 
-            return expect(expect(renderer, 'to contain', <ClassComponent className="notexists" />),
-                'to be rejected with',
+            return expect(() => expect(renderer, 'to contain', <ClassComponent className="notexists" />),
+                'to throw',
                 'expected\n' +
                 '<div>\n' +
                 '  <span>nested</span>\n' +
@@ -1436,11 +1455,11 @@ describe('unexpected-react-shallow', () => {
                     </span>
                 </MyDiv>);
 
-            return expect(expect(renderer, 'to contain',
+            return expect(() => expect(renderer, 'to contain',
                     <ClassComponent className="candidate">
                         <span>cheese</span>
                     </ClassComponent>),
-                    'to be rejected with',
+                    'to throw',
                     'expected\n' +
                     '<div>\n' +
                     '  <span>nested</span>\n' +
@@ -1508,8 +1527,8 @@ describe('unexpected-react-shallow', () => {
                     </span>
                 </MyDiv>);
 
-            return expect(expect(renderer, 'to contain exactly', <ClassComponent className="candidate" />),
-                'to be rejected with',
+            return expect(() => expect(renderer, 'to contain exactly', <ClassComponent className="candidate" />),
+                'to throw',
                 'expected\n' +
                 '<div>\n' +
                 '  <span>nested</span>\n' +
@@ -1542,12 +1561,12 @@ describe('unexpected-react-shallow', () => {
                     </span>
                 </MyDiv>);
 
-            return expect(expect(renderer, 'to contain exactly',
+            return expect(() => expect(renderer, 'to contain exactly',
                 <ClassComponent className="candidate">
                     <span>one</span>
                     <span>three</span>
                 </ClassComponent>),
-                'to be rejected with',
+                'to throw',
                 'expected\n' +
                 '<div>\n' +
                 '  <span>nested</span>\n' +
@@ -1584,12 +1603,12 @@ describe('unexpected-react-shallow', () => {
                     </span>
                 </MyDiv>);
 
-            return expect(expect(renderer, 'to contain with all children',
+            return expect(() => expect(renderer, 'to contain with all children',
                 <ClassComponent className="candidate">
                     <span>one</span>
                     <span>three</span>
                 </ClassComponent>),
-                'to be rejected with',
+                'to throw',
                 'expected\n' +
                 '<div>\n' +
                 '  <span>nested</span>\n' +
@@ -1644,8 +1663,8 @@ describe('unexpected-react-shallow', () => {
                     </span>
                 </MyDiv>);
 
-            return expect(expect(renderer, 'to contain exactly', <ClassComponent className="candidate" />),
-                'to be rejected with',
+            return expect(() => expect(renderer, 'to contain exactly', <ClassComponent className="candidate" />),
+                'to throw',
                 'expected\n' +
                 '<div>\n' +
                 '  <span>nested</span>\n' +
@@ -1677,11 +1696,11 @@ describe('unexpected-react-shallow', () => {
                     </span>
                 </MyDiv>);
 
-            return expect(expect(renderer, 'to contain',
+            return expect(() => expect(renderer, 'to contain',
                 <ClassComponent className="candidate">
                     <span>foo</span>
                 </ClassComponent>),
-                'to be rejected with',
+                'to throw',
                 'expected\n' +
                 '<div>\n' +
                 '  <span>nested</span>\n' +
@@ -1729,13 +1748,13 @@ describe('unexpected-react-shallow', () => {
                 </MyDiv>
             );
 
-            return expect(expect(renderer, 'to contain exactly',
+            return expect(() => expect(renderer, 'to contain exactly',
                 <ClassComponent>
                     <div className="one" />
                     <ClassComponent className="three" />
                     <span>foo</span>
                 </ClassComponent>
-            ), 'to be rejected with',
+            ), 'to throw',
                 'expected\n' +
                 '<div>\n' +
                 '  <ClassComponent>\n' +
@@ -1750,8 +1769,8 @@ describe('unexpected-react-shallow', () => {
                 'the best match was\n' +
                 '<ClassComponent>\n' +
                 '  <div className="one" />\n' +
-                '  // missing <ClassComponent className="three" />\n' +
-                '  <ES5Component className="three" /> // should be removed\n' +
+                '  <ES5Component // should be <ClassComponent\n' +
+                '     className="three"/>\n' +
                 '  <span>foo</span>\n' +
                 '</ClassComponent>');
         });
@@ -1776,8 +1795,8 @@ describe('unexpected-react-shallow', () => {
 
         it('outputs the match found when content is found', () => {
 
-           return expect(expect(renderer, 'not to contain', <span id="foo" />),
-               'to be rejected with',
+           return expect(() => expect(renderer, 'not to contain', <span id="foo" />),
+               'to throw',
                'expected <div><span id="foo" className="extra" /></div>\n' +
                'not to contain <span id="foo" />\n' +
                '\n' +
@@ -1807,4 +1826,65 @@ describe('unexpected-react-shallow', () => {
             });
         });
     });
+
+    describe('with expect.it', () => {
+
+        it('throws when expect.it fails', () => {
+
+            renderer.render(
+                <MyDiv>
+                    <span>some Text</span>
+                </MyDiv>
+            );
+
+            return expect(() => expect(renderer, 'to have rendered',
+                <div>
+                    <span>{ expect.it('to match', /a-z /) }</span>
+                </div>), 'to throw',
+            'expected <div><span>some Text</span></div>\n' +
+            'to have rendered <div><span>{expect.it(\'to match\', /a-z /)}</span></div>\n' +
+            '\n' +
+            '<div>\n' +
+            '  <span>\n' +
+            '    some Text // expected \'some Text\' to match /a-z /\n' +
+            '  </span>\n' +
+            '</div>');
+        });
+
+        it('returns a rejected promise when expect.it is async and fails', () => {
+
+            renderer.render(
+                <MyDiv>
+                    <span>some Text</span>
+                </MyDiv>
+            );
+
+            return expect(expect(renderer, 'to have rendered',
+                <div>
+                    <span>{ expect.it('to eventually equal', 'something different') }</span>
+                </div>), 'to be rejected with',
+                'expected <div><span>some Text</span></div>\n' +
+                'to have rendered <div><span>{expect.it(\'to eventually equal\', \'something different\')}</span></div>\n' +
+                '\n' +
+                '<div>\n' +
+                '  <span>\n' +
+                '    some Text // expected \'some Text\' to eventually equal \'something different\'\n' +
+                '  </span>\n' +
+                '</div>');
+        });
+
+        it('returns a resolved promise when expect.it is async and passes', () => {
+
+            renderer.render(
+                <MyDiv>
+                    <span>some Text</span>
+                </MyDiv>
+            );
+
+            return expect(expect(renderer, 'to have rendered',
+                <div>
+                    <span>{ expect.it('to eventually equal', 'some Text') }</span>
+                </div>), 'to be fulfilled');
+        });
+    })
 });
