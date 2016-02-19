@@ -39,12 +39,13 @@ function installInto(expect) {
                 diffWrappers: exactly || withAllWrappers,
                 diffExtraChildren: exactly || withAllChildren,
                 diffExtraAttributes: exactly,
-                diffExactClasses: false,
+                diffExactClasses: false, // TODO: This should be exactly - need to check the tests around this
                 diffExtraClasses: exactly
             };
             const data = RenderHook.findComponent(subject);
-            return htmlLikeRenderedReactElement.diff(jsxAdapter, data, element, expect.output.clone(), expect, options).then(result => {
+            const diffResult = htmlLikeRenderedReactElement.diff(jsxAdapter, data, element, expect.output.clone(), expect, options)
 
+            const checkEqualCreateOutput = function (result) {
                 return expect.withError(() => expect(result.weight, 'to equal', 0), () => {
                     expect.fail({
                         diff: function (output, diff, inspect, equal) {
@@ -54,7 +55,12 @@ function installInto(expect) {
                         }
                     });
                 });
-            });
+            };
+
+            if (typeof diffResult.then === 'function') {
+               return diffResult.then(result => checkEqualCreateOutput(result)) ;
+            }
+            return checkEqualCreateOutput(diffResult);
 
         });
 
@@ -82,49 +88,55 @@ function installInto(expect) {
         };
 
         const data = RenderHook.findComponent(subject);
-        return htmlLikeRenderedReactElement.contains(jsxAdapter, data, element, expect.output.clone(), expect, options)
-            .then(containsResult => {
-                if (not) {
-                    if (containsResult.found) {
-                        expect.fail({
-                            diff: output => {
-                                return {
-                                    diff: output.error('but found the following match').nl().append(containsResult.bestMatch.output)
-                                };
-                            }
-                        });
-                    }
-                    return;
-                }
+        const containsResult = htmlLikeRenderedReactElement.contains(jsxAdapter, data, element, expect.output.clone(), expect, options);
 
-                if (!containsResult.found) {
+        const checkAndCreateOutput = function (result) {
+            if (not) {
+                if (result.found) {
                     expect.fail({
-                        diff: function (output) {
+                        diff: output => {
                             return {
-                                diff: output.error('the best match was').nl().append(containsResult.bestMatch.output)
+                                diff: output.error('but found the following match').nl().append(result.bestMatch.output)
                             };
                         }
                     });
                 }
-            });
+                return;
+            }
 
+            if (!result.found) {
+                expect.fail({
+                    diff: function (output) {
+                        return {
+                            diff: output.error('the best match was').nl().append(result.bestMatch.output)
+                        };
+                    }
+                });
+            }
+        };
+
+        if (typeof containsResult.then === 'function') {
+            return containsResult.then(result => checkAndCreateOutput(result));
+        }
+
+        return checkAndCreateOutput(containsResult);
 
     });
 
     expect.addAssertion(['<ReactElement> to have [exactly] rendered <ReactElement>',
         '<ReactElement> to have rendered [with all children] [with all wrappers] <ReactElement>'], function (expect, subject, expected) {
 
-        var exactly = this.flags.exactly;
-        var withAllChildren = this.flags['with all children'];
-        var withAllWrappers = this.flags['with all wrappers'];
+        const exactly = this.flags.exactly;
+        const withAllChildren = this.flags['with all children'];
+        const withAllWrappers = this.flags['with all wrappers'];
 
-        var adapter = new ReactElementAdapter();
-        var jsxHtmlLike = new UnexpectedHtmlLike(adapter);
+        const adapter = new ReactElementAdapter();
+        const jsxHtmlLike = new UnexpectedHtmlLike(adapter);
         if (!exactly) {
             adapter.setOptions({ concatTextContent: true });
         }
 
-        var options = {
+        const options = {
             diffWrappers: exactly || withAllWrappers,
             diffExtraChildren: exactly || withAllChildren,
             diffExtraAttributes: exactly,
@@ -132,17 +144,26 @@ function installInto(expect) {
             diffExtraClasses: exactly
         };
 
-        return jsxHtmlLike.diff(adapter, subject, expected, expect.output.clone(), expect, options).then(function (diffResult) {
-            if (diffResult.weight !== 0) {
+        const diffResult = jsxHtmlLike.diff(adapter, subject, expected, expect.output.clone(), expect, options);
+
+        const checkAndCreateOutput = function (result) {
+
+            if (result.weight !== 0) {
                 return expect.fail({
                     diff: function () {
                         return {
-                            diff: diffResult.output
+                            diff: result.output
                         };
                     }
                 });
             }
-        });
+        };
+
+        if (typeof diffResult.then === 'function') {
+            return diffResult.then(result => checkAndCreateOutput(result));
+        }
+
+        return checkAndCreateOutput(diffResult);
 
     });
 
@@ -166,32 +187,39 @@ function installInto(expect) {
             diffExtraAttributes: exactly
         };
 
-        return jsxHtmlLike.contains(adapter, subject, expected, expect.output, expect, options)
-            .then(function (containsResult) {
+        const containsResult = jsxHtmlLike.contains(adapter, subject, expected, expect.output, expect, options);
 
-                if (not) {
-                    if (containsResult.found) {
-                        expect.fail({
-                            diff: output => {
-                                return {
-                                    diff: output.error('but found the following match').nl().append(containsResult.bestMatch.output)
-                                };
-                            }
-                        });
-                    }
-                    return;
-                }
+        const checkAndCreateOutput = function(result) {
 
-                if (!containsResult.found) {
+            if (not) {
+                if (containsResult.found) {
                     expect.fail({
-                        diff: function (output) {
+                        diff: output => {
                             return {
-                                diff: output.error('the best match was').nl().append(containsResult.bestMatch.output)
+                                diff: output.error('but found the following match').nl().append(containsResult.bestMatch.output)
                             };
                         }
                     });
                 }
-            });
+                return;
+            }
+
+            if (!containsResult.found) {
+                expect.fail({
+                    diff: function (output) {
+                        return {
+                            diff: output.error('the best match was').nl().append(containsResult.bestMatch.output)
+                        };
+                    }
+                });
+            }
+        }
+
+        if (typeof containsResult.then === 'function') {
+            return containsResult.then(result => checkAndCreateOutput(result));
+        }
+
+        return checkAndCreateOutput(containsResult);
     });
 
     expect.addAssertion('<ReactElement> to equal <ReactElement>', function (expect, subject, value) {
