@@ -100,7 +100,7 @@ it('renders with content', function () {
 
 If this fails for some reason, you get a nicely formatted error, with the differences highlighted:
 
-![shallow_simple](https://cloud.githubusercontent.com/assets/91716/11193811/fde1eadc-8ca8-11e5-918a-45bc7c1e0efd.png)
+![shallow_simple](https://raw.githubusercontent.com/bruderstein/unexpected-react/887855b3fe1cbdb166f9c45b62635f103fa638d1/demo/1.png)
 
 
 If you've emulated the DOM, you can write a similar test, but using `ReactDOM.render()` (or `TestUtils.renderIntoDocument()`)
@@ -118,7 +118,7 @@ it('renders with content', function () {
 });
 ```
 
-![deeprender_simple](https://cloud.githubusercontent.com/assets/91716/11193714/8028b224-8ca8-11e5-9d34-65532b06417f.png)
+![deeprender_simple](https://raw.githubusercontent.com/bruderstein/unexpected-react/887855b3fe1cbdb166f9c45b62635f103fa638d1/demo/2.png)
 
 Note the major difference between the shallow renderer and the "normal" renderer, is that child components are also
 rendered.  That is easier to see with these example components:
