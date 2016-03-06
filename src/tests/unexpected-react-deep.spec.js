@@ -244,9 +244,9 @@ describe('unexpected-react (deep rendering)', () => {
 
             const component = TestUtils.renderIntoDocument(<CustomComp className="bar" />);
 
-            return expect(expect(component, 'to have rendered',
+            return expect(() => expect(component, 'to have rendered',
                 <div className={ expect.it('to match', /foo/) } />
-            ), 'to be rejected with',
+            ), 'to throw',
                 'expected <CustomComp className="bar"><div className="bar" /></CustomComp>\n' +
                 'to have rendered <div className={expect.it(\'to match\', /foo/)} />\n' +
                 '\n' +

@@ -85,11 +85,18 @@ describe('Test', function () {
         '    <LiElement name="Banana">\n' +
         '      <li>Banana</li>\n' +
         '    </LiElement>\n' +
-        '    // missing (found at index 2) <LiElement name="Mustard"><li>Mustard</li></LiElement>\n' +
         '    <LiElement name="Chocolate">\n' +
-        '      <li>Chocolate</li>\n' +
+        '      <li>\n' +
+        '        -Chocolate\n' +
+        '        +Mustard\n' +
+        '      </li>\n' +
         '    </LiElement>\n' +
-        '    <LiElement name="Mustard"><li>Mustard</li></LiElement> // should be removed\n' +
+        '    <LiElement name="Mustard">\n' +
+        '      <li>\n' +
+        '        -Mustard\n' +
+        '        +Chocolate\n' +
+        '      </li>\n' +
+        '    </LiElement>\n' +
         '  </ul>\n' +
         '</UlElement>');
     });
