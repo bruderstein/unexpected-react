@@ -34,7 +34,7 @@
     "magicpen": "^5.7.0",
     "mocha": "^2.3.3",
     "object-assign": "^4.0.1",
-    "react": "^0.13.3",
+    "react": "^0.14.7",
     "unexpected": "^10.10.0"
   },
   "dependencies": {
