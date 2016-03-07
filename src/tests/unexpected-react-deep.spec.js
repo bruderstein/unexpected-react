@@ -71,6 +71,12 @@ class WrapperComp extends React.Component {
     }
 }
 
+class MyDiv extends React.Component {
+    render() {
+        return <div {...this.props}>{this.props.children}</div>;
+    }
+}
+
 describe('unexpected-react (deep rendering)', () => {
 
     beforeEach(() => {
@@ -104,46 +110,48 @@ describe('unexpected-react (deep rendering)', () => {
 
         it('inspects a rendered native element', () => {
 
-            const component = TestUtils.renderIntoDocument(<div className="foo" />);
+            const component = TestUtils.renderIntoDocument(<MyDiv className="foo" />);
             expect(expect.inspect(component).toString(), 'to equal',
-                '<div className="foo" />');
+                '<MyDiv className="foo"><div className="foo" /></MyDiv>');
         });
 
         it('inspects a rendered native element with a string child', () => {
 
-            const component = TestUtils.renderIntoDocument(<div className="foo">content</div>);
+            const component = TestUtils.renderIntoDocument(<MyDiv className="foo">content</MyDiv>);
             expect(expect.inspect(component).toString(), 'to equal',
-                '<div className="foo">content</div>');
+                '<MyDiv className="foo"><div className="foo">content</div></MyDiv>');
         });
 
         it('inspects a rendered native element with a numeric child', () => {
 
-            const component = TestUtils.renderIntoDocument(<div className="foo">{42}</div>);
+            const component = TestUtils.renderIntoDocument(<MyDiv className="foo">{42}</MyDiv>);
             expect(expect.inspect(component).toString(), 'to equal',
-                '<div className="foo">42</div>');
+                '<MyDiv className="foo"><div className="foo">42</div></MyDiv>');
         });
 
 
 
-        it('inspects a rendered native element with children', () => {
+        it('inspects a rendered element with children', () => {
 
-            const component = TestUtils.renderIntoDocument(<div className="foo"><span className="child1" /></div>);
+            const component = TestUtils.renderIntoDocument(<MyDiv className="foo"><span className="child1" /></MyDiv>);
             expect(expect.inspect(component).toString(), 'to equal',
-                '<div className="foo"><span className="child1" /></div>');
+                '<MyDiv className="foo"><div className="foo"><span className="child1" /></div></MyDiv>');
         });
 
         it('inspects a rendered native element with children and content', () => {
 
             const component = TestUtils.renderIntoDocument(
-                <div className="foo">
+                <MyDiv className="foo">
                     <span className="child1">child content 1</span>
                     <span className="child2">child content 2</span>
-                </div>);
+                </MyDiv>);
             expect(expect.inspect(component).toString(), 'to equal',
-                '<div className="foo">\n' +
-                '  <span className="child1">child content 1</span>\n' +
-                '  <span className="child2">child content 2</span>\n' +
-                '</div>');
+                '<MyDiv className="foo">\n' +
+                '  <div className="foo">\n' +
+                '    <span className="child1">child content 1</span>\n' +
+                '    <span className="child2">child content 2</span>\n' +
+                '  </div>\n' +
+                '</MyDiv>');
         });
 
         it('inspects a rendered custom component', () => {

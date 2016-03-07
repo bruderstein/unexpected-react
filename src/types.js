@@ -17,10 +17,9 @@ function installInto(expect) {
 
         identify(value) {
             return (typeof value === 'object' &&
-            value !== null &&
-            value._reactInternalInstance &&
-            value.hasOwnProperty('props') &&
-            value.hasOwnProperty('refs'));
+                value !== null &&
+                (value._reactInternalInstance || value._reactInternalComponent) &&
+                typeof value.setState === 'function');
         },
 
         inspect(value, depth, output, inspect) {
@@ -33,12 +32,13 @@ function installInto(expect) {
         name: 'RenderedReactElementData',
 
         identify(value) {
+
             return (typeof value === 'object' &&
-            value !== null &&
-            value.hasOwnProperty('element') &&
-            value.data &&
-            value.data.type &&
-            value.data.nodeType);
+                value !== null &&
+                value.element &&
+                value.data &&
+                value.data.type &&
+                value.data.nodeType);
         },
 
         inspect(value, depth, output, inspect) {
@@ -54,6 +54,7 @@ function installInto(expect) {
                 (typeof value === 'object' &&
                 value !== null &&
                 (typeof value.type === 'function' || typeof value.type === 'string') &&
+                typeof value.hasOwnProperty === 'function' &&
                 value.hasOwnProperty('props') &&
                 value.hasOwnProperty('ref') &&
                 value.hasOwnProperty('key'));
@@ -71,14 +72,16 @@ function installInto(expect) {
         name: 'ReactModule',
 
         identify(value) {
+
             return (typeof value === 'object' &&
-            value !== null &&
-            value.hasOwnProperty('createClass') &&
-            value.hasOwnProperty('createElement') &&
-            value.hasOwnProperty('cloneElement') &&
-            value.hasOwnProperty('createFactory') &&
-            value.hasOwnProperty('isValidElement') &&
-            value.hasOwnProperty('PropTypes'));
+                value !== null &&
+                typeof value.hasOwnProperty === 'function' &&
+                value.hasOwnProperty('createClass') &&
+                value.hasOwnProperty('createElement') &&
+                value.hasOwnProperty('cloneElement') &&
+                value.hasOwnProperty('createFactory') &&
+                value.hasOwnProperty('isValidElement') &&
+                value.hasOwnProperty('PropTypes'));
         },
 
         inspect(value, depth, output) {
