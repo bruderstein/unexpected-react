@@ -535,8 +535,8 @@ describe('unexpected-react-shallow', () => {
             renderer.render(
                 <MyDiv>
                     <ClassComponent test={true} className="foo">
-                        <span className="one">1</span>
-                        <span className="three">3</span>
+                        <span key="1" className="one">1</span>
+                        <span key="3" className="three">3</span>
                     </ClassComponent>
                 </MyDiv>
             );
@@ -544,9 +544,9 @@ describe('unexpected-react-shallow', () => {
             return expect(() => expect(renderer, 'to have exactly rendered',
                 <div>
                     <ClassComponent className="foo" test={true}>
-                        <span className="one">1</span>
-                        <span className="two">2</span>
-                        <span className="three">3</span>
+                        <span key="1" className="one">1</span>
+                        <span key="2" className="two">2</span>
+                        <span key="3" className="three">3</span>
                     </ClassComponent>
                 </div>
             ), 'to throw',
@@ -578,8 +578,8 @@ describe('unexpected-react-shallow', () => {
         it('matches immutable array of children in a custom component', function () {
 
             const items = new Immutable.List([
-                <span className="one">1</span>,
-                <span className="two">2</span>
+                <span key="1" className="one">1</span>,
+                <span key="2" className="two">2</span>
             ]);
 
             renderer.render(
@@ -593,8 +593,8 @@ describe('unexpected-react-shallow', () => {
             return expect(renderer, 'to have exactly rendered',
                 <div>
                     <ClassComponent className="foo" test={true}>
-                        <span className="one">1</span>
-                        <span className="two">2</span>
+                        <span key="1" className="one">1</span>
+                        <span key="2" className="two">2</span>
                     </ClassComponent>
                 </div>);
         });
@@ -1065,9 +1065,9 @@ describe('unexpected-react-shallow', () => {
             renderer.render(
                 <MyDiv>
                     <ul>
-                        <li>one</li>
-                        <li>two</li>
-                        <li>three</li>
+                        <li key="1">one</li>
+                        <li key="2">two</li>
+                        <li key="3">three</li>
                     </ul>
                 </MyDiv>
             );
@@ -1075,8 +1075,8 @@ describe('unexpected-react-shallow', () => {
             return expect(() => expect(renderer, 'to have rendered with all children',
                 <div>
                     <ul>
-                        <li>one</li>
-                        <li>two</li>
+                        <li key="1">one</li>
+                        <li key="2">two</li>
                     </ul>
                 </div>),
                 'to throw',
@@ -1094,9 +1094,9 @@ describe('unexpected-react-shallow', () => {
 
         it('highlights the block removal when mixing hardcoded elements add generated lists', function () {
             var numbers = [
-                <span>one</span>,
-                <span>two</span>,
-                <span>three</span>
+                <span key="1">one</span>,
+                <span key="2">two</span>,
+                <span key="3">three</span>
             ];
 
             renderer.render(
@@ -1109,8 +1109,8 @@ describe('unexpected-react-shallow', () => {
             return expect(() => expect(renderer, 'to have rendered with all children',
                 <div>
                     <h1>My numbers</h1>
-                    <span>one</span>
-                    <span>two</span>
+                    <span key="1">one</span>
+                    <span key="2">two</span>
                 </div>),
                 'to throw',
                 'expected <div><h1>My numbers</h1><span>one</span><span>two</span><span>three</span></div>\n' +
