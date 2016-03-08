@@ -71,6 +71,31 @@ class WrapperComp extends React.Component {
     }
 }
 
+class MyDiv extends React.Component {
+    render() {
+        return <div {...this.props}>{this.props.children}</div>;
+    }
+}
+
+// Dummy assertion for testing async expect.it
+expect.addAssertion('<string> to eventually have value <string>', (expect, subject, value) => {
+
+    return expect.promise((resolve, reject) => {
+
+        setTimeout(() => {
+            if (subject === value) {
+                resolve();
+            } else {
+                try {
+                    expect.fail('Failed');
+                } catch (e) {
+                    reject(e); // Return the UnexpectedError object
+                }
+            }
+        }, 10);
+    });
+});
+
 describe('unexpected-react (deep rendering)', () => {
 
     beforeEach(() => {
@@ -104,46 +129,48 @@ describe('unexpected-react (deep rendering)', () => {
 
         it('inspects a rendered native element', () => {
 
-            const component = TestUtils.renderIntoDocument(<div className="foo" />);
+            const component = TestUtils.renderIntoDocument(<MyDiv className="foo" />);
             expect(expect.inspect(component).toString(), 'to equal',
-                '<div className="foo" />');
+                '<MyDiv className="foo"><div className="foo" /></MyDiv>');
         });
 
         it('inspects a rendered native element with a string child', () => {
 
-            const component = TestUtils.renderIntoDocument(<div className="foo">content</div>);
+            const component = TestUtils.renderIntoDocument(<MyDiv className="foo">content</MyDiv>);
             expect(expect.inspect(component).toString(), 'to equal',
-                '<div className="foo">content</div>');
+                '<MyDiv className="foo"><div className="foo">content</div></MyDiv>');
         });
 
         it('inspects a rendered native element with a numeric child', () => {
 
-            const component = TestUtils.renderIntoDocument(<div className="foo">{42}</div>);
+            const component = TestUtils.renderIntoDocument(<MyDiv className="foo">{42}</MyDiv>);
             expect(expect.inspect(component).toString(), 'to equal',
-                '<div className="foo">42</div>');
+                '<MyDiv className="foo"><div className="foo">42</div></MyDiv>');
         });
 
 
 
-        it('inspects a rendered native element with children', () => {
+        it('inspects a rendered element with children', () => {
 
-            const component = TestUtils.renderIntoDocument(<div className="foo"><span className="child1" /></div>);
+            const component = TestUtils.renderIntoDocument(<MyDiv className="foo"><span className="child1" /></MyDiv>);
             expect(expect.inspect(component).toString(), 'to equal',
-                '<div className="foo"><span className="child1" /></div>');
+                '<MyDiv className="foo"><div className="foo"><span className="child1" /></div></MyDiv>');
         });
 
         it('inspects a rendered native element with children and content', () => {
 
             const component = TestUtils.renderIntoDocument(
-                <div className="foo">
+                <MyDiv className="foo">
                     <span className="child1">child content 1</span>
                     <span className="child2">child content 2</span>
-                </div>);
+                </MyDiv>);
             expect(expect.inspect(component).toString(), 'to equal',
-                '<div className="foo">\n' +
-                '  <span className="child1">child content 1</span>\n' +
-                '  <span className="child2">child content 2</span>\n' +
-                '</div>');
+                '<MyDiv className="foo">\n' +
+                '  <div className="foo">\n' +
+                '    <span className="child1">child content 1</span>\n' +
+                '    <span className="child2">child content 2</span>\n' +
+                '  </div>\n' +
+                '</MyDiv>');
         });
 
         it('inspects a rendered custom component', () => {
@@ -293,6 +320,73 @@ describe('unexpected-react (deep rendering)', () => {
                </CustomComp>
             );
 
+        });
+
+        it('throws an error with the best match when the element is not found', () => {
+
+            const component = TestUtils.renderIntoDocument(<CustomComp className="bar" childCount={3} />);
+            return expect(() => expect(component, 'to contain',
+                <span className="foo">2</span>
+            ), 'to throw',
+                'expected\n' +
+                '<CustomComp className="bar" childCount={3}>\n' +
+                '  <div className="bar">\n' +
+                '    <span className="1">1</span>\n' +
+                '    <span className="2">2</span>\n' +
+                '    <span className="3">3</span>\n' +
+                '  </div>\n' +
+                '</CustomComp>\n' +
+                'to contain <span className="foo">2</span>\n' +
+                '\n' +
+                'the best match was\n' +
+                '<span className="2" // missing class \'foo\'\n' +
+                '>\n' +
+                '  2\n' +
+                '</span>');
+
+        });
+
+        it('throws an error for `not to contain` with the match when the element is found ', () => {
+
+            const component = TestUtils.renderIntoDocument(<CustomComp className="bar" childCount={3} />);
+            return expect(() => expect(component, 'not to contain',
+                <span className="2">2</span>
+                ), 'to throw',
+                'expected\n' +
+                '<CustomComp className="bar" childCount={3}>\n' +
+                '  <div className="bar">\n' +
+                '    <span className="1">1</span>\n' +
+                '    <span className="2">2</span>\n' +
+                '    <span className="3">3</span>\n' +
+                '  </div>\n' +
+                '</CustomComp>\n' +
+                'not to contain <span className="2">2</span>\n' +
+                '\n' +
+                'but found the following match\n' +
+                '<span className="2">2</span>');
+        });
+
+        it('returns a rejected promise with the best match when the element is not found with an async expect.it', () => {
+
+            const component = TestUtils.renderIntoDocument(<CustomComp className="bar" childCount={3} />);
+            return expect(expect(component, 'to contain',
+                <span className={expect.it('to eventually have value', 'foo')}>2</span>
+                ), 'to be rejected with',
+                'expected\n' +
+                '<CustomComp className="bar" childCount={3}>\n' +
+                '  <div className="bar">\n' +
+                '    <span className="1">1</span>\n' +
+                '    <span className="2">2</span>\n' +
+                '    <span className="3">3</span>\n' +
+                '  </div>\n' +
+                '</CustomComp>\n' +
+                'to contain <span className={expect.it(\'to eventually have value\', \'foo\')}>2</span>\n' +
+                '\n' +
+                'the best match was\n' +
+                '<span className="2" // expected \'2\' to eventually have value \'foo\'\n' +
+                '>\n' +
+                '  2\n' +
+                '</span>');
         });
     });
 });

@@ -192,11 +192,11 @@ function installInto(expect) {
         const checkAndCreateOutput = function(result) {
 
             if (not) {
-                if (containsResult.found) {
+                if (result.found) {
                     expect.fail({
                         diff: output => {
                             return {
-                                diff: output.error('but found the following match').nl().append(containsResult.bestMatch.output)
+                                diff: output.error('but found the following match').nl().append(result.bestMatch.output)
                             };
                         }
                     });
@@ -204,16 +204,16 @@ function installInto(expect) {
                 return;
             }
 
-            if (!containsResult.found) {
+            if (!result.found) {
                 expect.fail({
                     diff: function (output) {
                         return {
-                            diff: output.error('the best match was').nl().append(containsResult.bestMatch.output)
+                            diff: output.error('the best match was').nl().append(result.bestMatch.output)
                         };
                     }
                 });
             }
-        }
+        };
 
         if (typeof containsResult.then === 'function') {
             return containsResult.then(result => checkAndCreateOutput(result));
