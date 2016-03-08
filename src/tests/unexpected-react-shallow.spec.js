@@ -1886,5 +1886,22 @@ describe('unexpected-react-shallow', () => {
                     <span>{ expect.it('to eventually equal', 'some Text') }</span>
                 </div>), 'to be fulfilled');
         });
+
+        it('returns a resolved promise when expect.it is async and passes for `contains`', () => {
+            renderer.render(
+                <MyDiv>
+                    <span>some Text</span>
+                </MyDiv>
+            );
+            expect(renderer, 'to contain',
+                    <span>{ expect.it('to eventually equal', 'some Text') }</span>
+                )
+
+            return expect(expect(renderer, 'to contain',
+                    <span>{ expect.it('to eventually equal', 'some Text') }</span>
+                ), 'to be fulfilled');
+
+
+        });
     })
 });
