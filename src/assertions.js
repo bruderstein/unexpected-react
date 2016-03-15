@@ -153,6 +153,53 @@ function installInto(expect) {
 
     });
 
+    expect.addAssertion(['<ReactElement> queried for [exactly] <ReactElement> <assertion>',
+        '<ReactElement> queried for [with all children] [with all wrapppers] <ReactElement> <assertion>'], function (expect, subject, query) {
+
+        var exactly = this.flags.exactly;
+        var withAllChildren = this.flags['with all children'];
+        var withAllWrappers = this.flags['with all wrappers'];
+
+        var adapter = new ReactElementAdapter();
+        var jsxHtmlLike = new UnexpectedHtmlLike(adapter);
+        if (!exactly) {
+            adapter.setOptions({ concatTextContent: true });
+        }
+
+        var options = {
+            diffWrappers: exactly || withAllWrappers,
+            diffExtraChildren: exactly || withAllChildren,
+            diffExtraAttributes: exactly
+        };
+
+        const containsResult = jsxHtmlLike.contains(adapter, subject, query, expect, options);
+
+        return jsxHtmlLike.withResult(containsResult, function (result) {
+            if (!result.found) {
+                expect.fail({
+                    diff: output => {
+                        return {
+                            diff: output.error('`queried for` found no match. The best match was')
+                                .nl()
+                                .append(jsxHtmlLike.render(result.bestMatch, output.clone(), expect))
+                        };
+                    }
+                });
+            }
+
+            expect.shift(result.bestMatchItem);
+        });
+    });
+
+    expect.addAssertion(['<ReactShallowRenderer> queried for [exactly] <ReactElement> <assertion>',
+       '<ReactShallowRenderer> queried for [with all children] [with all wrapppers] <ReactElement> <assertion>'
+    ], function (expect, subject, query, assertion) {
+        return expect.apply(expect,
+            [
+                subject.getRenderOutput(), 'queried for [exactly] [with all children] [with all wrappers]', query
+            ].concat(Array.prototype.slice.call(arguments, 3)));
+    });
+
     expect.addAssertion(['<ReactElement> [not] to contain [exactly] <ReactElement|string>',
         '<ReactElement> [not] to contain [with all children] [with all wrappers] <ReactElement|string>'], function (expect, subject, expected) {
 

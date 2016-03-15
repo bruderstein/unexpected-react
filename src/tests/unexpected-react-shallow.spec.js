@@ -1910,4 +1910,45 @@ describe('unexpected-react-shallow', () => {
                 ), 'to be fulfilled');
         });
     });
+
+    describe('queried for', () => {
+
+        it('finds an element in a tree', () => {
+
+            renderer.render(
+                <MyDiv className="foo">
+                    <MyDiv className="bar">
+                        <span>bar</span>
+                    </MyDiv>
+                    <MyDiv className="baz">
+                        <span>baz</span>
+                    </MyDiv>
+                </MyDiv>
+            );
+
+            expect(renderer.getRenderOutput(), 'queried for', <MyDiv className="bar" />, 'to have rendered',
+                <MyDiv className="bar">
+                    <span>bar</span>
+                </MyDiv>)
+        });
+
+        it('renderer finds an element in a tree', () => {
+
+            renderer.render(
+                <MyDiv className="foo">
+                    <MyDiv className="bar">
+                        <span>bar</span>
+                    </MyDiv>
+                    <MyDiv className="baz">
+                        <span>baz</span>
+                    </MyDiv>
+                </MyDiv>
+            );
+
+            expect(renderer, 'queried for', <MyDiv className="bar" />, 'to have rendered',
+                <MyDiv className="bar">
+                    <span>bar</span>
+                </MyDiv>)
+        });
+    })
 });
