@@ -43,28 +43,25 @@ function installInto(expect) {
                 diffExtraClasses: exactly
             };
             const data = RenderHook.findComponent(subject);
-            const diffResult = htmlLikeRenderedReactElement.diff(jsxAdapter, data, element, expect.output.clone(), expect, options)
+            const diffResult = htmlLikeRenderedReactElement.diff(jsxAdapter, data, element, expect, options)
 
-            const checkEqualCreateOutput = function (result) {
+            return htmlLikeRenderedReactElement.withResult(diffResult, result => {
+
                 return expect.withError(() => expect(result.weight, 'to equal', 0), () => {
                     expect.fail({
                         diff: function (output, diff, inspect, equal) {
                             return {
-                                diff: result.output
+                                diff: htmlLikeRenderedReactElement.render(result, output, expect)
                             };
                         }
                     });
                 });
-            };
-
-            if (typeof diffResult.then === 'function') {
-               return diffResult.then(result => checkEqualCreateOutput(result)) ;
-            }
-            return checkEqualCreateOutput(diffResult);
+            });
 
         });
 
     expect.addAssertion(['<RenderedReactElement> [not] to contain [exactly] <ReactElement|string>',
+
         '<RenderedReactElement> [not] to contain [with all children] [with all wrappers] <ReactElement|string>'], function (expect, subject, element) {
 
         checkAttached(expect);
@@ -88,15 +85,15 @@ function installInto(expect) {
         };
 
         const data = RenderHook.findComponent(subject);
-        const containsResult = htmlLikeRenderedReactElement.contains(jsxAdapter, data, element, expect.output.clone(), expect, options);
+        const containsResult = htmlLikeRenderedReactElement.contains(jsxAdapter, data, element, expect, options);
 
-        const checkAndCreateOutput = function (result) {
+        return htmlLikeRenderedReactElement.withResult(containsResult, result => {
             if (not) {
                 if (result.found) {
                     expect.fail({
                         diff: output => {
                             return {
-                                diff: output.error('but found the following match').nl().append(result.bestMatch.output)
+                                diff: output.error('but found the following match').nl().append(htmlLikeRenderedReactElement.render(result.bestMatch, output.clone(), expect))
                             };
                         }
                     });
@@ -108,18 +105,13 @@ function installInto(expect) {
                 expect.fail({
                     diff: function (output) {
                         return {
-                            diff: output.error('the best match was').nl().append(result.bestMatch.output)
+                            diff: output.error('the best match was').nl().append(htmlLikeRenderedReactElement.render(result.bestMatch, output.clone(), expect))
                         };
                     }
                 });
             }
-        };
 
-        if (typeof containsResult.then === 'function') {
-            return containsResult.then(result => checkAndCreateOutput(result));
-        }
-
-        return checkAndCreateOutput(containsResult);
+        });
 
     });
 
@@ -144,26 +136,20 @@ function installInto(expect) {
             diffExtraClasses: exactly
         };
 
-        const diffResult = jsxHtmlLike.diff(adapter, subject, expected, expect.output.clone(), expect, options);
+        const diffResult = jsxHtmlLike.diff(adapter, subject, expected, expect, options);
 
-        const checkAndCreateOutput = function (result) {
+        return jsxHtmlLike.withResult(diffResult, result => {
 
             if (result.weight !== 0) {
                 return expect.fail({
-                    diff: function () {
+                    diff: function (output) {
                         return {
-                            diff: result.output
+                            diff: jsxHtmlLike.render(result, output, expect)
                         };
                     }
                 });
             }
-        };
-
-        if (typeof diffResult.then === 'function') {
-            return diffResult.then(result => checkAndCreateOutput(result));
-        }
-
-        return checkAndCreateOutput(diffResult);
+        });
 
     });
 
@@ -187,16 +173,16 @@ function installInto(expect) {
             diffExtraAttributes: exactly
         };
 
-        const containsResult = jsxHtmlLike.contains(adapter, subject, expected, expect.output, expect, options);
+        const containsResult = jsxHtmlLike.contains(adapter, subject, expected, expect, options);
 
-        const checkAndCreateOutput = function(result) {
+        return jsxHtmlLike.withResult(containsResult, result => {
 
             if (not) {
                 if (result.found) {
                     expect.fail({
                         diff: output => {
                             return {
-                                diff: output.error('but found the following match').nl().append(result.bestMatch.output)
+                                diff: output.error('but found the following match').nl().append(jsxHtmlLike.render(result.bestMatch, output.clone(), expect))
                             };
                         }
                     });
@@ -208,18 +194,12 @@ function installInto(expect) {
                 expect.fail({
                     diff: function (output) {
                         return {
-                            diff: output.error('the best match was').nl().append(result.bestMatch.output)
+                            diff: output.error('the best match was').nl().append(jsxHtmlLike.render(result.bestMatch, output.clone(), expect))
                         };
                     }
                 });
             }
-        };
-
-        if (typeof containsResult.then === 'function') {
-            return containsResult.then(result => checkAndCreateOutput(result));
-        }
-
-        return checkAndCreateOutput(containsResult);
+        });
     });
 
     expect.addAssertion('<ReactElement> to equal <ReactElement>', function (expect, subject, value) {
