@@ -49,4 +49,10 @@ you're actually doing an asynchronous `expect.it()` assertion somewhere in your 
 
 ## v1.0.1
 
-Patch version of unexpected-htmllike to ^1.1.0 (improves output for function props, and props with undefined values)
+Patch version of unexpected-htmllike to ^1.1.0 (improves output for function props, and props with undefined values - #15)
+
+## v2.0.0
+
+Props / Attributes are now tested with `to satisfy` semantics, unless `exactly` is specified, in which case
+`to equal` is used.  This is probably what was expected, but could mean some tests that previously failed now pass,
+hence the major version.
