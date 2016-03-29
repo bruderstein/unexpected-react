@@ -32,7 +32,7 @@ describe('Select', () => {
             { label: 'two', value: 2 },
             { label: 'three', value: 3 }
         ];
-        component = TestUtils.renderIntoDocument(<Select options={options} />)
+        component = TestUtils.renderIntoDocument(<Select options={options} />);
     });
 
     it('should render a div.Select', () => {
@@ -93,6 +93,6 @@ describe('Select', () => {
         return expect(component, 'to contain',
             <li className="Select__item--unselected" />
         );
-    })
+    });
 });
 

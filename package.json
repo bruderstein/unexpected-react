@@ -7,6 +7,7 @@
     "prepublish": "npm run build && npm test",
     "test-main": "mocha --compilers js:babel/register src/tests/*.spec.js",
     "test-error": "mocha --compilers js:babel/register src/error-tests/*.spec.js",
+    "lint": "eslint src",
     "test": "npm run test-main && npm run test-error"
   },
   "main": "lib/unexpected-react.js",
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "babel": "5.x.x",
+    "babel-eslint": "^6.0.0",
     "eslint": "^2.2.0",
     "eslint-plugin-react": "^3.8.0",
     "immutable": "^3.7.6",
@@ -35,7 +37,7 @@
     "mocha": "^2.3.3",
     "object-assign": "^4.0.1",
     "react": "^0.14.7",
-    "unexpected": "^10.10.0"
+    "unexpected": "^10.10.12"
   },
   "dependencies": {
     "magicpen-prism": "^2.2.1",

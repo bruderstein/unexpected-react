@@ -4,6 +4,8 @@ var UnexpectedReact = require('../unexpected-react');
 var React = require('react/addons');
 var Immutable = require('immutable');
 
+var PropTypes = React.PropTypes;
+
 var expect = Unexpected.clone()
     .installPlugin(UnexpectedReact);
 
@@ -11,6 +13,7 @@ var ES5Component = React.createClass({
     displayName: 'ES5Component',
     render() { return null;}
 });
+
 
 function createNoNameComponent() {
     return React.createClass({
@@ -30,6 +33,10 @@ class ClassComponent extends React.Component {
         );
     }
 }
+
+ClassComponent.propTypes = {
+    content: PropTypes.any
+};
 
 class MyDiv extends React.Component {
     render() {
@@ -718,7 +725,7 @@ describe('unexpected-react-shallow', () => {
                 '  <ClassComponent\n' +
                 "     test={{ some: 'prop', arr: [ 1, 2, 3 ] }} // expected { some: 'prop', arr: [ 1, 2, 3 ] }\n" +
                 "                                               // to satisfy { some: 'prop', arr: [ 1, 2, 4 ] }\n" +
-                "                                               //\n" +
+                '                                               //\n' +
                 '                                               // {\n' +
                 "                                               //   some: 'prop',\n" +
                 '                                               //   arr: [\n' +
@@ -1381,7 +1388,6 @@ describe('unexpected-react-shallow', () => {
             // See the 'does not find a partial string' test above
             renderer.render(<MyDiv><span>button clicked {5} times</span></MyDiv>);
 
-            // TODO: I don't understand how this can throw - 'to contain' returns a promise.
             return expect(() => expect(renderer, 'to contain', 'button clicked '), 'to throw',
                 'expected <div><span>button clicked 5 times</span></div>\n' +
                 "to contain 'button clicked '\n" +
@@ -1898,15 +1904,10 @@ describe('unexpected-react-shallow', () => {
                     <span>some Text</span>
                 </MyDiv>
             );
-            expect(renderer, 'to contain',
-                    <span>{ expect.it('to eventually equal', 'some Text') }</span>
-                )
 
             return expect(expect(renderer, 'to contain',
                     <span>{ expect.it('to eventually equal', 'some Text') }</span>
                 ), 'to be fulfilled');
-
-
         });
-    })
+    });
 });
