@@ -20,6 +20,8 @@ const TestUtils = React.addons.TestUtils;
 const expect = Unexpected.clone()
     .use(UnexpectedReact);
 
+const PropTypes = React.PropTypes;
+
 expect.output.preferredWidth = 80;
 
 class CustomComp extends React.Component {
@@ -65,6 +67,12 @@ class CustomComp extends React.Component {
     }
 }
 
+CustomComp.propTypes = {
+    childCount: PropTypes.number,
+    className: PropTypes.string,
+    useEvents: PropTypes.boolean
+};
+
 class WrapperComp extends React.Component {
     render() {
         return <CustomComp {...this.props} />;
@@ -76,6 +84,10 @@ class MyDiv extends React.Component {
         return <div {...this.props}>{this.props.children}</div>;
     }
 }
+
+MyDiv.propTypes = {
+    children: PropTypes.any
+};
 
 // Dummy assertion for testing async expect.it
 expect.addAssertion('<string> to eventually have value <string>', (expect, subject, value) => {

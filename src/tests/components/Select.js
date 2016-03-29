@@ -1,5 +1,5 @@
 
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import SelectOption from './SelectOption';
 
 class Select extends Component {
@@ -38,5 +38,12 @@ class Select extends Component {
         );
     }
 }
+
+Select.propTypes = {
+    options: PropTypes.array,
+    selected: PropTypes.shape({
+        label: PropTypes.string
+    })
+};
 
 module.exports = Select;
