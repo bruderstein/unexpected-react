@@ -400,7 +400,7 @@ describe('unexpected-react-shallow', () => {
                 '</div>\n' +
                 '\n' +
                 '<div>\n' +
-                '  <ClassComponent test={true} // should be test={false}\n' +
+                '  <ClassComponent test={true} // expected true to equal false\n' +
                 '     className="foo">\n' +
                 '    <span className="bar">foo</span>\n' +
                 '  </ClassComponent>\n' +
@@ -716,7 +716,9 @@ describe('unexpected-react-shallow', () => {
                 '\n' +
                 '<div>\n' +
                 '  <ClassComponent\n' +
-                "     test={{ some: 'prop', arr: [ 1, 2, 3 ] }} // should be test={{ some: 'prop', arr: [ 1, 2, 4 ] }}\n" +
+                "     test={{ some: 'prop', arr: [ 1, 2, 3 ] }} // expected { some: 'prop', arr: [ 1, 2, 3 ] }\n" +
+                "                                               // to satisfy { some: 'prop', arr: [ 1, 2, 4 ] }\n" +
+                "                                               //\n" +
                 '                                               // {\n' +
                 "                                               //   some: 'prop',\n" +
                 '                                               //   arr: [\n' +
@@ -952,7 +954,8 @@ describe('unexpected-react-shallow', () => {
                 '<div>\n' +
                 '  <ClassComponent>\n' +
                 '    some text \n' +
-                '    <ES5Component foo="bar" // should be foo="blah"\n' +
+                '    <ES5Component foo="bar" // expected \'bar\' to equal \'blah\'\n' +
+                '                            //\n' +
                 '                            // -bar\n' +
                 '                            // +blah\n' +
                 '    />\n' +
@@ -1435,7 +1438,8 @@ describe('unexpected-react-shallow', () => {
                 'to contain <ClassComponent className="notexists" />\n' +
                 '\n' +
                 'the best match was\n' +
-                '<ClassComponent className="bar" // should be className="notexists"\n' +
+                '<ClassComponent className="bar" // expected \'bar\' to equal \'notexists\'\n' +
+                '                                //\n' +
                 '                                // -bar\n' +
                 '                                // +notexists\n' +
                 '/>');
@@ -1679,7 +1683,8 @@ describe('unexpected-react-shallow', () => {
                 'to contain exactly <ClassComponent className="candidate" />\n' +
                 '\n' +
                 'the best match was\n' +
-                '<ClassComponent className="bar" // should be className="candidate"\n' +
+                '<ClassComponent className="bar" // expected \'bar\' to equal \'candidate\'\n' +
+                '                                //\n' +
                 '                                // -bar\n' +
                 '                                // +candidate\n' +
                 '/>');

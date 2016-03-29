@@ -305,6 +305,50 @@ describe('unexpected-react (deep rendering)', () => {
                 '  </div>\n' +
                 '</CustomComp>');
         });
+
+        it('highlights a difference with an async expect.it on an attribute', () => {
+
+            const component = TestUtils.renderIntoDocument(<CustomComp className="bar" />);
+
+            return expect(expect(component, 'to have rendered',
+                <div className={ expect.it('to eventually have value', 'foo') } />
+            ), 'to be rejected with',
+                'expected <CustomComp className="bar"><div className="bar" /></CustomComp>\n' +
+                'to have rendered <div className={expect.it(\'to eventually have value\', \'foo\')} />\n' +
+                '\n' +
+                '<CustomComp className="bar">\n' +
+                '  <div className="bar" // expected \'bar\' to eventually have value \'foo\'\n' +
+                '  />\n' +
+                '</CustomComp>');
+
+        });
+
+        it('matches a component that renders multiple numbers', () => {
+
+            const NumberComponent = React.createClass({
+                render() {
+                    return <div>{3}{6}</div>;
+                }
+            });
+
+            const component = TestUtils.renderIntoDocument(<NumberComponent />);
+            expect(component, 'to have rendered', <div>{3}{6}</div>);
+
+        });
+        
+        it('matches a component that renders single numbers', () => {
+
+            const NumberComponent = React.createClass({
+                render() {
+                    return <div>{3}</div>;
+                }
+            });
+
+            const component = TestUtils.renderIntoDocument(<NumberComponent />);
+            expect(component, 'to have rendered', <div>{3}</div>);
+
+        });
+
     });
 
     describe('contains', () => {
@@ -388,5 +432,6 @@ describe('unexpected-react (deep rendering)', () => {
                 '  2\n' +
                 '</span>');
         });
+
     });
 });
