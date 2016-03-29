@@ -51,6 +51,8 @@ const FunctionComp = function (props) {
 const versionParts = React.version.split('.');
 const isReact014 = (parseFloat(versionParts[0] + '.' + versionParts[1]) >= 0.14);
 
+//expect.outputFormat('text');
+
 expect.addAssertion('<any> to inspect as <string>', function (expect, subject, value) {
     expect.errorMode = 'bubble';
     expect(expect.inspect(subject).toString(), 'to equal', value);
@@ -1929,10 +1931,10 @@ describe('unexpected-react-shallow', () => {
             expect(renderer.getRenderOutput(), 'queried for', <MyDiv className="bar" />, 'to have rendered',
                 <MyDiv className="bar">
                     <span>bar</span>
-                </MyDiv>)
+                </MyDiv>);
         });
 
-        it('renderer finds an element in a tree', () => {
+        it('using the renderer finds an element in a tree', () => {
 
             renderer.render(
                 <MyDiv className="foo">
@@ -1948,7 +1950,57 @@ describe('unexpected-react-shallow', () => {
             expect(renderer, 'queried for', <MyDiv className="bar" />, 'to have rendered',
                 <MyDiv className="bar">
                     <span>bar</span>
+                </MyDiv>);
+        });
+        
+        it('errors when no component is found', () => {
+
+            renderer.render(
+                <MyDiv className="foo">
+                    <MyDiv className="bar">
+                        <span>bar</span>
+                    </MyDiv>
+                    <MyDiv className="baz">
+                        <span>baz</span>
+                    </MyDiv>
+                </MyDiv>
+            );
+
+            expect(() => expect(renderer, 'queried for', <MyDiv className="not exists" />, 'to have rendered',
+                <MyDiv className="bar">
+                    <span>bar</span>
+                </MyDiv>), 'to throw',
+                'expected\n' +
+                '<div className="foo">\n' +
+                '  <MyDiv className="bar"><span>bar</span></MyDiv>\n' +
+                '  <MyDiv className="baz"><span>baz</span></MyDiv>\n' +
+                '</div>\n' +
+                'queried for <MyDiv className="not exists" /> to have rendered <MyDiv className="bar"><span>bar</span></MyDiv>\n' +
+                '\n' +
+                '`queried for` found no match.  The best match was\n' +
+                '<MyDiv className="bar" // missing classes \'not exists\'\n' +
+                '>\n' +
+                '  <span>bar</span>\n' +
+                '</MyDiv>');
+        });
+        
+        it('locates with an async expect.it', () => {
+
+            renderer.render(
+                <MyDiv className="foo">
+                    <MyDiv className="bar">
+                        <span>bar</span>
+                    </MyDiv>
+                    <MyDiv className="baz">
+                        <span>baz</span>
+                    </MyDiv>
+                </MyDiv>
+            );
+
+            return expect(renderer, 'queried for', <MyDiv className={ expect.it('to eventually equal', 'bar')} />, 'to have rendered',
+                <MyDiv className="bar">
+                    <span>bar</span>
                 </MyDiv>)
         });
-    })
+    });
 });
