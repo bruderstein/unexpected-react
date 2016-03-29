@@ -19,8 +19,8 @@ function installInto(expect) {
     const renderedReactElementAdapter = new RenderedReactElementAdapter({ convertToString: true });
     const htmlLikeRenderedReactElement = UnexpectedHtmlLike(renderedReactElementAdapter);
 
-    expect.addAssertion(['<RenderedReactElement> to have [exactly] rendered <ReactElement>',
-        '<RenderedReactElement> to have rendered [with all children] [with all wrappers] <ReactElement>'], function (expect, subject, element) {
+    expect.addAssertion(['<RenderedReactElementData> to have [exactly] rendered <ReactElement>',
+        '<RenderedReactElementData> to have rendered [with all children] [with all wrappers] <ReactElement>'], function (expect, subject, element) {
 
             checkAttached(expect);
             var exactly = this.flags.exactly;
@@ -42,8 +42,7 @@ function installInto(expect) {
                 diffExactClasses: false, // TODO: This should be exactly - need to check the tests around this
                 diffExtraClasses: exactly
             };
-            const data = RenderHook.findComponent(subject);
-            const diffResult = htmlLikeRenderedReactElement.diff(jsxAdapter, data, element, expect, options);
+            const diffResult = htmlLikeRenderedReactElement.diff(jsxAdapter, subject, element, expect, options);
 
             return htmlLikeRenderedReactElement.withResult(diffResult, result => {
 
@@ -59,10 +58,19 @@ function installInto(expect) {
             });
 
         });
+    
+    expect.addAssertion(['<RenderedReactElement> to have [exactly] rendered <ReactElement>',
+        '<RenderedReactElement> to have rendered [with all children] [with all wrappers] <ReactElement>'], function (expect, subject, element) {
+        
+        checkAttached(expect);
 
-    expect.addAssertion(['<RenderedReactElement> [not] to contain [exactly] <ReactElement|string>',
+        const data = RenderHook.findComponent(subject);
+        return expect(data, 'to have [exactly] rendered [with all children] [with all wrappers]', element);
+    });
 
-        '<RenderedReactElement> [not] to contain [with all children] [with all wrappers] <ReactElement|string>'], function (expect, subject, element) {
+    expect.addAssertion(['<RenderedReactElementData> [not] to contain [exactly] <ReactElement|string>',
+
+        '<RenderedReactElementData> [not] to contain [with all children] [with all wrappers] <ReactElement|string>'], function (expect, subject, element) {
 
         checkAttached(expect);
 
@@ -84,8 +92,7 @@ function installInto(expect) {
             diffExtraClasses: exactly
         };
 
-        const data = RenderHook.findComponent(subject);
-        const containsResult = htmlLikeRenderedReactElement.contains(jsxAdapter, data, element, expect, options);
+        const containsResult = htmlLikeRenderedReactElement.contains(jsxAdapter, subject, element, expect, options);
 
         return htmlLikeRenderedReactElement.withResult(containsResult, result => {
             if (not) {
@@ -113,6 +120,16 @@ function installInto(expect) {
 
         });
 
+    });
+    
+    expect.addAssertion(['<RenderedReactElement> [not] to contain [exactly] <ReactElement|string>',
+        '<RenderedReactElement> [not] to contain [with all children] [with all wrappers] <ReactElement|string>'], function (expect, subject, element) {
+
+        checkAttached(expect);
+
+        const data = RenderHook.findComponent(subject);
+        
+        return expect(data, '[not] to contain [exactly] [with all children] [with all wrappers]', element);
     });
 
     expect.addAssertion(['<ReactElement> to have [exactly] rendered <ReactElement>',
@@ -166,23 +183,30 @@ function installInto(expect) {
             adapter.setOptions({ concatTextContent: true });
         }
 
-        var options = {
+        const options = {
             diffWrappers: exactly || withAllWrappers,
             diffExtraChildren: exactly || withAllChildren,
-            diffExtraAttributes: exactly
+            diffExtraAttributes: exactly,
+            diffExactClasses: exactly,
+            diffExtraClasses: exactly
         };
 
         const containsResult = jsxHtmlLike.contains(adapter, subject, query, expect, options);
 
         return jsxHtmlLike.withResult(containsResult, function (result) {
+            
             if (!result.found) {
                 expect.fail({
                     diff: output => {
-                        return {
-                            diff: output.error('`queried for` found no match. The best match was')
-                                .nl()
-                                .append(jsxHtmlLike.render(result.bestMatch, output.clone(), expect))
+                        const resultOutput = {
+                            diff: output.error('`queried for` found no match.')
                         };
+                        if (result.bestMatch) {
+                            resultOutput.diff.error('  The best match was')
+                                .nl()
+                                .append(jsxHtmlLike.render(result.bestMatch, output.clone(), expect));
+                        }
+                        return resultOutput;
                     }
                 });
             }
@@ -198,6 +222,51 @@ function installInto(expect) {
             [
                 subject.getRenderOutput(), 'queried for [exactly] [with all children] [with all wrappers]', query
             ].concat(Array.prototype.slice.call(arguments, 3)));
+    });
+
+
+    expect.addAssertion(['<RenderedReactElement> queried for [exactly] <ReactElement> <assertion>',
+        '<RenderedReactElement> queried for [with all children] [with all wrapppers] <ReactElement> <assertion>'], function (expect, subject, query) {
+
+        var exactly = this.flags.exactly;
+        var withAllChildren = this.flags['with all children'];
+        var withAllWrappers = this.flags['with all wrappers'];
+
+        var adapter = new RenderedReactElementAdapter({ convertToString: true, concatTextContent: !exactly});
+        var renderedHtmlLike = new UnexpectedHtmlLike(adapter);
+        var jsxAdapter = new ReactElementAdapter({ convertToString: true, concatTextContent: !exactly });
+
+        const options = {
+            diffWrappers: exactly || withAllWrappers,
+            diffExtraChildren: exactly || withAllChildren,
+            diffExtraAttributes: exactly,
+            diffExactClasses: exactly,
+            diffExtraClasses: exactly
+        };
+
+        const data = RenderHook.findComponent(subject);
+        const containsResult = renderedHtmlLike.contains(jsxAdapter, data, query, expect, options);
+
+        return renderedHtmlLike.withResult(containsResult, function (result) {
+
+            if (!result.found) {
+                expect.fail({
+                    diff: output => {
+                        const resultOutput = {
+                            diff: output.error('`queried for` found no match.')
+                        };
+                        if (result.bestMatch) {
+                            resultOutput.diff.error('  The best match was')
+                                .nl()
+                                .append(renderedHtmlLike.render(result.bestMatch, output.clone(), expect));
+                        }
+                        return resultOutput;
+                    }
+                });
+            }
+
+            expect.shift(result.bestMatchItem);
+        });
     });
 
     expect.addAssertion(['<ReactElement> [not] to contain [exactly] <ReactElement|string>',

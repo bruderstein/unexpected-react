@@ -446,4 +446,72 @@ describe('unexpected-react (deep rendering)', () => {
         });
 
     });
+
+    describe('queried for', () => {
+
+        it('finds a rendered component', () => {
+
+            const component = TestUtils.renderIntoDocument(<CustomComp className="bar" childCount={3} />);
+            return expect(component, 'queried for', <span className="2" />, 'to have rendered', <span className="2">2</span>);
+        });
+
+        it('finds a `contains` query', () => {
+
+            const component = TestUtils.renderIntoDocument(<CustomComp className="bar" childCount={3} />);
+            return expect(component, 'queried for', <div className="bar" />, 'to contain', <span className="2">2</span>);
+        });
+
+        it('errors when the query is not found', () => {
+
+            const component = TestUtils.renderIntoDocument(<CustomComp className="bar" childCount={3}/>);
+            return expect(() => expect(component, 'queried for', <div className="not-exist"/>, 'to contain',
+                <span className="2">2</span>),
+                'to throw',
+                'expected\n' +
+                '<CustomComp className="bar" childCount={3}>\n' +
+                '  <div className="bar">\n' +
+                '    <span className="1">1</span>\n' +
+                '    <span className="2">2</span>\n' +
+                '    <span className="3">3</span>\n' +
+                '  </div>\n' +
+                '</CustomComp>\n' +
+                'queried for <div className="not-exist" /> to contain <span className="2">2</span>\n' +
+                '\n' +
+                '`queried for` found no match.  The best match was\n' +
+                '<div className="bar" // missing class \'not-exist\'\n' +
+                '>\n' +
+                '  <span className="1">1</span>\n' +
+                '  <span className="2">2</span>\n' +
+                '  <span className="3">3</span>\n' +
+                '</div>')
+        });
+
+        it('errors correctly when the following assertion fails', () => {
+
+            const component = TestUtils.renderIntoDocument(<CustomComp className="bar" childCount={3} />);
+            return expect(() => expect(component, 'queried for', <span className="2" />, 'to have rendered', <span className="2">foo</span>),
+                'to throw',
+                'expected\n' +
+                '<CustomComp className="bar" childCount={3}>\n' +
+                '  <div className="bar">\n' +
+                '    <span className="1">1</span>\n' +
+                '    <span className="2">2</span>\n' +
+                '    <span className="3">3</span>\n' +
+                '  </div>\n' +
+                '</CustomComp>\n' +
+                'queried for <span className="2" /> to have rendered <span className="2">foo</span>\n' +
+                '\n' +
+                '<span className="2">\n' +
+                '  -2\n' +
+                '  +foo\n' +
+                '</span>');
+        });
+
+        it('finds an element with an async expect.it', () => {
+
+            const component = TestUtils.renderIntoDocument(<CustomComp className="bar" childCount={3} />);
+            return expect(component, 'queried for', <div className={ expect.it('to eventually have value', 'bar')} />, 'to contain', <span className="2">2</span>);
+        });
+
+    });
 });
