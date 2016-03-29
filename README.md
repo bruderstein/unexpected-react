@@ -158,7 +158,7 @@ it('renders the Text components with the spans with the full renderer', function
 
    var component = TestUtils.renderIntoDocument(<App />);
    
-   return expect(component, 'to have rendered', 
+   expect(component, 'to have rendered', 
       <App>
         <div className="testing-is-fun">
           <Text content="hello">
@@ -176,7 +176,7 @@ it('renders the Text nodes with the full renderer', function () {
 
    var component = TestUtils.renderIntoDocument(<App />);
    
-   return expect(component, 'to have rendered', 
+   expect(component, 'to have rendered', 
       <div className="testing-is-fun">
          <Text content="hello" />
          <Text content="world" />
@@ -188,7 +188,7 @@ it('renders the spans with the full renderer', function () {
 
    var component = TestUtils.renderIntoDocument(<App />);
    
-   return expect(component, 'to have rendered', 
+   expect(component, 'to have rendered', 
       <div className="testing-is-fun">
          <span>hello</span>
          <span>world</span>
@@ -202,9 +202,6 @@ The first test shows the full virtual DOM that gets rendered. The second test sk
 and leaves out the `<span>` children of the `<Text>` components. The third tests skips both the `<App>` wrapper component,
 and the `<Text>` wrapper component.
 
-Notice that the result from `expect` is returned from the `it` block. The `unexpected-react` assertions are currently
-asynchronous, and *can* therefore return a promise.  When using [mocha](https://npmjs.com/package/mocha), you can return
- the promise from the `it` block, and `mocha` will wait for the promise to be resolved.
 
 # Assertions
 
@@ -320,7 +317,7 @@ For example:
 ```
 
 This actually produces 3 "child" elements of the div, `Click on `, the `clickCount` and the ` times`
-To make this simpler, `unexpected-react-shallow` concatenates these values so you can simply test the
+To make this simpler, `unexpected-react` concatenates these values so you can simply test the
 previous example as follows:
 
 ```js
@@ -350,8 +347,10 @@ if you use a test runner that keeps the process alive (such as [wallaby.js](http
 
 ## Roadmap / Plans
 
-* There are some performance optimisations to do. The performance suffers a bit due to the possible asynchronous nature of the inline assertions. Most of the time these will be synchronous, and hence we don't need to pay the price.
-* Some helper functions, allowing directly calling functions passed to props may make working with events and the shallow renderer easier
+* [DONE] There are some performance optimisations to do. The performance suffers a bit due to the possible asynchronous nature of 
+the inline assertions. Most of the time these will be synchronous, and hence we don't need to pay the price.
+* (started) `queried for` implementation
+* (started) Directly calling events on both the shallow renderer, and the full virtual DOM renderer
 
 # Contributing
 

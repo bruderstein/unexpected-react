@@ -40,3 +40,13 @@ Patch version of unexpected-htmllike-jsx-adapter to support flattening children 
 ## v0.5.2
 
 Patch version of unexpected-htmllike to ^0.5.0 to fix issue with reordered children
+
+## v1.0.0
+
+Update to unexpected-htmllike v1.0.0 - much faster due to attempting everything sync first, before reverting  
+to async if an async assertion is encountered.  You no longer need to return the result of the `expect`, unless 
+you're actually doing an asynchronous `expect.it()` assertion somewhere in your `expected` value. 
+
+## v1.0.1
+
+Patch version of unexpected-htmllike to ^1.1.0 (improves output for function props, and props with undefined values)
