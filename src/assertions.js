@@ -9,7 +9,7 @@ function checkAttached(expect) {
         expect.errorMode = 'bubble';
         expect.fail(output => {
             return output.error('The global rendering hook is not attached')
-                .nl().text('This probably means React was required before unexpected-react. Check that unexpected-react is required first')
+                .nl().text('This probably means React was required before unexpected-react. Check that unexpected-react is required first');
         });
     }
 }
@@ -18,19 +18,19 @@ function installInto(expect) {
 
     const renderedReactElementAdapter = new RenderedReactElementAdapter({ convertToString: true });
     const htmlLikeRenderedReactElement = UnexpectedHtmlLike(renderedReactElementAdapter);
-    const reactElementAdapter = new ReactElementAdapter({ convertToString: true });
-
 
     expect.addAssertion(['<RenderedReactElement> to have [exactly] rendered <ReactElement>',
         '<RenderedReactElement> to have rendered [with all children] [with all wrappers] <ReactElement>'], function (expect, subject, element) {
 
             checkAttached(expect);
-
             var exactly = this.flags.exactly;
+            const renderedReactElementAdapter = new RenderedReactElementAdapter({ convertToString: true, concatTextContent: !exactly });
+
+            const htmlLikeRenderedReactElement = UnexpectedHtmlLike(renderedReactElementAdapter);
             var withAllChildren = this.flags['with all children'];
             var withAllWrappers = this.flags['with all wrappers'];
 
-            var jsxAdapter = new ReactElementAdapter();
+            var jsxAdapter = new ReactElementAdapter({ convertToString: true });
             if (!exactly) {
                 jsxAdapter.setOptions({ concatTextContent: true });
             }
@@ -43,13 +43,13 @@ function installInto(expect) {
                 diffExtraClasses: exactly
             };
             const data = RenderHook.findComponent(subject);
-            const diffResult = htmlLikeRenderedReactElement.diff(jsxAdapter, data, element, expect, options)
+            const diffResult = htmlLikeRenderedReactElement.diff(jsxAdapter, data, element, expect, options);
 
             return htmlLikeRenderedReactElement.withResult(diffResult, result => {
 
                 return expect.withError(() => expect(result.weight, 'to equal', 0), () => {
                     expect.fail({
-                        diff: function (output, diff, inspect, equal) {
+                        diff: function (output) {
                             return {
                                 diff: htmlLikeRenderedReactElement.render(result, output, expect)
                             };
@@ -226,9 +226,9 @@ function installInto(expect) {
         return expect(actual, '[not] to contain [exactly] [with all children] [with all wrappers]', renderOutput);
     });
 
-    expect.addAssertion('<ReactModule> to have been injected', function (expect, subject) {
+    expect.addAssertion('<ReactModule> to have been injected', function (expect) {
         checkAttached(expect);
     });
 }
 
-export default { installInto }
+export default { installInto };
