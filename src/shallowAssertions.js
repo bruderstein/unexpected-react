@@ -57,9 +57,9 @@ function installInto(expect) {
 
             if (result.weight !== 0) {
                 return expect.fail({
-                    diff: function (output) {
+                    diff: function (output, diff, inspect) {
                         return {
-                            diff: output.append(jsxHtmlLike.render(result, output.clone(), expect))
+                            diff: output.append(jsxHtmlLike.render(result, output.clone(), diff, inspect))
                         };
                     }
                 });
@@ -101,9 +101,9 @@ function installInto(expect) {
             if (not) {
                 if (result.found) {
                     expect.fail({
-                        diff: output => {
+                        diff: (output, diff, inspect) => {
                             return {
-                                diff: output.error('but found the following match').nl().append(jsxHtmlLike.render(result.bestMatch, output.clone(), expect))
+                                diff: output.error('but found the following match').nl().append(jsxHtmlLike.render(result.bestMatch, output.clone(), diff, inspect))
                             };
                         }
                     });
@@ -113,9 +113,9 @@ function installInto(expect) {
 
             if (!result.found) {
                 expect.fail({
-                    diff: function (output) {
+                    diff: function (output, diff, inspect) {
                         return {
-                            diff: output.error('the best match was').nl().append(jsxHtmlLike.render(result.bestMatch, output.clone(), expect))
+                            diff: output.error('the best match was').nl().append(jsxHtmlLike.render(result.bestMatch, output.clone(), diff, inspect))
                         };
                     }
                 });
@@ -150,14 +150,14 @@ function installInto(expect) {
 
             if (!result.found) {
                 expect.fail({
-                    diff: output => {
+                    diff: (output, diff, inspect) => {
                         const resultOutput = {
                             diff: output.error('`queried for` found no match.')
                         };
                         if (result.bestMatch) {
                             resultOutput.diff.error('  The best match was')
                                 .nl()
-                                .append(jsxHtmlLike.render(result.bestMatch, output.clone(), expect));
+                                .append(jsxHtmlLike.render(result.bestMatch, output.clone(), diff, inspect));
                         }
                         return resultOutput;
                     }
@@ -235,10 +235,10 @@ function installInto(expect) {
         return jsxHtmlLike.withResult(containsResult, result => {
             if (!result.found) {
                 return expect.fail({
-                    diff: function (output) {
+                    diff: function (output, diff, inspect) {
                         output.error('Could not find the target for the event. ');
                         if (result.bestMatch) {
-                            output.error('The best match was').nl().nl().append(jsxHtmlLike.render(result.bestMatch, output.clone(), expect))
+                            output.error('The best match was').nl().nl().append(jsxHtmlLike.render(result.bestMatch, output.clone(), diff, inspect))
                         }
                         return output;
                     }

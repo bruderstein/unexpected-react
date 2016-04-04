@@ -59,9 +59,9 @@ function installInto(expect) {
 
                 return expect.withError(() => expect(result.weight, 'to equal', 0), () => {
                     expect.fail({
-                        diff: function (output) {
+                        diff: function (output, diff, inspect) {
                             return {
-                                diff: htmlLikeRenderedReactElement.render(result, output, expect)
+                                diff: htmlLikeRenderedReactElement.render(result, output, diff, inspect)
                             };
                         }
                     });
@@ -113,9 +113,9 @@ function installInto(expect) {
             if (not) {
                 if (result.found) {
                     expect.fail({
-                        diff: output => {
+                        diff: function (output, diff, inspect) {
                             return {
-                                diff: output.error('but found the following match').nl().append(htmlLikeRenderedReactElement.render(result.bestMatch, output.clone(), expect))
+                                diff: output.error('but found the following match').nl().append(htmlLikeRenderedReactElement.render(result.bestMatch, output.clone(), diff, inspect))
                             };
                         }
                     });
@@ -125,9 +125,9 @@ function installInto(expect) {
 
             if (!result.found) {
                 expect.fail({
-                    diff: function (output) {
+                    diff: function (output, diff, inspect) {
                         return {
-                            diff: output.error('the best match was').nl().append(htmlLikeRenderedReactElement.render(result.bestMatch, output.clone(), expect))
+                            diff: output.error('the best match was').nl().append(htmlLikeRenderedReactElement.render(result.bestMatch, output.clone(), diff, inspect))
                         };
                     }
                 });
@@ -165,14 +165,14 @@ function installInto(expect) {
 
             if (!result.found) {
                 expect.fail({
-                    diff: output => {
+                    diff: (output, diff, inspect) => {
                         const resultOutput = {
                             diff: output.error('`queried for` found no match.')
                         };
                         if (result.bestMatch) {
                             resultOutput.diff.error('  The best match was')
                                 .nl()
-                                .append(renderedHtmlLike.render(result.bestMatch, output.clone(), expect));
+                                .append(renderedHtmlLike.render(result.bestMatch, output.clone(), diff, inspect));
                         }
                         return resultOutput;
                     }
@@ -236,12 +236,12 @@ function installInto(expect) {
             if (!result.found) {
                 return expect.fail({
 
-                    diff: function (output) {
+                    diff: function (output, diff, inspect) {
                         if (result.bestMatch) {
                             return {
                                 diff: output
                                     .error('Could not find the target. The best match was ')
-                                    .append(reactHtmlLike.render(result.bestMatch, output.clone(), expect))
+                                    .append(reactHtmlLike.render(result.bestMatch, output.clone(), diff, inspect))
                             };
                         }
 
