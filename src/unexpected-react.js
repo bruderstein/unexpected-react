@@ -1,7 +1,8 @@
 import RenderHook from 'react-render-hook';
 
 import types from './types';
-import assertions from './assertions';
+import * as deepAssertions from './deepAssertions';
+import * as shallowAssertions from './shallowAssertions';
 
 
 module.exports = {
@@ -12,7 +13,8 @@ module.exports = {
         expect.installPlugin(require('magicpen-prism'));
 
         types.installInto(expect);
-        assertions.installInto(expect);
+        shallowAssertions.installInto(expect);
+        deepAssertions.installInto(expect);
     },
 
     clearAll() {

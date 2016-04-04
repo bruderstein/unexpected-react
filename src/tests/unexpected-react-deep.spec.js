@@ -594,6 +594,25 @@ describe('unexpected-react (deep rendering)', () => {
 
         });
         
+        it('calls click on a sub component with `to contain`', () => {
+            const component = TestUtils.renderIntoDocument(<ClickableComponent />);
+
+            expect(component, 'with event', 'click', 'on', <span className="item-click" />, 
+                'to contain',
+                <span className="item-click">Item clicked 2</span>
+            );
+        });
+        
+        it('calls click on a sub component with `queried for`', () => {
+            const component = TestUtils.renderIntoDocument(<ClickableComponent />);
+
+            expect(component, 'with event', 'click', 'on', <span className="item-click" />,
+                'queried for', <span className="item-click" />,
+                'to have rendered',
+                <span className="item-click">Item clicked 2</span>
+            );
+        });
+        
         it('fails with a helpful error when the event is not known', () => {
 
             const component = TestUtils.renderIntoDocument(<ClickableComponent />);

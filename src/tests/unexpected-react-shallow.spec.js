@@ -2100,7 +2100,25 @@ describe('unexpected-react-shallow', () => {
                     <span className="main-click">Main clicked 1000</span>
                 </div>);
         });
-        
+
+        it('calls events with event parameters with `to contain`', () => {
+            renderer.render(<ClickableComponent />);
+
+            expect(renderer, 'with event', 'aliensLanded', { increment: 1000 }, 'to contain',
+                <span className="main-click">Main clicked 1000</span>
+            );
+        });
+
+        it('calls events with event parameters with `queried for`', () => {
+            renderer.render(<ClickableComponent />);
+
+            expect(renderer, 'with event', 'aliensLanded', { increment: 1000 },
+                'queried for', <span className="main-click" />,
+                'to have rendered',
+                <span className="main-click">Main clicked 1000</span>
+            );
+        });
+
         it('errors with a helpful error message when the event target cannot be found', () => {
             
             renderer.render(<ClickableComponent />);
@@ -2130,6 +2148,36 @@ describe('unexpected-react-shallow', () => {
             '>\n' +
             '  Main clicked 0\n' +
             '</span>')
+        });
+
+        it('triggers events on raw components without a renderer', () => {
+
+            expect(<ClickableComponent />, 'with event', 'click', 'on', <span className="item-click" />,
+                'to have rendered',
+                <div>
+                    <span className="item-click">Item clicked 1</span>
+                </div>
+            );
+        });
+
+        it('allows concatenating the event with the `with event`', () => {
+
+            expect(<ClickableComponent />, 'with event click', 'on', <span className="item-click" />,
+                'to have rendered',
+                <div>
+                    <span className="item-click">Item clicked 1</span>
+                </div>
+            );
+        });
+
+        it('triggers events with arguments on raw components without a renderer', () => {
+
+            expect(<ClickableComponent />, 'with event', 'aliensLanded', { increment: 42 },
+                'to have rendered',
+                <div>
+                    <span className="main-click">Main clicked 42</span>
+                </div>
+            )
         });
 
     });
