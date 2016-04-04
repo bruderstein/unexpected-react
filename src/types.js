@@ -6,9 +6,9 @@ import ReactElementAdapter from 'unexpected-htmllike-jsx-adapter';
 
 function installInto(expect) {
 
-    const renderedReactElementAdapter = new RenderedReactElementAdapter({ convertToString: true });
+    const renderedReactElementAdapter = new RenderedReactElementAdapter({ convertToString: true, concatTextContent: true });
     const htmlLikeRenderedReactElement = UnexpectedHtmlLike(renderedReactElementAdapter);
-    const reactElementAdapter = new ReactElementAdapter({ convertToString: true });
+    const reactElementAdapter = new ReactElementAdapter({ convertToString: true, concatTextContent: true });
     const htmlLikeReactElement = UnexpectedHtmlLike(reactElementAdapter);
 
     expect.addType({

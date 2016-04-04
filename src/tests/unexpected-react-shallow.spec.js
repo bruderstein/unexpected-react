@@ -1906,6 +1906,9 @@ describe('unexpected-react-shallow', () => {
                     <span>some Text</span>
                 </MyDiv>
             );
+            expect(renderer, 'to contain',
+                    <span>{ expect.it('to eventually equal', 'some Text') }</span>
+                )
 
             return expect(expect(renderer, 'to contain',
                     <span>{ expect.it('to eventually equal', 'some Text') }</span>
@@ -2003,4 +2006,132 @@ describe('unexpected-react-shallow', () => {
                 </MyDiv>)
         });
     });
+     
+
+    describe('with events', () => {
+
+        let ClickableComponent;
+
+        beforeEach(() => {
+            ClickableComponent = React.createClass({
+
+                getInitialState() {
+                    return {
+                        clickCount: 0,
+                        itemClickCount: 0
+                    };
+                },
+
+                handleMainClick() {
+                    this.setState({
+                        clickCount: this.state.clickCount + 1
+                    });
+                },
+
+                handleItemClick() {
+                    this.setState({
+                        itemClickCount: this.state.itemClickCount + 1
+                    });
+                },
+
+                handleAliensLanded(args) {
+                    this.setState({
+                        clickCount: this.state.clickCount + ((args && args.increment) || 10)
+                    });
+                },
+
+                render() {
+                    return (
+                        <div onClick={this.handleMainClick} onAliensLanded={this.handleAliensLanded}>
+                            <span className="main-click">Main clicked {this.state.clickCount}</span>
+                            <span className="item-click"
+                                  onClick={this.handleItemClick}>Item clicked {this.state.itemClickCount}</span>
+                        </div>
+                    );
+                }
+
+            });
+        });
+
+        it('calls click on a component', () => {
+            renderer.render(<ClickableComponent />);
+
+            expect(renderer, 'with event', 'click', 'to have rendered', 
+                <div>
+                    <span className="main-click">Main clicked 1</span>
+                </div>);
+
+        });
+
+        it('calls click on a part of a component', () => {
+            renderer.render(<ClickableComponent />);
+
+            expect(renderer, 'with event', 'click', 'on', <span className="item-click" />, 'to have rendered',
+                <div>
+                    <span className="item-click">Item clicked 1</span>
+                </div>);
+
+        });
+
+        it('errors with a helpful error message when the event is not known', () => {
+            renderer.render(<ClickableComponent />);
+
+            expect(() => expect(renderer, 'with event', 'foo', 'to have rendered',
+                <div>
+                    <span className="item-click">Item clicked 1</span>
+                </div>), 'to throw', /No handler function prop 'onFoo' on the target element/);
+
+        });
+
+        it('calls non-standard events', () => {
+            renderer.render(<ClickableComponent />);
+
+            expect(renderer, 'with event', 'aliensLanded', 'to have rendered',
+                <div>
+                    <span className="main-click">Main clicked 10</span>
+                </div>);
+        });
+
+        it('calls events with event parameters', () => {
+            renderer.render(<ClickableComponent />);
+
+            expect(renderer, 'with event', 'aliensLanded', { increment: 1000 }, 'to have rendered',
+                <div>
+                    <span className="main-click">Main clicked 1000</span>
+                </div>);
+        });
+        
+        it('errors with a helpful error message when the event target cannot be found', () => {
+            
+            renderer.render(<ClickableComponent />);
+
+            expect(() => expect(renderer, 'with event', 'aliensLanded', { increment: 1000 }, 'on', <span className="not-exists" />,
+                'to have rendered',
+                <div>
+                    <span className="main-click">Main clicked 1000</span>
+                </div>), 'to throw',
+                'expected\n' +
+            '<div onClick={function bound handleMainClick() { /* native code */ }}\n' +
+            '   onAliensLanded={function bound handleAliensLanded() { /* native code */ }}>\n' +
+            '  <span className="main-click">Main clicked 0</span>\n' +
+            '  <span className="item-click"\n' +
+            '     onClick={function bound handleItemClick() { /* native code */ }}>\n' +
+            '    Item clicked 0\n' +
+            '  </span>\n' +
+            '</div>\n' +
+            'with event \'aliensLanded\', { increment: 1000 } on <span className="not-exists" /> to have rendered <div><span className="main-click">Main clicked 1000</span></div>\n' +
+            '\n' +
+            'Could not find the target for the event. The best match was\n' +
+            '\n' +
+            '<span className="main-click" // expected \'main-click\' to equal \'not-exists\'\n' +
+            '                             //\n' +
+            '                             // -main-click\n' +
+            '                             // +not-exists\n' +
+            '>\n' +
+            '  Main clicked 0\n' +
+            '</span>')
+        });
+
+    });
+
 });

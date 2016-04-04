@@ -2,7 +2,11 @@ import RenderHook from 'react-render-hook';
 import UnexpectedHtmlLike from 'unexpected-htmllike';
 import RenderedReactElementAdapter from 'unexpected-htmllike-reactrendered-adapter';
 import ReactElementAdapter from 'unexpected-htmllike-jsx-adapter';
+import React from 'react/addons';
 
+const TestUtils = React.addons.TestUtils;
+const PENDING_SHALLOW_EVENT_TYPE = Symbol('Pending shallow event');
+const PENDING_DEEP_EVENT_TYPE = Symbol('Pending deep event');
 
 function checkAttached(expect) {
     if (!RenderHook.isAttached) {
@@ -161,7 +165,7 @@ function installInto(expect) {
                 return expect.fail({
                     diff: function (output) {
                         return {
-                            diff: jsxHtmlLike.render(result, output, expect)
+                            diff: output.append(jsxHtmlLike.render(result, output.clone(), expect))
                         };
                     }
                 });
@@ -316,6 +320,175 @@ function installInto(expect) {
                 });
             }
         });
+    });
+    
+    expect.addAssertion('<ReactShallowRenderer> with event <string> <assertion>', function (expect, subject, eventName) {
+        expect.shift({
+            $$typeof: PENDING_SHALLOW_EVENT_TYPE,
+            renderer: subject,
+            eventName: eventName
+        });
+    });
+    
+    expect.addAssertion('<ReactShallowRenderer> with event <string> <object> <assertion>', function (expect, subject, eventName, args) {
+        expect.shift({
+            $$typeof: PENDING_SHALLOW_EVENT_TYPE,
+            renderer: subject,
+            eventName: eventName,
+            eventArgs: args
+        });
+    });
+    
+    expect.addAssertion('<RenderedReactElement> with event <string> <assertion>', function (expect, subject, eventName) {
+        expect.shift({
+            $$typeof: PENDING_DEEP_EVENT_TYPE,
+            component: subject,
+            eventName: eventName
+        });
+    });
+    
+    expect.addAssertion('<RenderedReactElement> with event <string> <object> <assertion>', function (expect, subject, eventName, args) {
+        expect.shift({
+            $$typeof: PENDING_DEEP_EVENT_TYPE,
+            component: subject,
+            eventName: eventName,
+            eventArgs: args
+        });
+    });
+    
+    expect.addType({
+        
+        name: 'ReactPendingShallowEvent',
+        
+        base: 'object',
+        
+        identify: function (value) {
+            return value && typeof value === 'object' && value.$$typeof === PENDING_SHALLOW_EVENT_TYPE;
+        }
+        
+    });
+    
+    expect.addType({
+
+        name: 'ReactPendingDeepEvent',
+
+        base: 'object',
+
+        identify: function (value) {
+            return value && typeof value === 'object' && value.$$typeof === PENDING_DEEP_EVENT_TYPE;
+        }
+
+    });
+    
+    expect.addAssertion('<ReactPendingShallowEvent> to have rendered <ReactElement>', function (expect, subject, expected) {
+        
+        let target = subject.target;
+        if (!target) {
+            target = subject.renderer.getRenderOutput();
+        }
+        const handlerPropName = 'on' + subject.eventName[0].toUpperCase() + subject.eventName.substr(1)
+        const handler = target.props[handlerPropName];
+        if (typeof handler !== 'function') {
+            return expect.fail({
+                diff: function (output) {
+                    return output.error('No handler function prop ').text("'" + handlerPropName + "'").error(' on the target element');
+                    
+                }
+            })
+        }
+        handler(subject.eventArgs);
+        return expect(subject.renderer, 'to have rendered', expected); //subject.component, 'to have rendered', expected);
+    });
+    
+    expect.addAssertion('<ReactPendingShallowEvent> on [exactly] [with all children] <ReactElement> <assertion>', function (expect, subject, target) {
+        const adapter = new ReactElementAdapter({ convertToString: true, concatTextContent: true });
+        const jsxHtmlLike = new UnexpectedHtmlLike(adapter);
+        const exactly = this.flags.exactly;
+        const withAllChildren = this.flags['with all children'];
+        const containsResult = jsxHtmlLike.contains(adapter, subject.renderer.getRenderOutput(), target, expect, {
+            diffWrappers: exactly,
+            diffExtraChildren: exactly || withAllChildren,
+            diffExtraAttributes: exactly
+        });
+        return jsxHtmlLike.withResult(containsResult, result => {
+            if (!result.found) {
+                return expect.fail({
+                    diff: function (output) {
+                        output.error('Could not find the target for the event. ');
+                        if (result.bestMatch) {
+                            output.error('The best match was').nl().nl().append(jsxHtmlLike.render(result.bestMatch, output.clone(), expect))
+                        }
+                        return output;
+                    }
+                })
+            }
+
+            const newSubject = Object.assign({}, subject, {
+                target: result.bestMatchItem
+            });
+            expect.shift(newSubject);
+        });
+    });
+
+    expect.addAssertion('<ReactPendingDeepEvent> on [exactly] [with all children] <ReactElement> <assertion>', function (expect, subject, target) {
+        const renderedAdapter = new RenderedReactElementAdapter({ convertToString: true });
+        const jsxAdapter = new ReactElementAdapter({ convertToString: true });
+        const reactHtmlLike = new UnexpectedHtmlLike(renderedAdapter);
+
+        const componentData = RenderHook.findComponent(subject.component);
+        const exactly = this.flags.exactly;
+        const withAllChildren = this.flags['with all children'];
+        const containsResult = reactHtmlLike.contains(jsxAdapter, componentData, target, expect, {
+            diffWrappers: exactly,
+            diffExtraChildren: exactly || withAllChildren,
+            diffExtraAttributes: exactly
+        });
+        
+        return reactHtmlLike.withResult(containsResult, result => {
+            
+            if (!result.found) {
+                return expect.fail({
+
+                    diff: function (output) {
+                        if (result.bestMatch) {
+                            return {
+                                diff: output
+                                    .error('Could not find the target. The best match was ')
+                                    .append(reactHtmlLike.render(result.bestMatch, output.clone(), expect))
+                            };
+                        }
+
+                        return {
+                            diff: output.error('Could not find the target.')
+                        };
+                    }
+                })
+            }
+
+            const newSubject = Object.assign({}, subject, {
+                target: result.bestMatchItem
+            });
+            expect.shift(newSubject);
+        });
+    });
+
+    expect.addAssertion(['<ReactPendingDeepEvent> to have [exactly] rendered <ReactElement>',
+        '<ReactPendingDeepEvent> to have rendered [with all children] [with all wrappers]'], function (expect, subject, expected) {
+        let target = React.findDOMNode(subject.component);
+        if (subject.target) {
+            target = React.findDOMNode(subject.target.element.getPublicInstance());
+        }
+
+        if (typeof TestUtils.Simulate[subject.eventName] !== 'function') {
+            
+            return expect.fail({
+                diff: function (output) {
+                    return output.error('Event ').text("'" + subject.eventName + "'").error(' is not supported by TestUtils.Simulate');
+                }
+            });
+        }
+        TestUtils.Simulate[subject.eventName](target, subject.eventArgs);
+        return expect(subject.component, 'to have [exactly] rendered [with all children] [with all wrappers]', expected); //subject.component, 'to have rendered', expected);
     });
 
     expect.addAssertion('<ReactElement> to equal <ReactElement>', function (expect, subject, value) {

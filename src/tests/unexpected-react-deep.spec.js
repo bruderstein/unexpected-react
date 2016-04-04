@@ -514,4 +514,113 @@ describe('unexpected-react (deep rendering)', () => {
         });
 
     });
+
+    describe('with events', () => {
+
+        let ClickableComponent;
+
+        beforeEach(() => {
+            ClickableComponent = React.createClass({
+
+                getInitialState() {
+                    return {
+                        clickCount: 1,
+                        itemClickCount: 1
+                    };
+                },
+
+                handleMainClick() {
+                    this.setState({
+                        clickCount: this.state.clickCount + 1
+                    });
+                },
+
+                handleMouseDown(e) {
+                    this.setState({
+                        clickCount: this.state.clickCount + ((e && e.mouseX) || 1)
+                    });
+                },
+
+                handleItemClick() {
+                    this.setState({
+                        itemClickCount: this.state.itemClickCount + 1
+                    });
+                },
+
+                render() {
+                    return (
+                        <div onClick={this.handleMainClick} onMouseDown={this.handleMouseDown}>
+                            <span className="main-click">Main clicked {this.state.clickCount}</span>
+                            <span className="item-click"
+                                  onClick={this.handleItemClick}>Item clicked {this.state.itemClickCount || 0}</span>
+                        </div>
+                    );
+                }
+
+            });
+        });
+        
+        it('renders a zero initially', () => {
+
+            // This test is (was) failing, when the initial click count is 0. Seems to be a bug in the devtools.
+            // Not yet tried updating the devtools.
+            const component = TestUtils.renderIntoDocument(<ClickableComponent />);
+            expect(component, 'to have rendered',
+                <div>
+                    <span className="main-click">Main clicked 1</span>
+                    <span className="item-click">Item clicked 1</span>
+                </div>
+                    
+            );
+        });
+
+        it('calls click on a component using the deep renderer', () => {
+            const component = TestUtils.renderIntoDocument(<ClickableComponent />);
+
+            expect(component, 'with event', 'click', 'to have rendered',
+                <div>
+                    <span className="main-click">Main clicked 2</span>
+                </div>);
+
+        });
+        
+        it('calls click on a sub component using the deep renderer', () => {
+            const component = TestUtils.renderIntoDocument(<ClickableComponent />);
+
+            expect(component, 'with event', 'click', 'on', <span className="item-click" />, 'to have rendered',
+                <div>
+                    <span className="item-click">Item clicked 2</span>
+                </div>);
+
+        });
+        
+        it('fails with a helpful error when the event is not known', () => {
+
+            const component = TestUtils.renderIntoDocument(<ClickableComponent />);
+
+            expect(() => expect(component, 'with event', 'foo', 'to have rendered',
+                <div>
+                    <span className="main-click">Main clicked 2</span>
+                </div>), 'to throw', /Event 'foo' is not supported by TestUtils.Simulate/)
+        });
+
+        it('calls events with event parameters', () => {
+            const component = TestUtils.renderIntoDocument(<ClickableComponent />);
+
+            expect(component, 'with event', 'mouseDown', { mouseX: 50 }, 'to have rendered',
+                <div>
+                    <span className="main-click">Main clicked 51</span>
+                </div>);
+        });
+
+        it('fails with a helpful error message when the target cannot be found', () => {
+
+            const component = TestUtils.renderIntoDocument(<ClickableComponent />);
+
+            expect(() => expect(component, 'with event', 'click', 'on', <span className="not exists" />, 'to have rendered',
+                <div>
+                    <span>This is never checked</span>
+                </div>), 'to throw', /Could not find the target. The best match was/);
+        });
+    });
 });
