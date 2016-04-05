@@ -2075,8 +2075,10 @@ describe('unexpected-react-shallow', () => {
 
         it('errors with a helpful error message when the event is not known', () => {
             renderer.render(<ClickableComponent />);
+            const textExpect = expect.clone();
+            textExpect.outputFormat('text');
 
-            expect(() => expect(renderer, 'with event', 'foo', 'to have rendered',
+            expect(() => textExpect(renderer, 'with event', 'foo', 'to have rendered',
                 <div>
                     <span className="item-click">Item clicked 1</span>
                 </div>), 'to throw', /No handler function prop 'onFoo' on the target element/);
@@ -2170,6 +2172,30 @@ describe('unexpected-react-shallow', () => {
             );
         });
 
+        it('allows triggering multiple events', () => {
+
+            expect(<ClickableComponent />, 'with event click', 'on', <span className="item-click" />,
+                'with event', 'click', 'on', <span className="item-click" />,
+                'with event', 'click', 'on', <span className="item-click" />,
+                'to have rendered',
+                <div>
+                    <span className="item-click">Item clicked 3</span>
+                </div>
+            );
+        });
+
+        it('allows triggering multiple events with `and` and event args', () => {
+
+            expect(<ClickableComponent />, 'with event aliensLanded', { increment: 2 },
+                'and with event aliensLanded', { increment: 4 },
+                'and with event aliensLanded', { increment: 8 },
+                'to have rendered',
+                <div>
+                    <span className="main-click">Main clicked 14</span>
+                </div>
+            );
+        });
+
         it('triggers events with arguments on raw components without a renderer', () => {
 
             expect(<ClickableComponent />, 'with event', 'aliensLanded', { increment: 42 },
@@ -2177,7 +2203,7 @@ describe('unexpected-react-shallow', () => {
                 <div>
                     <span className="main-click">Main clicked 42</span>
                 </div>
-            )
+            );
         });
 
     });

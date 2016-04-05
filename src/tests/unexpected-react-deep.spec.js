@@ -593,7 +593,29 @@ describe('unexpected-react (deep rendering)', () => {
                 </div>);
 
         });
+
+        it('triggers multiple events', () => {
+            const component = TestUtils.renderIntoDocument(<ClickableComponent />);
+
+            expect(component, 'with event', 'click', 'on', <span className="item-click" />,
+                'with event', 'click', 'on', <span className="item-click" />,
+                'to have rendered',
+                <div>
+                    <span className="item-click">Item clicked 3</span>
+                </div>);
+        });
         
+        it('triggers multiple events with eventArgs', () => {
+            const component = TestUtils.renderIntoDocument(<ClickableComponent />);
+
+            expect(component, 'with event', 'mouseDown', { mouseX: 2 }, 
+                'with event', 'mouseDown', { mouseX: 4 }, 
+                'to have rendered',
+                <div>
+                    <span className="main-click">Main clicked 7</span>
+                </div>);
+        });
+
         it('calls click on a sub component with `to contain`', () => {
             const component = TestUtils.renderIntoDocument(<ClickableComponent />);
 

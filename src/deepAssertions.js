@@ -277,6 +277,27 @@ function installInto(expect) {
 
     }
 
+    expect.addAssertion('<ReactPendingDeepEvent> [and] with event <string> <assertion>', function (expect, subject, eventName) {
+
+        triggerEvent(subject.component, subject.target, subject.eventName, subject.eventArgs);
+        expect.shift({
+            $$typeof: PENDING_DEEP_EVENT_TYPE,
+            component: subject.component,
+            eventName: eventName
+        });
+    });
+    
+    expect.addAssertion('<ReactPendingDeepEvent> [and] with event <string> <object> <assertion>', function (expect, subject, eventName, eventArgs) {
+
+        triggerEvent(subject.component, subject.target, subject.eventName, subject.eventArgs);
+        expect.shift({
+            $$typeof: PENDING_DEEP_EVENT_TYPE,
+            component: subject.component,
+            eventName: eventName,
+            eventArgs: eventArgs
+        });
+    });
+
     expect.addAssertion(['<ReactPendingDeepEvent> to have [exactly] rendered <ReactElement>',
         '<ReactPendingDeepEvent> to have rendered [with all children] [with all wrappers]'], function (expect, subject, expected) {
 

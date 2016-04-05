@@ -280,6 +280,26 @@ function installInto(expect) {
         return expect(subject.renderer, 'to have [exactly] rendered [with all children] [with all wrappers]', expected);
     });
     
+    expect.addAssertion('<ReactPendingShallowEvent> [and] with event <string> <assertion>', function (expect, subject, eventName) {
+
+        triggerEvent(subject.renderer, subject.target, subject.eventName, subject.eventArgs);
+        return expect.shift({
+            $$typeof: PENDING_SHALLOW_EVENT_TYPE,
+            renderer: subject.renderer,
+            eventName: eventName
+        });
+    });
+
+    expect.addAssertion('<ReactPendingShallowEvent> [and] with event <string> <object> <assertion>', function (expect, subject, eventName, eventArgs) {
+
+        triggerEvent(subject.renderer, subject.target, subject.eventName, subject.eventArgs);
+        return expect.shift({
+            $$typeof: PENDING_SHALLOW_EVENT_TYPE,
+            renderer: subject.renderer,
+            eventName: eventName,
+            eventArgs: eventArgs
+        });
+    });
     
     expect.addAssertion(['<ReactPendingShallowEvent> to contain [exactly] <ReactElement>', 
         '<ReactPendingShallowEvent> to contain [with all children] [with all wrappers] <ReactElement>'], function (expect, subject, expected) {
