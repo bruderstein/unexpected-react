@@ -142,11 +142,11 @@ describe('unexpected-react-shallow', () => {
                 'expected <div className={null} /> to equal 1');
         });
 
-        it('outputs a tag element with an undefined prop', () => {
+        it('outputs a tag element and skips an undefined prop', () => {
 
             renderer.render(<MyDiv className={undefined} />);
             expect(() => expect(renderer, 'to equal', 1), 'to throw',
-                'expected <div className={undefined} /> to equal 1');
+                'expected <div /> to equal 1');
         });
 
         it('outputs a tag element with an object prop', () => {
