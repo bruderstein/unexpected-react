@@ -7,6 +7,8 @@
     "prepublish": "npm run build && npm test",
     "test-main": "mocha --compilers js:babel/register src/tests/*.spec.js",
     "test-error": "mocha --compilers js:babel/register src/error-tests/*.spec.js",
+    "lint": "eslint src",
+    "generate-site": "generate-site --require ./bootstrap-unexpected-markdown.js",
     "test": "npm run test-main && npm run test-error"
   },
   "main": "lib/unexpected-react.js",
@@ -27,6 +29,7 @@
   },
   "devDependencies": {
     "babel": "5.x.x",
+    "babel-eslint": "^6.0.0",
     "eslint": "^2.2.0",
     "eslint-plugin-react": "^3.8.0",
     "immutable": "^3.7.6",
@@ -35,13 +38,15 @@
     "mocha": "^2.3.3",
     "object-assign": "^4.0.1",
     "react": "^0.14.7",
-    "unexpected": "^10.10.0"
+    "unexpected": "^10.10.12",
+    "unexpected-documentation-site-generator": "^4.0.0",
+    "unexpected-markdown": "^1.4.1"
   },
   "dependencies": {
     "magicpen-prism": "^2.2.1",
     "react-render-hook": "^0.1.1",
-    "unexpected-htmllike": "^1.1.0",
+    "unexpected-htmllike": "^2.0.0",
     "unexpected-htmllike-jsx-adapter": "^0.5.1",
-    "unexpected-htmllike-reactrendered-adapter": "^0.2.1"
+    "unexpected-htmllike-reactrendered-adapter": "^1.0.0"
   }
 }

@@ -1,5 +1,5 @@
 
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 class SelectOption extends Component {
 
@@ -10,5 +10,9 @@ class SelectOption extends Component {
             </li>);
     }
 }
+
+SelectOption.propTypes = {
+    label: PropTypes.string
+};
 
 module.exports = SelectOption;

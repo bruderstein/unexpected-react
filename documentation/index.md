@@ -1,3 +1,10 @@
+---
+template: default.ejs
+theme: dark
+title: unexpected-react
+repository: https://github.com/bruderstein/unexpected-react
+---
+
 # unexpected-react
 
 Plugin for [unexpected](https://unexpected.js.org) to allow for testing the full virtual DOM, and 
@@ -203,197 +210,6 @@ component, and leaves out the `<span>` children of the `<Text>` components. The 
 the `<App>` wrapper component, and the `<Text>` wrapper component.
 
 
-# Assertions
-
-All the assertions can be used with an instance of the shallow renderer, a shallow rendered component 
-(i.e. the return value from `renderer.getRenderOutput()`), or a normally rendered component (i.e. the return
-value from `ReactDOM.render()` (`React.render()` in React <= 0.13.x), or `TestUtils.renderIntoDocument()`). 
-
-You can make the following assertions:
-## `to have [exactly] rendered [with all children] [with all wrappers]`
-
-```js
-// Extra props and children from the render are ignored
-expect(component, 'to have rendered', <div className="parent" />);
-
-// The span "two" is missing here, but it is ignored.
-expect(component, 'to have rendered',
-   <div id="main">
-      <span>one</span>
-      <span>three</span>
-  </div>
-);
-
-// The following assertion will fail, as 'four' does not exist
-expect(renderer, 'to have rendered',
-   <div id="main">
-      <span>one</span>
-      <span>four</span>
-  </div>
-);
-```
-
-If you want to check for an exact render, use `'to have exactly rendered'`.
-
-Alternatively, if you don't care about extra props, but want to check that there are no extra child nodes, use `'to have rendered with all children'`
-Note that `exactly` implies `with all children`, so you using both options is not necessary.
-
-Normally wrappers (elements that simply wrap other components) are ignored. This can be useful if you have higher order
-components wrapping your components, you can simply ignore them in your tests (they will be shown greyed out 
-if there is a "real" error).  If you want to test that there are no extra wrappers, simply add 
-`with all wrappers` to the assertion.
-
-
-```js
-
-// The span "two" is missing here, as is `className="parent"`
-// The missing span will cause an assertion error, but the extra prop will be ignored
-// due to `to have rendered with all children` being used
-
-expect(renderer, 'to have rendered with all children',
-   <div id="main">
-      <span>one</span>
-      <span>three</span>
-  </div>
-);
-```
-
-```js
-
-// The span "two" is missing here, as is `className="parent"`
-// This will cause an assertion error,
-// due to `to have exactly rendered` being used
-
-expect(renderer, 'to have exactly rendered',
-   <div id="main">
-      <span>one</span>
-      <span>three</span>
-  </div>
-);
-```
-
-## `[not] to contain [exactly] [with all children] [with all wrappers]`
-
-It's possible to check for a part of the subtree, without
-testing the entire returned tree.  This allows you to test specific elements, without
-writing brittle tests that break when the structure changes.
-
-```js
-// This will pass, as `<span className="middle">two</span>` can be found in the renderers output
-expect(renderer, 'to contain', <span>two</span>);
-```
-
-Notice that the extra `className="middle"` in the `<span className="middle">two</span>` is ignored,
-in a similar way to the `to have rendered` assertion.
-
-You can override this behaviour by using `'to contain exactly'`, and `'to contain with all children'`
-
-
-```js
-// This will fail, as `<span>two</span>` cannot be found in the renderers output, due to
-// the missing `className="middle"` prop
-expect(renderer, 'to contain exactly', <span>two</span>);
-
-```
-
-The same thing applies to children for `'to contain'` as for `'to have rendered'`.
-
-## `queried for`
-
-This enables finding a particular component or element, to then perform further assertions on.
-
-e.g.
-```js
-
-var component = TestUtils.renderIntoDocument(<TodoList items={items} />);
-expect(component, 'queried for', <TodoItem item={{ id: 3 }} />, 'to have rendered', <span>Do something</span>);
-```
-Here we're searching for a `TodoItem` component whose `item` prop satisfies `{ id: 3 }`. Because props are 
-checked with `to satisfy`, extra data in this object is ignored.
-
-You can use `to have rendered` or `to contain` with all the options as usual following a `queried for`.
-
-## `with event` .... [`on`]
-
-`with event` can trigger events in both the shallow and full renderer.  For the normal full renderer,
-`TestUtils.Simulate` is used to simulate the event. For the shallow renderer, it is expected that 
-there is a prop with the name `on[EventName]`, where the first letter of the event is capitalised.
-
-e.g. with a button that counts it's own clicks
-
-```js
-
-var renderer = TestUtils.createRenderer()
-renderer.render(<MyButton />);
-
-expect(renderer, 'with event', 'click', 'to have rendered', <button>Button was clicked 1 times</button>);
-```
-
-This works with the component directly, as a shallow renderer is automatically created.
-Also note that due to unexpected's clever string handling, you can concatenated the `with event` and the 
-event name.
-
-
-```js
-expect(<MyButton />, 'with event click', 'to have rendered', <button>Button was clicked 1 times</button>);
-```
-
-If you want to trigger an event on a specific component, (i.e. not the top level component), use `on` 
-after the event.
-
-```js
-expect(<TodoList items={items} />, 'with event click', 'on', <TodoItem item={{ id: 3}} />, 
-    'to contain', <span className="TodoItem--completed">do something</span>);
-```
-
-To pass arguments to the event, simply include the event object after the event name
-
-```js
-expect(<TodoList items={items} />, 'with event mouseDown', { mouseX: 150, mouseY: 50 },
-    'on', <TodoItem item={{ id: 3}} />,
-    'to contain', <span className="TodoItem--completed">do something</span>);
-```
-
-This will call the function passed in the `onMouseDown` prop of the `<TodoItem>`.
-
-# Strings
-
-String content is split up by React when you have embedded variables.
-
-For example:
-
-```js
-{
-    render: function() {
-        return (
-           <div>
-              Click on {this.props.clickCount} times
-           </div>
-        );
-    }
-}
-```
-
-This actually produces 3 "child" elements of the div, `Click on `, the `clickCount` and the ` times`
-To make this simpler, `unexpected-react` concatenates these values so you can simply test the
-previous example as follows:
-
-```js
-expect(renderer, 'to have rendered',
-    <div>
-       Clicked on 3 times
-    </div>);
-```
-
-If you use the `exactly` variants of the assertions, you will need to split up your assertion in the same way
-
-e.g.
-```js
-expect(renderer, 'to have exactly rendered',
-    <div>
-       Clicked on {3} times
-    </div>);
-```
 
 ## Cleaning up
 
@@ -405,10 +221,10 @@ if you use a test runner that keeps the process alive (such as [wallaby.js](http
 
 ## Roadmap / Plans
 
-* [DONE] There are some performance optimisations to do. The performance suffers a bit due to the possible asynchronous nature of 
-the inline assertions. Most of the time these will be synchronous, and hence we don't need to pay the price.
-* (started) `queried for` implementation
-* (started) Directly calling events on both the shallow renderer, and the full virtual DOM renderer
+* [DONE] ~~There are some performance optimisations to do. The performance suffers a bit due to the possible asynchronous nature of the inline assertions. Most of the time these will be synchronous, and hence we don't need to pay the price.~~
+* [DONE] ~~`queried for` implementation~~
+* [DONE] ~~Directly calling events on both the shallow renderer, and the full virtual DOM renderer~~
+* Cleanup output - where there are no differences to highlight, we could skip the branch
 
 # Contributing
 

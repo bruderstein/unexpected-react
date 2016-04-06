@@ -4,6 +4,8 @@ var UnexpectedReact = require('../unexpected-react');
 var React = require('react/addons');
 var Immutable = require('immutable');
 
+var PropTypes = React.PropTypes;
+
 var expect = Unexpected.clone()
     .installPlugin(UnexpectedReact);
 
@@ -11,6 +13,7 @@ var ES5Component = React.createClass({
     displayName: 'ES5Component',
     render() { return null;}
 });
+
 
 function createNoNameComponent() {
     return React.createClass({
@@ -31,6 +34,10 @@ class ClassComponent extends React.Component {
     }
 }
 
+ClassComponent.propTypes = {
+    content: PropTypes.any
+};
+
 class MyDiv extends React.Component {
     render() {
         return React.createElement('div', this.props);
@@ -43,6 +50,8 @@ const FunctionComp = function (props) {
 
 const versionParts = React.version.split('.');
 const isReact014 = (parseFloat(versionParts[0] + '.' + versionParts[1]) >= 0.14);
+
+//expect.outputFormat('text');
 
 expect.addAssertion('<any> to inspect as <string>', function (expect, subject, value) {
     expect.errorMode = 'bubble';
@@ -400,7 +409,7 @@ describe('unexpected-react-shallow', () => {
                 '</div>\n' +
                 '\n' +
                 '<div>\n' +
-                '  <ClassComponent test={true} // should be test={false}\n' +
+                '  <ClassComponent test={true} // expected true to equal false\n' +
                 '     className="foo">\n' +
                 '    <span className="bar">foo</span>\n' +
                 '  </ClassComponent>\n' +
@@ -716,7 +725,9 @@ describe('unexpected-react-shallow', () => {
                 '\n' +
                 '<div>\n' +
                 '  <ClassComponent\n' +
-                "     test={{ some: 'prop', arr: [ 1, 2, 3 ] }} // should be test={{ some: 'prop', arr: [ 1, 2, 4 ] }}\n" +
+                "     test={{ some: 'prop', arr: [ 1, 2, 3 ] }} // expected { some: 'prop', arr: [ 1, 2, 3 ] }\n" +
+                "                                               // to satisfy { some: 'prop', arr: [ 1, 2, 4 ] }\n" +
+                '                                               //\n' +
                 '                                               // {\n' +
                 "                                               //   some: 'prop',\n" +
                 '                                               //   arr: [\n' +
@@ -952,7 +963,8 @@ describe('unexpected-react-shallow', () => {
                 '<div>\n' +
                 '  <ClassComponent>\n' +
                 '    some text \n' +
-                '    <ES5Component foo="bar" // should be foo="blah"\n' +
+                '    <ES5Component foo="bar" // expected \'bar\' to equal \'blah\'\n' +
+                '                            //\n' +
                 '                            // -bar\n' +
                 '                            // +blah\n' +
                 '    />\n' +
@@ -1378,7 +1390,6 @@ describe('unexpected-react-shallow', () => {
             // See the 'does not find a partial string' test above
             renderer.render(<MyDiv><span>button clicked {5} times</span></MyDiv>);
 
-            // TODO: I don't understand how this can throw - 'to contain' returns a promise.
             return expect(() => expect(renderer, 'to contain', 'button clicked '), 'to throw',
                 'expected <div><span>button clicked 5 times</span></div>\n' +
                 "to contain 'button clicked '\n" +
@@ -1435,7 +1446,8 @@ describe('unexpected-react-shallow', () => {
                 'to contain <ClassComponent className="notexists" />\n' +
                 '\n' +
                 'the best match was\n' +
-                '<ClassComponent className="bar" // should be className="notexists"\n' +
+                '<ClassComponent className="bar" // expected \'bar\' to equal \'notexists\'\n' +
+                '                                //\n' +
                 '                                // -bar\n' +
                 '                                // +notexists\n' +
                 '/>');
@@ -1679,7 +1691,8 @@ describe('unexpected-react-shallow', () => {
                 'to contain exactly <ClassComponent className="candidate" />\n' +
                 '\n' +
                 'the best match was\n' +
-                '<ClassComponent className="bar" // should be className="candidate"\n' +
+                '<ClassComponent className="bar" // expected \'bar\' to equal \'candidate\'\n' +
+                '                                //\n' +
                 '                                // -bar\n' +
                 '                                // +candidate\n' +
                 '/>');
@@ -1900,8 +1913,299 @@ describe('unexpected-react-shallow', () => {
             return expect(expect(renderer, 'to contain',
                     <span>{ expect.it('to eventually equal', 'some Text') }</span>
                 ), 'to be fulfilled');
+        });
+    });
 
+    describe('queried for', () => {
+
+        it('finds an element in a tree', () => {
+
+            renderer.render(
+                <MyDiv className="foo">
+                    <MyDiv className="bar">
+                        <span>bar</span>
+                    </MyDiv>
+                    <MyDiv className="baz">
+                        <span>baz</span>
+                    </MyDiv>
+                </MyDiv>
+            );
+
+            expect(renderer.getRenderOutput(), 'queried for', <MyDiv className="bar" />, 'to have rendered',
+                <MyDiv className="bar">
+                    <span>bar</span>
+                </MyDiv>);
+        });
+
+        it('using the renderer finds an element in a tree', () => {
+
+            renderer.render(
+                <MyDiv className="foo">
+                    <MyDiv className="bar">
+                        <span>bar</span>
+                    </MyDiv>
+                    <MyDiv className="baz">
+                        <span>baz</span>
+                    </MyDiv>
+                </MyDiv>
+            );
+
+            expect(renderer, 'queried for', <MyDiv className="bar" />, 'to have rendered',
+                <MyDiv className="bar">
+                    <span>bar</span>
+                </MyDiv>);
+        });
+        
+        it('errors when no component is found', () => {
+
+            renderer.render(
+                <MyDiv className="foo">
+                    <MyDiv className="bar">
+                        <span>bar</span>
+                    </MyDiv>
+                    <MyDiv className="baz">
+                        <span>baz</span>
+                    </MyDiv>
+                </MyDiv>
+            );
+
+            expect(() => expect(renderer, 'queried for', <MyDiv className="not exists" />, 'to have rendered',
+                <MyDiv className="bar">
+                    <span>bar</span>
+                </MyDiv>), 'to throw',
+                'expected\n' +
+                '<div className="foo">\n' +
+                '  <MyDiv className="bar"><span>bar</span></MyDiv>\n' +
+                '  <MyDiv className="baz"><span>baz</span></MyDiv>\n' +
+                '</div>\n' +
+                'queried for <MyDiv className="not exists" /> to have rendered <MyDiv className="bar"><span>bar</span></MyDiv>\n' +
+                '\n' +
+                '`queried for` found no match.  The best match was\n' +
+                '<MyDiv className="bar" // missing classes \'not exists\'\n' +
+                '>\n' +
+                '  <span>bar</span>\n' +
+                '</MyDiv>');
+        });
+        
+        it('locates with an async expect.it', () => {
+
+            renderer.render(
+                <MyDiv className="foo">
+                    <MyDiv className="bar">
+                        <span>bar</span>
+                    </MyDiv>
+                    <MyDiv className="baz">
+                        <span>baz</span>
+                    </MyDiv>
+                </MyDiv>
+            );
+
+            return expect(renderer, 'queried for', <MyDiv className={ expect.it('to eventually equal', 'bar')} />, 'to have rendered',
+                <MyDiv className="bar">
+                    <span>bar</span>
+                </MyDiv>)
+        });
+    });
+     
+
+    describe('with events', () => {
+
+        let ClickableComponent;
+
+        beforeEach(() => {
+            ClickableComponent = React.createClass({
+
+                getInitialState() {
+                    return {
+                        clickCount: 0,
+                        itemClickCount: 0
+                    };
+                },
+
+                handleMainClick() {
+                    this.setState({
+                        clickCount: this.state.clickCount + 1
+                    });
+                },
+
+                handleItemClick() {
+                    this.setState({
+                        itemClickCount: this.state.itemClickCount + 1
+                    });
+                },
+
+                handleAliensLanded(args) {
+                    this.setState({
+                        clickCount: this.state.clickCount + ((args && args.increment) || 10)
+                    });
+                },
+
+                render() {
+                    return (
+                        <div onClick={this.handleMainClick} onAliensLanded={this.handleAliensLanded}>
+                            <span className="main-click">Main clicked {this.state.clickCount}</span>
+                            <span className="item-click"
+                                  onClick={this.handleItemClick}>Item clicked {this.state.itemClickCount}</span>
+                        </div>
+                    );
+                }
+
+            });
+        });
+
+        it('calls click on a component', () => {
+            renderer.render(<ClickableComponent />);
+
+            expect(renderer, 'with event', 'click', 'to have rendered', 
+                <div>
+                    <span className="main-click">Main clicked 1</span>
+                </div>);
 
         });
-    })
+
+        it('calls click on a part of a component', () => {
+            renderer.render(<ClickableComponent />);
+
+            expect(renderer, 'with event', 'click', 'on', <span className="item-click" />, 'to have rendered',
+                <div>
+                    <span className="item-click">Item clicked 1</span>
+                </div>);
+
+        });
+
+        it('errors with a helpful error message when the event is not known', () => {
+            renderer.render(<ClickableComponent />);
+            const textExpect = expect.clone();
+            textExpect.outputFormat('text');
+
+            expect(() => textExpect(renderer, 'with event', 'foo', 'to have rendered',
+                <div>
+                    <span className="item-click">Item clicked 1</span>
+                </div>), 'to throw', /No handler function prop 'onFoo' on the target element/);
+
+        });
+
+        it('calls non-standard events', () => {
+            renderer.render(<ClickableComponent />);
+
+            expect(renderer, 'with event', 'aliensLanded', 'to have rendered',
+                <div>
+                    <span className="main-click">Main clicked 10</span>
+                </div>);
+        });
+
+        it('calls events with event parameters', () => {
+            renderer.render(<ClickableComponent />);
+
+            expect(renderer, 'with event', 'aliensLanded', { increment: 1000 }, 'to have rendered',
+                <div>
+                    <span className="main-click">Main clicked 1000</span>
+                </div>);
+        });
+
+        it('calls events with event parameters with `to contain`', () => {
+            renderer.render(<ClickableComponent />);
+
+            expect(renderer, 'with event', 'aliensLanded', { increment: 1000 }, 'to contain',
+                <span className="main-click">Main clicked 1000</span>
+            );
+        });
+
+        it('calls events with event parameters with `queried for`', () => {
+            renderer.render(<ClickableComponent />);
+
+            expect(renderer, 'with event', 'aliensLanded', { increment: 1000 },
+                'queried for', <span className="main-click" />,
+                'to have rendered',
+                <span className="main-click">Main clicked 1000</span>
+            );
+        });
+
+        it('errors with a helpful error message when the event target cannot be found', () => {
+            
+            renderer.render(<ClickableComponent />);
+
+            expect(() => expect(renderer, 'with event', 'aliensLanded', { increment: 1000 }, 'on', <span className="not-exists" />,
+                'to have rendered',
+                <div>
+                    <span className="main-click">Main clicked 1000</span>
+                </div>), 'to throw',
+                'expected\n' +
+            '<div onClick={function bound handleMainClick() { /* native code */ }}\n' +
+            '   onAliensLanded={function bound handleAliensLanded() { /* native code */ }}>\n' +
+            '  <span className="main-click">Main clicked 0</span>\n' +
+            '  <span className="item-click"\n' +
+            '     onClick={function bound handleItemClick() { /* native code */ }}>\n' +
+            '    Item clicked 0\n' +
+            '  </span>\n' +
+            '</div>\n' +
+            'with event \'aliensLanded\', { increment: 1000 } on <span className="not-exists" /> to have rendered <div><span className="main-click">Main clicked 1000</span></div>\n' +
+            '\n' +
+            'Could not find the target for the event. The best match was\n' +
+            '\n' +
+            '<span className="main-click" // expected \'main-click\' to equal \'not-exists\'\n' +
+            '                             //\n' +
+            '                             // -main-click\n' +
+            '                             // +not-exists\n' +
+            '>\n' +
+            '  Main clicked 0\n' +
+            '</span>')
+        });
+
+        it('triggers events on raw components without a renderer', () => {
+
+            expect(<ClickableComponent />, 'with event', 'click', 'on', <span className="item-click" />,
+                'to have rendered',
+                <div>
+                    <span className="item-click">Item clicked 1</span>
+                </div>
+            );
+        });
+
+        it('allows concatenating the event with the `with event`', () => {
+
+            expect(<ClickableComponent />, 'with event click', 'on', <span className="item-click" />,
+                'to have rendered',
+                <div>
+                    <span className="item-click">Item clicked 1</span>
+                </div>
+            );
+        });
+
+        it('allows triggering multiple events', () => {
+
+            expect(<ClickableComponent />, 'with event click', 'on', <span className="item-click" />,
+                'with event', 'click', 'on', <span className="item-click" />,
+                'with event', 'click', 'on', <span className="item-click" />,
+                'to have rendered',
+                <div>
+                    <span className="item-click">Item clicked 3</span>
+                </div>
+            );
+        });
+
+        it('allows triggering multiple events with `and` and event args', () => {
+
+            expect(<ClickableComponent />, 'with event aliensLanded', { increment: 2 },
+                'and with event aliensLanded', { increment: 4 },
+                'and with event aliensLanded', { increment: 8 },
+                'to have rendered',
+                <div>
+                    <span className="main-click">Main clicked 14</span>
+                </div>
+            );
+        });
+
+        it('triggers events with arguments on raw components without a renderer', () => {
+
+            expect(<ClickableComponent />, 'with event', 'aliensLanded', { increment: 42 },
+                'to have rendered',
+                <div>
+                    <span className="main-click">Main clicked 42</span>
+                </div>
+            );
+        });
+
+    });
+
 });
