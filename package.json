@@ -8,6 +8,7 @@
     "test-main": "mocha --compilers js:babel/register src/tests/*.spec.js",
     "test-error": "mocha --compilers js:babel/register src/error-tests/*.spec.js",
     "lint": "eslint src",
+    "generate-site": "generate-site --require ./bootstrap-unexpected-markdown.js",
     "test": "npm run test-main && npm run test-error"
   },
   "main": "lib/unexpected-react.js",
@@ -37,7 +38,9 @@
     "mocha": "^2.3.3",
     "object-assign": "^4.0.1",
     "react": "^0.14.7",
-    "unexpected": "^10.10.12"
+    "unexpected": "^10.10.12",
+    "unexpected-documentation-site-generator": "^4.0.0",
+    "unexpected-markdown": "^1.4.1"
   },
   "dependencies": {
     "magicpen-prism": "^2.2.1",
