@@ -59,3 +59,7 @@ hence the major version.
 
 `queried for` support for both shallow and deep renderers
 `with event` event triggering for shallow and deep renderers
+
+## v2.0.1
+
+Fix rendering numerical 0, via a fix from react-devtools
