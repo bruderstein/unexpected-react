@@ -1,0 +1,34 @@
+[
+  {
+    "label": "queried for (RenderedReactElement)",
+    "url": "/assertions/RenderedReactElement/queried-for/"
+  },
+  {
+    "label": "to contain (RenderedReactElement)",
+    "url": "/assertions/RenderedReactElement/to-contain/"
+  },
+  {
+    "label": "to have rendered (RenderedReactElement)",
+    "url": "/assertions/RenderedReactElement/to-have-rendered/"
+  },
+  {
+    "label": "with event (RenderedReactElement)",
+    "url": "/assertions/RenderedReactElement/with-event/"
+  },
+  {
+    "label": "queried for (ReactElement)",
+    "url": "/assertions/ReactElement/queried-for/"
+  },
+  {
+    "label": "to contain (ReactElement)",
+    "url": "/assertions/ReactElement/to-contain/"
+  },
+  {
+    "label": "to have rendered (ReactElement)",
+    "url": "/assertions/ReactElement/to-have-rendered/"
+  },
+  {
+    "label": "with event (ReactElement)",
+    "url": "/assertions/ReactElement/with-event/"
+  }
+]
