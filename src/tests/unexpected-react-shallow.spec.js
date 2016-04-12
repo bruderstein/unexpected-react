@@ -1,8 +1,8 @@
 var Unexpected = require('unexpected');
 var UnexpectedReact = require('../unexpected-react');
 
-const React = require('react');
-const TestUtils = require('react-addons-test-utils');
+var React = require('react');
+var TestUtils = require('react-addons-test-utils');
 var Immutable = require('immutable');
 
 var PropTypes = React.PropTypes;
