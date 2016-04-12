@@ -26,7 +26,9 @@
     "test"
   ],
   "peerDependencies": {
-    "react": "^0.13.0 || ^0.14.0"
+    "react": "^0.14.0 || ^15.0.0",
+    "react-addons-test-utils": "^0.14.0 || ^15.0.0",
+    "react-dom": "^0.14.0 || ^15.0.0"
   },
   "devDependencies": {
     "babel": "5.x.x",
@@ -38,7 +40,9 @@
     "magicpen": "^5.7.0",
     "mocha": "^2.3.3",
     "object-assign": "^4.0.1",
-    "react": "^0.14.7",
+    "react": "^15.0.0",
+    "react-addons-test-utils": "^15.0.0",
+    "react-dom": "^15.0.0",
     "unexpected": "^10.10.12",
     "unexpected-documentation-site-generator": "^4.0.0",
     "unexpected-markdown": "^1.4.1"
