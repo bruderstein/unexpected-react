@@ -119,7 +119,7 @@ describe('unexpected-react (deep rendering)', () => {
         it('identifies a rendered component', () => {
 
             const component = TestUtils.renderIntoDocument(<div className="foo" />);
-            return expect(TestUtils.isDOMComponent(component), 'to be ok');
+            expect(component, 'to be a', 'RenderedReactElement');
         });
 
     });
