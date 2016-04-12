@@ -1,7 +1,8 @@
 var Unexpected = require('unexpected');
 var UnexpectedReact = require('../unexpected-react');
 
-var React = require('react/addons');
+const React = require('react');
+const TestUtils = require('react-addons-test-utils');
 var Immutable = require('immutable');
 
 var PropTypes = React.PropTypes;
@@ -89,8 +90,8 @@ describe('unexpected-react-shallow', () => {
     var renderer, renderer2;
 
     beforeEach(function () {
-        renderer = React.addons.TestUtils.createRenderer();
-        renderer2 = React.addons.TestUtils.createRenderer();
+        renderer = TestUtils.createRenderer();
+        renderer2 = TestUtils.createRenderer();
 
     });
 

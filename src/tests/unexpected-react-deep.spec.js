@@ -13,9 +13,9 @@ const EmulateDom = require( '../testHelpers/emulateDom');
 const Unexpected = require('unexpected');
 const UnexpectedReact = require('../unexpected-react');
 
-const React = require('react/addons');
-
-const TestUtils = React.addons.TestUtils;
+const React = require('react');
+const TestUtils = require('react-addons-test-utils');
+const { findDOMNode } = require('react-dom');
 
 const expect = Unexpected.clone()
     .use(UnexpectedReact);
@@ -119,7 +119,7 @@ describe('unexpected-react (deep rendering)', () => {
         it('identifies a rendered component', () => {
 
             const component = TestUtils.renderIntoDocument(<div className="foo" />);
-            expect(component, 'to be a', 'RenderedReactElement');
+            return expect(TestUtils.isDOMComponent(component), 'to be ok');
         });
 
     });
@@ -263,7 +263,7 @@ describe('unexpected-react (deep rendering)', () => {
         it('updates on change', () => {
 
             const component = TestUtils.renderIntoDocument(<CustomComp className="bar" useEvents={true} />);
-            TestUtils.Simulate.click(React.findDOMNode(component));
+            TestUtils.Simulate.click(findDOMNode(component));
 
             return expect(component, 'to have rendered',
                     <div className="bar" data-click-count={1} />

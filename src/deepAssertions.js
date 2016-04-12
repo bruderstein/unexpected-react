@@ -2,9 +2,10 @@ import RenderHook from 'react-render-hook';
 import UnexpectedHtmlLike from 'unexpected-htmllike';
 import RenderedReactElementAdapter from 'unexpected-htmllike-reactrendered-adapter';
 import ReactElementAdapter from 'unexpected-htmllike-jsx-adapter';
-import React from 'react/addons';
+import React from 'react';
+import TestUtils from 'react-addons-test-utils';
+import { findDOMNode } from 'react-dom';
 
-const TestUtils = React.addons.TestUtils;
 const PENDING_SHALLOW_EVENT_TYPE = Symbol('Pending shallow event');
 const PENDING_DEEP_EVENT_TYPE = Symbol('Pending deep event');
 
@@ -260,9 +261,9 @@ function installInto(expect) {
     });
 
     function triggerEvent(component, target, eventName, eventArgs) {
-        let targetDOM = React.findDOMNode(component);
+        let targetDOM = findDOMNode(component);
         if (target) {
-            targetDOM = React.findDOMNode(target.element.getPublicInstance());
+            targetDOM = findDOMNode(target.element.getPublicInstance());
         }
 
         if (typeof TestUtils.Simulate[eventName] !== 'function') {

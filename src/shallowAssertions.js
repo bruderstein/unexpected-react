@@ -1,9 +1,8 @@
 import RenderHook from 'react-render-hook';
 import UnexpectedHtmlLike from 'unexpected-htmllike';
 import ReactElementAdapter from 'unexpected-htmllike-jsx-adapter';
-import React from 'react/addons';
-
-const TestUtils = React.addons.TestUtils;
+import React from 'react';
+import TestUtils from 'react-addons-test-utils';
 
 const PENDING_SHALLOW_EVENT_TYPE = Symbol('Pending shallow event');
 
@@ -300,8 +299,8 @@ function installInto(expect) {
             eventArgs: eventArgs
         });
     });
-    
-    expect.addAssertion(['<ReactPendingShallowEvent> to contain [exactly] <ReactElement>', 
+
+    expect.addAssertion(['<ReactPendingShallowEvent> to contain [exactly] <ReactElement>',
         '<ReactPendingShallowEvent> to contain [with all children] [with all wrappers] <ReactElement>'], function (expect, subject, expected) {
 
         triggerEvent(subject.renderer, subject.target, subject.eventName, subject.eventArgs);

@@ -5,8 +5,8 @@
 
 const EmulateDom = require( '../testHelpers/emulateDom');
 
-const React = require('react/addons');
-const TestUtils = React.addons.TestUtils;
+const React = require('react');
+const TestUtils = require('react-addons-test-utils');
 
 const Unexpected = require('unexpected');
 const UnexpectedReact = require('../unexpected-react');
