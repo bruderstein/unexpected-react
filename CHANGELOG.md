@@ -64,9 +64,13 @@ hence the major version.
 
 Fix rendering numerical 0, via a fix from react-devtools
 
-### v3.0.0
+## v3.0.0
 
 Drop support for React 0.13.x and add support for React v15 (thanks Gustav Nikolaj #19)
 Remove need for Symbol polyfill (fixed #18)
+
+## v3.0.1
+
+Remove unexpected-documentation-site-generator from the dependencies (thanks @jkimbo #20)
 
 
