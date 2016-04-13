@@ -73,4 +73,8 @@ Remove need for Symbol polyfill (fixed #18)
 
 Remove unexpected-documentation-site-generator from the dependencies (thanks @jkimbo #20)
 
+## v3.0.2
+
+Update various dependencies, so that React 0.13 is probably no longer supported, and
+React v15 *is* probably supported, without peerDep warnings
 
