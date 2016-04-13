@@ -85,6 +85,14 @@ if (typeof document === 'undefined') {
 
 From that point on, you can `require` the components you want to test, and write your tests.
 
+# React Compatibility
+
+v3.x.x is compatible with React v0.14.x and v15.
+v2.x.x is compatible with React v0.13.x and v0.14.x
+
+It is not planned to make further releases of the v2 branch, but if you still need 0.13 support,
+and are missing things from v3, please raise an issue.
+
 # Tests
 
 For the shallow renderer, you can assert on the renderer itself (you can also write the same assertion for the result of `getRenderOutput()`)
