@@ -4,7 +4,12 @@ import ReactElementAdapter from 'unexpected-htmllike-jsx-adapter';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 
-const PENDING_SHALLOW_EVENT_TYPE = Symbol('Pending shallow event');
+
+// This is a dummy constant object used as a unique identifier for a pending
+// event. This should be a Symbol in ES6, but would mean requiring polyfills
+// for browsers that don't support it
+// See issue #18
+const PENDING_SHALLOW_EVENT_TYPE = { PENDING_SHALLOW_EVENT: 'Pending shallow event' };
 
 
 function installInto(expect) {

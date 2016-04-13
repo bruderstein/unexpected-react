@@ -6,8 +6,11 @@ import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import { findDOMNode } from 'react-dom';
 
-const PENDING_SHALLOW_EVENT_TYPE = Symbol('Pending shallow event');
-const PENDING_DEEP_EVENT_TYPE = Symbol('Pending deep event');
+// This is a dummy constant object used as a unique identifier for a pending
+// event. This should be a Symbol in ES6, but would mean requiring polyfills
+// for browsers that don't support it.
+// See issue #18
+const PENDING_DEEP_EVENT_TYPE = { PENDING_DEEP_EVENT: 'Pending deep event' };
 
 function checkAttached(expect) {
     if (!RenderHook.isAttached) {
