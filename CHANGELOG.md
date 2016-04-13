@@ -75,6 +75,6 @@ hence the major version.
 
 ## v3.0.2
 
-* Update various dependencies, so that React 0.13 is probably no longer supported, and
-React v15 *is* probably supported, without peerDep warnings (thanks @choffmeister)
+* Update various dependencies, so that React 0.13 is properly no longer supported, and
+React v15 *is* properly supported, without peerDep warnings (thanks @choffmeister)
 
