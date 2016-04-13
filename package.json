@@ -53,6 +53,6 @@
     "unexpected-documentation-site-generator": "^4.1.0",
     "unexpected-htmllike": "^2.0.0",
     "unexpected-htmllike-jsx-adapter": "^0.5.1",
-    "unexpected-htmllike-reactrendered-adapter": "^1.0.1"
+    "unexpected-htmllike-reactrendered-adapter": "^2.0.0"
   }
 }
