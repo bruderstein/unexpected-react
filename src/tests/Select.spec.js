@@ -11,9 +11,9 @@ const EmulateDom = require( '../testHelpers/emulateDom');
 const Unexpected = require('unexpected');
 const UnexpectedReact = require('../unexpected-react');
 
-const React = require('react/addons');
-
-const TestUtils = React.addons.TestUtils;
+const React = require('react');
+const TestUtils = require('react-addons-test-utils');
+const { findDOMNode } = require('react-dom');
 
 const Select = require('./components/Select');
 const SelectOption = require('./components/SelectOption');
@@ -47,7 +47,7 @@ describe('Select', () => {
 
     it('should show the menu when clicked', () => {
 
-        TestUtils.Simulate.click(React.findDOMNode(component));
+        TestUtils.Simulate.click(findDOMNode(component));
         return expect(component, 'to have rendered',
             <div>
                 <SelectOption />
@@ -58,7 +58,7 @@ describe('Select', () => {
 
     it('renders the options', () => {
 
-        TestUtils.Simulate.click(React.findDOMNode(component));
+        TestUtils.Simulate.click(findDOMNode(component));
         return expect(component, 'to have rendered',
             <div>
                 <li>one</li>
@@ -70,7 +70,7 @@ describe('Select', () => {
 
     it('renders a particular option', () => {
 
-        TestUtils.Simulate.click(React.findDOMNode(component));
+        TestUtils.Simulate.click(findDOMNode(component));
 
         return expect(component, 'to contain',
             <li id={ expect.it('to match', /unique_[0-9]+/) }>two</li>
@@ -79,7 +79,7 @@ describe('Select', () => {
 
     it('renders a particular option', () => {
 
-        TestUtils.Simulate.click(React.findDOMNode(component));
+        TestUtils.Simulate.click(findDOMNode(component));
 
         return expect(component, 'to contain',
             <li>{ expect.it('to match', /th/) }</li>
@@ -88,7 +88,7 @@ describe('Select', () => {
 
     it('renders with the right class', () => {
 
-        TestUtils.Simulate.click(React.findDOMNode(component));
+        TestUtils.Simulate.click(findDOMNode(component));
 
         return expect(component, 'to contain',
             <li className="Select__item--unselected" />
