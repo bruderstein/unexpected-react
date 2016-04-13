@@ -116,9 +116,9 @@ describe('unexpected-react (deep rendering)', () => {
 
     describe('identify', () => {
 
-        it('identifies a rendered component', () => {
+        it('identifies a rendered ES6 component', () => {
 
-            const component = TestUtils.renderIntoDocument(<div className="foo" />);
+            const component = TestUtils.renderIntoDocument(<MyDiv className="foo" />);
             expect(component, 'to be a', 'RenderedReactElement');
         });
 
