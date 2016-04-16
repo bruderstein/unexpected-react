@@ -143,8 +143,8 @@ function installInto(expect) {
     
 
     
-    expect.addAssertion(['<RenderedReactElement> queried for [exactly] <ReactElement> <assertion>',
-        '<RenderedReactElement> queried for [with all children] [with all wrapppers] <ReactElement> <assertion>'], function (expect, subject, query) {
+    expect.addAssertion(['<RenderedReactElement> queried for [exactly] <ReactElement> <assertion?>',
+        '<RenderedReactElement> queried for [with all children] [with all wrapppers] <ReactElement> <assertion?>'], function (expect, subject, query) {
 
         var exactly = this.flags.exactly;
         var withAllChildren = this.flags['with all children'];
@@ -183,7 +183,7 @@ function installInto(expect) {
                 });
             }
 
-            expect.shift(result.bestMatchItem);
+            return expect.shift(result.bestMatchItem);
         });
     });
 
@@ -201,26 +201,39 @@ function installInto(expect) {
     });
 
     
-    expect.addAssertion('<RenderedReactElement> with event <string> <assertion>', function (expect, subject, eventName) {
-        expect.shift({
-            $$typeof: PENDING_DEEP_EVENT_TYPE,
-            component: subject,
-            eventName: eventName
-        });
+    expect.addAssertion('<RenderedReactElement> with event <string> <assertion?>', function (expect, subject, eventName) {
+        if (arguments.length > 3) {
+            return expect.shift({
+                $$typeof: PENDING_DEEP_EVENT_TYPE,
+                component: subject,
+                eventName: eventName
+            });
+        } else {
+            // No further arguments, we can trigger the event immediately, and resolve with the component
+            triggerEvent(subject, null, eventName, undefined);
+            return expect.shift(subject);
+        }
     });
     
     
-    expect.addAssertion('<RenderedReactElement> with event <string> <object> <assertion>', function (expect, subject, eventName, args) {
-        expect.shift({
-            $$typeof: PENDING_DEEP_EVENT_TYPE,
-            component: subject,
-            eventName: eventName,
-            eventArgs: args
-        });
+    expect.addAssertion('<RenderedReactElement> with event <string> <object> <assertion?>', function (expect, subject, eventName, args) {
+        if (arguments.length > 4) {
+
+            return expect.shift({
+                $$typeof: PENDING_DEEP_EVENT_TYPE,
+                component: subject,
+                eventName: eventName,
+                eventArgs: args
+            });
+        } else {
+            // No further arguments, we can trigger the event immediately, and resolve with the component
+            triggerEvent(subject, null, eventName, args);
+            return expect.shift(subject);
+        }
     });
     
 
-    expect.addAssertion('<ReactPendingDeepEvent> on [exactly] [with all children] [with all wrappers] <ReactElement> <assertion>', function (expect, subject, target) {
+    expect.addAssertion('<ReactPendingDeepEvent> on [exactly] [with all children] [with all wrappers] <ReactElement> <assertion?>', function (expect, subject, target) {
         const renderedAdapter = new RenderedReactElementAdapter({ convertToString: true });
         const jsxAdapter = new ReactElementAdapter({ convertToString: true });
         const reactHtmlLike = new UnexpectedHtmlLike(renderedAdapter);
@@ -259,7 +272,16 @@ function installInto(expect) {
             const newSubject = Object.assign({}, subject, {
                 target: result.bestMatchItem
             });
-            expect.shift(newSubject);
+            
+            if (arguments.length > 3) {
+
+                return expect.shift(newSubject);
+            } else {
+                // We're at the end, so trigger the event
+                triggerEvent(newSubject.component, newSubject.target, newSubject.eventName, newSubject.eventArgs);
+                return expect.shift(newSubject.component);
+            }
+            
         });
     });
 
@@ -281,25 +303,35 @@ function installInto(expect) {
 
     }
 
-    expect.addAssertion('<ReactPendingDeepEvent> [and] with event <string> <assertion>', function (expect, subject, eventName) {
+    expect.addAssertion('<ReactPendingDeepEvent> [and] with event <string> <assertion?>', function (expect, subject, eventName) {
 
         triggerEvent(subject.component, subject.target, subject.eventName, subject.eventArgs);
-        expect.shift({
-            $$typeof: PENDING_DEEP_EVENT_TYPE,
-            component: subject.component,
-            eventName: eventName
-        });
+        if (arguments.length > 3) {
+            return expect.shift({
+                $$typeof: PENDING_DEEP_EVENT_TYPE,
+                component: subject.component,
+                eventName: eventName
+            });
+        } else {
+            triggerEvent(subject.component, null, eventName);
+            return expect.shift(subject.component);
+        }
     });
     
-    expect.addAssertion('<ReactPendingDeepEvent> [and] with event <string> <object> <assertion>', function (expect, subject, eventName, eventArgs) {
+    expect.addAssertion('<ReactPendingDeepEvent> [and] with event <string> <object> <assertion?>', function (expect, subject, eventName, eventArgs) {
 
         triggerEvent(subject.component, subject.target, subject.eventName, subject.eventArgs);
-        expect.shift({
-            $$typeof: PENDING_DEEP_EVENT_TYPE,
-            component: subject.component,
-            eventName: eventName,
-            eventArgs: eventArgs
-        });
+        if (arguments.length > 4) {
+            expect.shift({
+                $$typeof: PENDING_DEEP_EVENT_TYPE,
+                component: subject.component,
+                eventName: eventName,
+                eventArgs: eventArgs
+            });
+        } else {
+            triggerEvent(subject.component, null, eventName, eventArgs);
+            return expect.shift(subject.component);
+        }
     });
 
     expect.addAssertion(['<ReactPendingDeepEvent> to have [exactly] rendered <ReactElement>',
@@ -316,8 +348,8 @@ function installInto(expect) {
         return expect(subject.component, 'to contain [exactly] [with all children] [with all wrappers]', expected);
     });
 
-    expect.addAssertion(['<ReactPendingDeepEvent> queried for [exactly] <ReactElement> <assertion>',
-        '<ReactPendingDeepEvent> queried for [with all children] [with all wrappers] <ReactElement> <assertion>'], function (expect, subject, expected) {
+    expect.addAssertion(['<ReactPendingDeepEvent> queried for [exactly] <ReactElement> <assertion?>',
+        '<ReactPendingDeepEvent> queried for [with all children] [with all wrappers] <ReactElement> <assertion?>'], function (expect, subject, expected) {
 
         triggerEvent(subject.component, subject.target, subject.eventName, subject.eventArgs);
         return expect.apply(expect,

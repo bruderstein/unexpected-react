@@ -512,6 +512,24 @@ describe('unexpected-react (deep rendering)', () => {
             const component = TestUtils.renderIntoDocument(<CustomComp className="bar" childCount={3} />);
             return expect(component, 'queried for', <div className={ expect.it('to eventually have value', 'bar')} />, 'to contain', <span className="2">2</span>);
         });
+        
+        it('passes the located component as the resolution of the promise', () => {
+
+            const component = TestUtils.renderIntoDocument(<CustomComp className="bar" childCount={3} />);
+            return expect(component, 'queried for', <span className="2" />)
+                .then(span => {
+                    expect(span, 'to have rendered', <span className="2">2</span>);
+                });
+        });
+        
+        it('passes the located component as the resolution of the promise when the query is async', () => {
+
+            const component = TestUtils.renderIntoDocument(<CustomComp className="bar" childCount={3} />);
+            return expect(component, 'queried for', <span className={ expect.it('to eventually have value', '2')} />)
+                .then(span => {
+                    expect(span, 'to have rendered', <span className="2">2</span>);
+                });
+        });
 
     });
 
@@ -546,13 +564,20 @@ describe('unexpected-react (deep rendering)', () => {
                         itemClickCount: this.state.itemClickCount + 1
                     });
                 },
+                
+                handleItemMouseDown(e) {
+                    this.setState({
+                        itemClickCount: this.state.itemClickCount + ((e && e.mouseX) || 1)
+                    });
+                },
 
                 render() {
                     return (
                         <div onClick={this.handleMainClick} onMouseDown={this.handleMouseDown}>
                             <span className="main-click">Main clicked {this.state.clickCount}</span>
                             <span className="item-click"
-                                  onClick={this.handleItemClick}>Item clicked {this.state.itemClickCount || 0}</span>
+                                  onClick={this.handleItemClick}
+                                  onMouseDown={this.handleItemMouseDown}>Item clicked {this.state.itemClickCount || 0}</span>
                         </div>
                     );
                 }
@@ -662,6 +687,68 @@ describe('unexpected-react (deep rendering)', () => {
                 <div>
                     <span>This is never checked</span>
                 </div>), 'to throw', /Could not find the target. The best match was/);
+        });
+        
+        it('passes the resulting component as the resolution of the promise', () => {
+
+            const component = TestUtils.renderIntoDocument(<ClickableComponent />);
+            
+            return expect(component, 'with event', 'click')
+                .then(result => {
+                    expect(result.state, 'to satisfy', { clickCount: 2 });
+                });
+        });
+
+        it('passes the resulting component as the resolution of the promise with an event argument', () => {
+
+            const component = TestUtils.renderIntoDocument(<ClickableComponent />);
+
+            return expect(component, 'with event', 'mouseDown', { mouseX: 10 })
+                .then(result => {
+                    expect(result.state, 'to satisfy', { clickCount: 11 });
+                });
+        });
+
+        it('passes the resulting component as the resolution of the promise when using `on`', () => {
+
+            const component = TestUtils.renderIntoDocument(<ClickableComponent />);
+
+            return expect(component, 'with event', 'click', 'on', <span className="item-click" />)
+                .then(result => {
+                    expect(result.state, 'to satisfy', { itemClickCount: 2 });
+                });
+        });
+        
+        it('passes the resulting component as the resolution of the promise when using event arguments and `on`', () => {
+
+            const component = TestUtils.renderIntoDocument(<ClickableComponent />);
+
+            return expect(component, 'with event', 'mouseDown', { mouseX: 10 }, 'on', <span className="item-click" />)
+                .then(result => {
+                    expect(result.state, 'to satisfy', { itemClickCount: 11 });
+                });
+        });
+
+        it('passes the resulting component as the resolution of the promise with multiple events', () => {
+
+            const component = TestUtils.renderIntoDocument(<ClickableComponent />);
+
+            return expect(component, 'with event', 'mouseDown', { mouseX: 10 }, 'on', <span className="item-click" />,
+            'and with event', 'click')
+                .then(result => {
+                    expect(result.state, 'to satisfy', { clickCount: 12, itemClickCount: 11 });
+                });
+        });
+        
+        it('passes the resulting component as the resolution of the promise with multiple events and eventArgs', () => {
+
+            const component = TestUtils.renderIntoDocument(<ClickableComponent />);
+
+            return expect(component, 'with event', 'mouseDown', { mouseX: 10 }, 'on', <span className="item-click" />,
+                'and with event', 'mouseDown', { mouseX: 15 })
+                .then(result => {
+                    expect(result.state, 'to satisfy', { clickCount: 26, itemClickCount: 11 });
+                });
         });
     });
 });

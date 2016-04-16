@@ -2006,6 +2006,25 @@ describe('unexpected-react-shallow', () => {
                     <span>bar</span>
                 </MyDiv>)
         });
+
+        it('passes the component as the resolution of the promise', () => {
+            renderer.render(
+                <MyDiv className="foo">
+                    <MyDiv className="bar">
+                        <span>bar</span>
+                    </MyDiv>
+                    <MyDiv className="baz">
+                        <span>baz</span>
+                    </MyDiv>
+                </MyDiv>
+            );
+            return expect(renderer, 'queried for', <MyDiv className="bar" />)
+                .then(element => {
+                    expect(element.props, 'to satisfy', {
+                        className: 'bar'
+                    });
+                });
+        });
     });
      
 
@@ -2029,9 +2048,9 @@ describe('unexpected-react-shallow', () => {
                     });
                 },
 
-                handleItemClick() {
+                handleItemClick(e) {
                     this.setState({
-                        itemClickCount: this.state.itemClickCount + 1
+                        itemClickCount: this.state.itemClickCount + (e && e.increment || 1)
                     });
                 },
 
@@ -2205,6 +2224,54 @@ describe('unexpected-react-shallow', () => {
                     <span className="main-click">Main clicked 42</span>
                 </div>
             );
+        });
+        
+        it('passes the renderer with the event triggered as the fulfillment of the promise', () => {
+
+            expect(<ClickableComponent />, 'with event', 'click')
+                .then(renderer => {
+                    expect(renderer, 'to have rendered',
+                        <div>
+                            <span className="main-click">Main clicked 1</span>
+                        </div>);
+                });
+        });
+        
+        it('passes the renderer with the event triggered as the fulfillment of the promise with event args', () => {
+
+            expect(<ClickableComponent />, 'with event', 'aliensLanded', { increment: 5 })
+                .then(renderer => {
+                    expect(renderer.getRenderOutput(), 'to have rendered',
+                        <div>
+                            <span className="main-click">Main clicked 5</span>
+                        </div>);
+                });
+        });
+
+        it('passes the renderer with the event triggered as the fulfillment of the promise with event args and `on`', () => {
+
+            expect(<ClickableComponent />, 'with event', 'click', { increment: 5 }, 'on', <span className="item-click" />)
+                .then(renderer => {
+                    // Using getRenderOutput() here to validate that the renderer and not the pending event wrapper is forwarded
+                    expect(renderer.getRenderOutput(), 'to have rendered',
+                        <div>
+                            <span className="item-click">Item clicked 5</span>
+                        </div>);
+                });
+        });
+        
+        it('passes the renderer with the event triggered as the fulfillment of the promise with multiple events', () => {
+
+            expect(<ClickableComponent />, 'with event', 'click', { increment: 5 }, 'on', <span className="item-click" />,
+                'and with event', 'aliensLanded', { increment: 7 })
+                .then(renderer => {
+                    // Using getRenderOutput() here to validate that the renderer and not the pending event wrapper is forwarded
+                    expect(renderer.getRenderOutput(), 'to have rendered',
+                        <div>
+                            <span className="main-click">Main clicked 7</span>
+                            <span className="item-click">Item clicked 5</span>
+                        </div>);
+                });
         });
 
     });

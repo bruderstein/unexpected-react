@@ -10,6 +10,7 @@ import TestUtils from 'react-addons-test-utils';
 // for browsers that don't support it
 // See issue #18
 const PENDING_SHALLOW_EVENT_TYPE = { PENDING_SHALLOW_EVENT: 'Pending shallow event' };
+const PENDING_QUERIED_FOR = { PENDING_QUERIED_FOR: 'Pending queried for' };
 
 
 function installInto(expect) {
@@ -127,8 +128,8 @@ function installInto(expect) {
         });
     });
 
-    expect.addAssertion(['<ReactElement> queried for [exactly] <ReactElement> <assertion>',
-        '<ReactElement> queried for [with all children] [with all wrapppers] <ReactElement> <assertion>'], function (expect, subject, query) {
+    expect.addAssertion(['<ReactElement> queried for [exactly] <ReactElement> <assertion?>',
+        '<ReactElement> queried for [with all children] [with all wrapppers] <ReactElement> <assertion?>'], function (expect, subject, query) {
 
         var exactly = this.flags.exactly;
         var withAllChildren = this.flags['with all children'];
@@ -168,12 +169,12 @@ function installInto(expect) {
                 });
             }
 
-            expect.shift(result.bestMatchItem);
+            return expect.shift(result.bestMatchItem);
         });
     });
 
-    expect.addAssertion(['<ReactShallowRenderer> queried for [exactly] <ReactElement> <assertion>',
-        '<ReactShallowRenderer> queried for [with all children] [with all wrapppers] <ReactElement> <assertion>'
+    expect.addAssertion(['<ReactShallowRenderer> queried for [exactly] <ReactElement> <assertion?>',
+        '<ReactShallowRenderer> queried for [with all children] [with all wrapppers] <ReactElement> <assertion?>'
     ], function (expect, subject, query, assertion) {
         return expect.apply(expect,
             [
@@ -182,50 +183,50 @@ function installInto(expect) {
     });
 
 
-    expect.addAssertion('<ReactShallowRenderer> with event <string> <assertion>', function (expect, subject, eventName) {
-        expect.shift({
-            $$typeof: PENDING_SHALLOW_EVENT_TYPE,
-            renderer: subject,
-            eventName: eventName
-        });
+    expect.addAssertion('<ReactShallowRenderer> with event <string> <assertion?>', function (expect, subject, eventName) {
+        if (arguments.length > 3) {
+            return expect.shift({
+                $$typeof: PENDING_SHALLOW_EVENT_TYPE,
+                renderer: subject,
+                eventName: eventName
+            });
+        } else {
+            triggerEvent(subject, null, eventName);
+            return expect.shift(subject);
+        }
     });
 
-    expect.addAssertion('<ReactShallowRenderer> with event <string> <object> <assertion>', function (expect, subject, eventName, args) {
-        expect.shift({
-            $$typeof: PENDING_SHALLOW_EVENT_TYPE,
-            renderer: subject,
-            eventName: eventName,
-            eventArgs: args
-        });
+    expect.addAssertion('<ReactShallowRenderer> with event <string> <object> <assertion?>', function (expect, subject, eventName, args) {
+        if (arguments.length > 4) {
+            return expect.shift({
+                $$typeof: PENDING_SHALLOW_EVENT_TYPE,
+                renderer: subject,
+                eventName: eventName,
+                eventArgs: args
+            });
+        } else {
+            triggerEvent(subject, null, eventName, args);
+            return expect.shift(subject);
+        }
     });
 
-    expect.addAssertion('<ReactElement> with event <string> <assertion>', function (expect, subject, eventName) {
+    expect.addAssertion('<ReactElement> with event <string> <assertion?>', function (expect, subject, eventName) {
 
         const renderer = TestUtils.createRenderer();
         renderer.render(subject);
+        return expect.apply(expect, [renderer, 'with event'].concat(Array.prototype.slice.call(arguments, 2)))
 
-        expect.shift({
-            $$typeof: PENDING_SHALLOW_EVENT_TYPE,
-            renderer: renderer,
-            eventName: eventName
-        });
     });
     
-    expect.addAssertion('<ReactElement> with event <string> <object> <assertion>', function (expect, subject, eventName, eventArgs) {
+    expect.addAssertion('<ReactElement> with event <string> <object> <assertion?>', function (expect, subject, eventName, eventArgs) {
 
         const renderer = TestUtils.createRenderer();
         renderer.render(subject);
-
-        expect.shift({
-            $$typeof: PENDING_SHALLOW_EVENT_TYPE,
-            renderer: renderer,
-            eventName: eventName,
-            eventArgs: eventArgs
-        });
+        return expect.apply(expect, [renderer, 'with event'].concat(Array.prototype.slice.call(arguments, 2)))
     });
     
     
-    expect.addAssertion('<ReactPendingShallowEvent> on [exactly] [with all children] [with all wrappers] <ReactElement> <assertion>', function (expect, subject, target) {
+    expect.addAssertion('<ReactPendingShallowEvent> on [exactly] [with all children] [with all wrappers] <ReactElement> <assertion?>', function (expect, subject, target) {
         const adapter = new ReactElementAdapter({ convertToString: true, concatTextContent: true });
         const jsxHtmlLike = new UnexpectedHtmlLike(adapter);
         const exactly = this.flags.exactly;
@@ -252,7 +253,12 @@ function installInto(expect) {
             const newSubject = Object.assign({}, subject, {
                 target: result.bestMatchItem
             });
-            expect.shift(newSubject);
+            if (arguments.length > 3) {
+                return expect.shift(newSubject);
+            } else {
+                triggerEvent(newSubject.renderer, newSubject.target, newSubject.eventName, newSubject.eventArgs);
+                return expect.shift(newSubject.renderer);
+            }
         });
     });
     
@@ -284,25 +290,35 @@ function installInto(expect) {
         return expect(subject.renderer, 'to have [exactly] rendered [with all children] [with all wrappers]', expected);
     });
     
-    expect.addAssertion('<ReactPendingShallowEvent> [and] with event <string> <assertion>', function (expect, subject, eventName) {
+    expect.addAssertion('<ReactPendingShallowEvent> [and] with event <string> <assertion?>', function (expect, subject, eventName) {
 
         triggerEvent(subject.renderer, subject.target, subject.eventName, subject.eventArgs);
-        return expect.shift({
-            $$typeof: PENDING_SHALLOW_EVENT_TYPE,
-            renderer: subject.renderer,
-            eventName: eventName
-        });
+        if (arguments.length > 3) {
+            return expect.shift({
+                $$typeof: PENDING_SHALLOW_EVENT_TYPE,
+                renderer: subject.renderer,
+                eventName: eventName
+            });
+        } else {
+            triggerEvent(subject.renderer, null, eventName);
+            return expect.shift(subject.renderer);
+        }
     });
 
-    expect.addAssertion('<ReactPendingShallowEvent> [and] with event <string> <object> <assertion>', function (expect, subject, eventName, eventArgs) {
+    expect.addAssertion('<ReactPendingShallowEvent> [and] with event <string> <object> <assertion?>', function (expect, subject, eventName, eventArgs) {
 
         triggerEvent(subject.renderer, subject.target, subject.eventName, subject.eventArgs);
-        return expect.shift({
-            $$typeof: PENDING_SHALLOW_EVENT_TYPE,
-            renderer: subject.renderer,
-            eventName: eventName,
-            eventArgs: eventArgs
-        });
+        if (arguments.length > 4) {
+            return expect.shift({
+                $$typeof: PENDING_SHALLOW_EVENT_TYPE,
+                renderer: subject.renderer,
+                eventName: eventName,
+                eventArgs: eventArgs
+            });
+        } else {
+            triggerEvent(subject.renderer, null, eventName, eventArgs);
+            return expect.shift(subject.renderer);
+        }
     });
 
     expect.addAssertion(['<ReactPendingShallowEvent> to contain [exactly] <ReactElement>',
@@ -313,8 +329,8 @@ function installInto(expect) {
     });
     
     
-    expect.addAssertion(['<ReactPendingShallowEvent> queried for [exactly] <ReactElement> <assertion>',
-        '<ReactPendingShallowEvent> queried for [with all children] [with all wrappers] <ReactElement> <assertion>'], function (expect, subject, expected) {
+    expect.addAssertion(['<ReactPendingShallowEvent> queried for [exactly] <ReactElement> <assertion?>',
+        '<ReactPendingShallowEvent> queried for [with all children] [with all wrappers] <ReactElement> <assertion?>'], function (expect, subject, expected) {
 
         triggerEvent(subject.renderer, subject.target, subject.eventName, subject.eventArgs);
         return expect.apply(expect, 
