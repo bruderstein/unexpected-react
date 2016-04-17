@@ -82,3 +82,7 @@ React v15 *is* properly supported, without peerDep warnings (thanks @choffmeiste
 
 * Enable using `queried for` and `with event` as the resolution of the promise.
 
+## v3.1.1
+
+* Update to htmllike 2.0.2, fixes output issue
+
