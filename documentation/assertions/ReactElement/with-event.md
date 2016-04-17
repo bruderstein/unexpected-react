@@ -41,3 +41,15 @@ expect(<TodoList items={items} />, 'with event mouseDown', { mouseX: 150, mouseY
 
 This will call the function passed in the `onMouseDown` prop of the `<TodoItem>`.
 
+
+
+You can take the instance of the component after the event has been triggered by using the promise returned
+from `expect`.
+
+```js
+expect(<TodoList items={items} />, 'with event mouseDown', { mouseX: 150, mouseY: 50 })
+    .then(todoList => {
+        expect(todoList.state, 'to satisfy', { items: [ { clicked: true } ] });
+    });
+        
+```

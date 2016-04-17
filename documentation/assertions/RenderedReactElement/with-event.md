@@ -73,3 +73,14 @@ expect(<TodoList items={items} />,
     </div>
 );
 ```
+
+You can extract the renderer after an event by using the result of the promise returned from `expect`
+```js
+
+expect(<TodoList items={items} />, 
+    'with event mouseDown', { mouseX: 150, mouseY: 50 },
+    'on', <TodoItem item={{ id: 3}} />)
+   .then(renderer => {
+       expect(renderer, 'to contain', <TodoItem item={{ id: 3, completed: true }} />);
+   });
+```

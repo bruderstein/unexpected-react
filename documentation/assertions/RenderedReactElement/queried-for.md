@@ -12,3 +12,13 @@ checked with `to satisfy`, extra data in this object is ignored.
 
 You can use `to have rendered` or `to contain` with all the options as usual following a `queried for`.
 
+It is also possible to extract the found component, by using the value of the returned promise from `expect`.
+
+
+```js
+var component = TestUtils.renderIntoDocument(<TodoList items={items} />);
+expect(component, 'queried for', <TodoItem item={{ id: 3 }} />)
+    .then(todoItem => {
+        expect(todoItem.props.label, 'to equal', 'Do something');
+    });
+```

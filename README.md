@@ -229,8 +229,9 @@ if you use a test runner that keeps the process alive (such as [wallaby.js](http
 
 * [DONE] There are some performance optimisations to do. The performance suffers a bit due to the possible asynchronous nature of 
 the inline assertions. Most of the time these will be synchronous, and hence we don't need to pay the price.
-* (started) `queried for` implementation
-* (started) Directly calling events on both the shallow renderer, and the full virtual DOM renderer
+* (DONE) `queried for` implementation
+* (DONE) Directly calling events on both the shallow renderer, and the full virtual DOM renderer
+* Improve output further
 
 # Contributing
 
