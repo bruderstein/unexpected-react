@@ -78,3 +78,7 @@ hence the major version.
 * Update various dependencies, so that React 0.13 is properly no longer supported, and
 React v15 *is* properly supported, without peerDep warnings (thanks @choffmeister)
 
+## v3.1.0
+
+* Enable using `queried for` and `with event` as the resolution of the promise.
+
