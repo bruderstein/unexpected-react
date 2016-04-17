@@ -88,9 +88,9 @@
             
                 <ul class="declarations">
                 
-                    <li>&lt;ReactElement&gt; queried for [with all children] [with all wrapppers] &lt;ReactElement&gt; &lt;assertion&gt;</li>
+                    <li>&lt;ReactElement&gt; queried for [with all children] [with all wrapppers] &lt;ReactElement&gt; &lt;assertion?&gt;</li>
                 
-                    <li>&lt;ReactElement&gt; queried for [exactly] &lt;ReactElement&gt; &lt;assertion&gt;</li>
+                    <li>&lt;ReactElement&gt; queried for [exactly] &lt;ReactElement&gt; &lt;assertion?&gt;</li>
                 
                 </ul>
             
@@ -112,6 +112,17 @@
 item text. We&#39;re searching for the right div (with id 3), then checking the correct text is rendered.
 As the spans for id and label are siblings, they don&#39;t need to be included to &quot;match&quot;. </p>
 <p>You can use <code>to have rendered</code> or <code>to contain</code> with all the options as usual following a <code>queried for</code>.</p>
+<p>It is possible to use <code>queried for</code> to extract a part of a component.</p>
+<div class="code lang-javascript">
+  <div><span style="color: #a71d5d">var</span>&nbsp;renderer&nbsp;<span style="color: #a71d5d">=</span>&nbsp;TestUtils<span style="color: #000000">.</span><span style="color: #000000">createRenderer</span><span style="color: #000000">();</span></div>
+  <div>renderer<span style="color: #000000">.</span><span style="color: #000000">render</span><span style="color: #000000">(</span><span style="color: #a71d5d">&lt;</span>TodoList&nbsp;items<span style="color: #a71d5d">=</span><span style="color: #000000">{</span>items<span style="color: #000000">}</span>&nbsp;<span style="color: #a71d5d">/&gt;</span><span style="color: #000000">);</span></div>
+  <div><span style="color: #a71d5d">return</span>&nbsp;<span style="color: #000000">expect</span><span style="color: #000000">(</span>renderer<span style="color: #000000">,</span>&nbsp;<span style="color: #df5000">'queried&nbsp;for'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #a71d5d">&lt;</span>TodoItem&nbsp;id<span style="color: #a71d5d">=</span><span style="color: #000000">{</span><span style="color: #0086b3">3</span><span style="color: #000000">}</span>&nbsp;<span style="color: #a71d5d">/&gt;</span><span style="color: #000000">)</span></div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #000000">.</span><span style="color: #000000">then</span><span style="color: #000000">(</span>todoItem&nbsp;<span style="color: #a71d5d">=&gt;</span>&nbsp;<span style="color: #000000">{</span></div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #000000">expect</span><span style="color: #000000">(</span>todoItem<span style="color: #000000">.</span>props<span style="color: #000000">.</span>title<span style="color: #000000">,</span>&nbsp;<span style="color: #df5000">'to&nbsp;equal'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #df5000">'Do&nbsp;something'</span><span style="color: #000000">);</span></div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #000000">});</span></div>
+</div><p>Note that it is not possible to call an event using <code>with event</code> after using <code>queried for</code> in
+an assertion.  This is because the <code>queried for</code> extracts the rendered output from the shallow 
+renderer, so future events will be lost.</p>
 
         </div>
     </div>

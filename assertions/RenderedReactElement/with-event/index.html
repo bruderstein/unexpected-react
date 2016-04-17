@@ -88,9 +88,9 @@
             
                 <ul class="declarations">
                 
-                    <li>&lt;RenderedReactElement&gt; with event &lt;string&gt; &lt;assertion&gt;</li>
+                    <li>&lt;RenderedReactElement&gt; with event &lt;string&gt; &lt;assertion?&gt;</li>
                 
-                    <li>&lt;RenderedReactElement&gt; with event &lt;string&gt; &lt;object&gt; &lt;assertion&gt;</li>
+                    <li>&lt;RenderedReactElement&gt; with event &lt;string&gt; &lt;object&gt; &lt;assertion?&gt;</li>
                 
                 </ul>
             
@@ -150,6 +150,15 @@ after the event.</p>
   <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #a71d5d">&lt;/</span>TodoItem<span style="color: #a71d5d">&gt;</span></div>
   <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #a71d5d">&lt;/</span>div<span style="color: #a71d5d">&gt;</span></div>
   <div><span style="color: #000000">);</span></div>
+</div><p>You can extract the renderer after an event by using the result of the promise returned from <code>expect</code></p>
+<div class="code lang-javascript">
+  <div>&nbsp;</div>
+  <div><span style="color: #000000">expect</span><span style="color: #000000">(</span><span style="color: #a71d5d">&lt;</span>TodoList&nbsp;items<span style="color: #a71d5d">=</span><span style="color: #000000">{</span>items<span style="color: #000000">}</span>&nbsp;<span style="color: #a71d5d">/&gt;</span><span style="color: #000000">,</span>&nbsp;</div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #df5000">'with&nbsp;event&nbsp;mouseDown'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #000000">{</span>&nbsp;mouseX<span style="color: #000000">:</span>&nbsp;<span style="color: #0086b3">150</span><span style="color: #000000">,</span>&nbsp;mouseY<span style="color: #000000">:</span>&nbsp;<span style="color: #0086b3">50</span>&nbsp;<span style="color: #000000">},</span></div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #df5000">'on'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #a71d5d">&lt;</span>TodoItem&nbsp;item<span style="color: #a71d5d">=</span><span style="color: #000000">{{</span>&nbsp;id<span style="color: #000000">:</span>&nbsp;<span style="color: #0086b3">3</span><span style="color: #000000">}}</span>&nbsp;<span style="color: #a71d5d">/&gt;</span><span style="color: #000000">)</span></div>
+  <div>&nbsp;&nbsp;&nbsp;<span style="color: #000000">.</span><span style="color: #000000">then</span><span style="color: #000000">(</span>renderer&nbsp;<span style="color: #a71d5d">=&gt;</span>&nbsp;<span style="color: #000000">{</span></div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #000000">expect</span><span style="color: #000000">(</span>renderer<span style="color: #000000">,</span>&nbsp;<span style="color: #df5000">'to&nbsp;contain'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #a71d5d">&lt;</span>TodoItem&nbsp;item<span style="color: #a71d5d">=</span><span style="color: #000000">{{</span>&nbsp;id<span style="color: #000000">:</span>&nbsp;<span style="color: #0086b3">3</span><span style="color: #000000">,</span>&nbsp;completed<span style="color: #000000">:</span>&nbsp;<span style="color: #0086b3">true</span>&nbsp;<span style="color: #000000">}}</span>&nbsp;<span style="color: #a71d5d">/&gt;</span><span style="color: #000000">);</span></div>
+  <div>&nbsp;&nbsp;&nbsp;<span style="color: #000000">});</span></div>
 </div>
         </div>
     </div>
