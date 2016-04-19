@@ -750,5 +750,85 @@ describe('unexpected-react (deep rendering)', () => {
                     expect(result.state, 'to satisfy', { clickCount: 26, itemClickCount: 11 });
                 });
         });
+
+        describe('combined with queried for', () => {
+
+            const TodoItem = React.createClass({
+                getInitialState() {
+                    return {
+                        isCompleted: 'false'
+                    }
+                },
+
+                onClick() {
+                    this.setState({
+                        isCompleted: 'true'
+                    })
+                },
+
+                render() {
+                    return <div>
+                        <span>{this.props.label}</span>
+                        <span>Is complete {this.state.isCompleted}</span>
+                        <button onClick={this.onClick}>Click me</button>
+                    </div>
+                }
+            });
+
+            const TodoList = React.createClass({
+
+                render() {
+                    return <div>
+                        <TodoItem id={1} label="one"/>
+                        <TodoItem id={2} label="two"/>
+                        <TodoItem id={3} label="three"/>
+                    </div>
+                }
+            });
+            
+            it('combines with queried for', () => {
+
+                const component = TestUtils.renderIntoDocument(<TodoList />);
+                expect(component, 'queried for', <TodoItem id={2}/>,
+                    'with event', 'click', 'on', <button />, 'to have rendered',
+                    <div>
+                        <span>two</span>
+                        <span>Is complete true</span>
+                    </div>
+                );
+
+            });
+
+            it('combines with queried for using the result promise', () => {
+
+                const component = TestUtils.renderIntoDocument(<TodoList />);
+                return expect(component, 'queried for', <TodoItem id={2}/>)
+                    .then(todoItem => {
+                        return expect(todoItem, 'with event', 'click', 'on', <button />, 'to have rendered',
+                            <div>
+                                <span>two</span>
+                                <span>Is complete true</span>
+                            </div>
+                        );
+                    });
+            });
+            
+            it('combines with queried for using the result promise and the event promise', () => {
+
+                const component = TestUtils.renderIntoDocument(<TodoList />);
+                return expect(component, 'queried for', <TodoItem id={2}/>)
+                    .then(todoItem => {
+                            return expect(todoItem, 'with event', 'click', 'on', <button />);
+                        })
+                    .then(todoItem => {
+                        return expect(todoItem, 'to have rendered',
+                            <div>
+                                <span>two</span>
+                                <span>Is complete true</span>
+                            </div>
+                        );
+                    });
+            });
+        });
     });
 });

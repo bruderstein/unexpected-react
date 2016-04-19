@@ -140,11 +140,20 @@ function installInto(expect) {
         });
 
     });
-    
 
-    
     expect.addAssertion(['<RenderedReactElement> queried for [exactly] <ReactElement> <assertion?>',
         '<RenderedReactElement> queried for [with all children] [with all wrapppers] <ReactElement> <assertion?>'], function (expect, subject, query) {
+
+        checkAttached();
+        const data = RenderHook.findComponent(subject);
+        return expect.apply(expect,
+            [data, 'queried for [exactly] [with all children] [with all wrappers]', query]
+                .concat(Array.prototype.slice.call(arguments, 3)));
+    });
+
+    
+    expect.addAssertion(['<RenderedReactElementData> queried for [exactly] <ReactElement> <assertion?>',
+        '<RenderedReactElementData> queried for [with all children] [with all wrapppers] <ReactElement> <assertion?>'], function (expect, subject, query) {
 
         var exactly = this.flags.exactly;
         var withAllChildren = this.flags['with all children'];
@@ -162,8 +171,7 @@ function installInto(expect) {
             diffExtraClasses: exactly
         };
 
-        const data = RenderHook.findComponent(subject);
-        const containsResult = renderedHtmlLike.contains(jsxAdapter, data, query, expect, options);
+        const containsResult = renderedHtmlLike.contains(jsxAdapter, subject, query, expect, options);
 
         return renderedHtmlLike.withResult(containsResult, function (result) {
 
@@ -200,8 +208,25 @@ function installInto(expect) {
 
     });
 
-    
     expect.addAssertion('<RenderedReactElement> with event <string> <assertion?>', function (expect, subject, eventName) {
+
+        const data = RenderHook.findComponent(subject);
+        return expect.apply(expect,
+            [data, 'with event', eventName]
+                .concat(Array.prototype.slice.call(arguments, 3)));
+    });
+    
+    expect.addAssertion('<RenderedReactElement> with event <string> <object> <assertion?>', function (expect, subject, eventName, args) {
+        
+        const data = RenderHook.findComponent(subject);
+        return expect.apply(expect,
+            [data, 'with event', eventName, args]
+                .concat(Array.prototype.slice.call(arguments, 4)));
+    
+    });
+    
+    expect.addAssertion('<RenderedReactElementData> with event <string> <assertion?>', function (expect, subject, eventName) {
+        
         if (arguments.length > 3) {
             return expect.shift({
                 $$typeof: PENDING_DEEP_EVENT_TYPE,
@@ -211,12 +236,12 @@ function installInto(expect) {
         } else {
             // No further arguments, we can trigger the event immediately, and resolve with the component
             triggerEvent(subject, null, eventName, undefined);
-            return expect.shift(subject);
+            return expect.shift(subject.element.getPublicInstance());
         }
     });
     
     
-    expect.addAssertion('<RenderedReactElement> with event <string> <object> <assertion?>', function (expect, subject, eventName, args) {
+    expect.addAssertion('<RenderedReactElementData> with event <string> <object> <assertion?>', function (expect, subject, eventName, args) {
         if (arguments.length > 4) {
 
             return expect.shift({
@@ -228,7 +253,7 @@ function installInto(expect) {
         } else {
             // No further arguments, we can trigger the event immediately, and resolve with the component
             triggerEvent(subject, null, eventName, args);
-            return expect.shift(subject);
+            return expect.shift(subject.element.getPublicInstance());
         }
     });
     
@@ -238,7 +263,7 @@ function installInto(expect) {
         const jsxAdapter = new ReactElementAdapter({ convertToString: true });
         const reactHtmlLike = new UnexpectedHtmlLike(renderedAdapter);
 
-        const componentData = RenderHook.findComponent(subject.component);
+        const componentData = subject.component;
         const exactly = this.flags.exactly;
         const withAllChildren = this.flags['with all children'];
         const withAllWrappers = this.flags['with all wrappers'];
@@ -279,18 +304,17 @@ function installInto(expect) {
             } else {
                 // We're at the end, so trigger the event
                 triggerEvent(newSubject.component, newSubject.target, newSubject.eventName, newSubject.eventArgs);
-                return expect.shift(newSubject.component);
+                return expect.shift(newSubject.component.element.getPublicInstance());
             }
             
         });
     });
 
     function triggerEvent(component, target, eventName, eventArgs) {
-        let targetDOM = findDOMNode(component);
+        let targetDOM = findDOMNode(component.element.getPublicInstance());
         if (target) {
             targetDOM = findDOMNode(target.element.getPublicInstance());
         }
-
         if (typeof TestUtils.Simulate[eventName] !== 'function') {
 
             return expect.fail({
@@ -314,7 +338,7 @@ function installInto(expect) {
             });
         } else {
             triggerEvent(subject.component, null, eventName);
-            return expect.shift(subject.component);
+            return expect.shift(subject.component.element.getPublicInstance());
         }
     });
     
@@ -330,7 +354,7 @@ function installInto(expect) {
             });
         } else {
             triggerEvent(subject.component, null, eventName, eventArgs);
-            return expect.shift(subject.component);
+            return expect.shift(subject.component.element.getPublicInstance());
         }
     });
 
