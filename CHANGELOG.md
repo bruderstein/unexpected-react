@@ -86,3 +86,7 @@ React v15 *is* properly supported, without peerDep warnings (thanks @choffmeiste
 
 * Update to htmllike 2.0.2, fixes output issue
 
+## v3.1.2
+
+* Fix for combining `queried for` and `with event` in the deep renderer (#23 - thanks @janmeier for reporting)
+
