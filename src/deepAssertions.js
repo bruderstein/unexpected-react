@@ -365,11 +365,11 @@ function installInto(expect) {
         return expect(subject.component, 'to have [exactly] rendered [with all children] [with all wrappers]', expected);
     });
 
-    expect.addAssertion(['<ReactPendingDeepEvent> to contain [exactly] <ReactElement>',
-        '<ReactPendingDeepEvent> to contain [with all children] [with all wrappers]'], function (expect, subject, expected) {
+    expect.addAssertion(['<ReactPendingDeepEvent> [not] to contain [exactly] <ReactElement>',
+        '<ReactPendingDeepEvent> [not] to contain [with all children] [with all wrappers] <ReactElement>'], function (expect, subject, expected) {
 
         triggerEvent(subject.component, subject.target, subject.eventName, subject.eventArgs);
-        return expect(subject.component, 'to contain [exactly] [with all children] [with all wrappers]', expected);
+        return expect(subject.component, '[not] to contain [exactly] [with all children] [with all wrappers]', expected);
     });
 
     expect.addAssertion(['<ReactPendingDeepEvent> queried for [exactly] <ReactElement> <assertion?>',

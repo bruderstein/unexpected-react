@@ -650,6 +650,24 @@ describe('unexpected-react (deep rendering)', () => {
             );
         });
         
+        it('calls click on a sub component with `not to contain`', () => {
+            const component = TestUtils.renderIntoDocument(<ClickableComponent />);
+
+            expect(component, 'with event', 'click', 'on', <span className="item-click" />,
+                'not to contain',
+                <span className="item-click">Item clicked 1</span>
+            );
+        });
+
+        it('calls click on a sub component with `not to contain with all children`', () => {
+            const component = TestUtils.renderIntoDocument(<ClickableComponent />);
+
+            expect(component, 'with event', 'click', 'on', <span className="item-click" />,
+                'not to contain with all children',
+                <span className="item-click">Item clicked 1</span>
+            );
+        });
+
         it('calls click on a sub component with `queried for`', () => {
             const component = TestUtils.renderIntoDocument(<ClickableComponent />);
 

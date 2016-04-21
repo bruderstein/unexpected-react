@@ -2130,6 +2130,22 @@ describe('unexpected-react-shallow', () => {
                 <span className="main-click">Main clicked 1000</span>
             );
         });
+        
+        it('calls events with event parameters with `not to contain`', () => {
+            renderer.render(<ClickableComponent />);
+
+            expect(renderer, 'with event', 'aliensLanded', { increment: 1000 }, 'not to contain',
+                <span className="main-click">Does not exist</span>
+            );
+        });
+
+        it('calls events with event parameters with `to contain with all children`', () => {
+            renderer.render(<ClickableComponent />);
+
+            expect(renderer, 'with event', 'aliensLanded', { increment: 1000 }, 'to contain with all children',
+                <span className="main-click">Main clicked 1000</span>
+            );
+        });
 
         it('calls events with event parameters with `queried for`', () => {
             renderer.render(<ClickableComponent />);
