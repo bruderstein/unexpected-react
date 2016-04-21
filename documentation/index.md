@@ -226,7 +226,7 @@ For full rendering, they can be tested with a wrapper component as such:
 ```
 class StatelessWrapper extends React.Component {
   render() {
-    return (<div>{this.props.children}</div>)
+    return (this.props.children)
   }
 }
 
