@@ -226,11 +226,11 @@ For full rendering, they can be tested with a wrapper component as such:
 ```
 class StatelessWrapper extends React.Component {
   render() {
-    return (this.props.children)
+    return (this.props.children);
   }
 }
 
-var component = TestUtils.renderIntoDocument(<StatelessWrapper><StatelessComponent name="Daniel" /></StatelessWrapper>
+var component = TestUtils.renderIntoDocument(<StatelessWrapper><StatelessComponent name="Daniel" /></StatelessWrapper>);
 ```
 
 ## Cleaning up
