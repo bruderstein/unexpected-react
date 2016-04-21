@@ -90,3 +90,7 @@ React v15 *is* properly supported, without peerDep warnings (thanks @choffmeiste
 
 * Fix for combining `queried for` and `with event` in the deep renderer (#23 - thanks @janmeier for reporting)
 
+## v3.1.3
+
+* Fix for 'not to contain' and 'to contain with all children' after event
+
