@@ -218,6 +218,20 @@ component, and leaves out the `<span>` children of the `<Text>` components. The 
 the `<App>` wrapper component, and the `<Text>` wrapper component.
 
 
+## Stateless components
+Because [stateless components](https://facebook.github.io/react/docs/reusable-components.html#stateless-functions) can't be instantiated, `renderIntoDocument` won't return an instance back. 
+Using the shallow renderer works as shown in the first example. 
+For full rendering, they can be tested with a wrapper component as such:
+
+```
+class StatelessWrapper extends React.Component {
+  render() {
+    return (this.props.children);
+  }
+}
+
+var component = TestUtils.renderIntoDocument(<StatelessWrapper><StatelessComponent name="Daniel" /></StatelessWrapper>);
+```
 
 ## Cleaning up
 
