@@ -43,7 +43,7 @@
     "react": "^15.0.0",
     "react-addons-test-utils": "^15.0.0",
     "react-dom": "^15.0.0",
-    "unexpected": "^10.10.12",
+    "unexpected": "^10.13.2",
     "unexpected-documentation-site-generator": "^4.1.0",
     "unexpected-markdown": "^1.4.1"
   },
