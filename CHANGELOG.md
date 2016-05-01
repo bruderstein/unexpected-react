@@ -94,3 +94,9 @@ React v15 *is* properly supported, without peerDep warnings (thanks @choffmeiste
 
 * Fix for 'not to contain' and 'to contain with all children' after event
 
+## v3.2.0
+
+* Update docs for rendering stateless components (thanks @2color)
+* Add support for `eventTarget` in `on` clauses of `with event`
+* Add support for `queryTarget` in `queried for`
+
