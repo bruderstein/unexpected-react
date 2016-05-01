@@ -36,3 +36,15 @@ return expect(renderer, 'queried for', <TodoItem id={3} />)
 Note that it is not possible to call an event using `with event` after using `queried for` in
 an assertion.  This is because the `queried for` extracts the rendered output from the shallow 
 renderer, so future events will be lost.
+
+## queryTarget
+
+If you want to find a target nested inside a parent element, use `queryTarget` in the query.
+e.g. This `queried for` clause returns the `InputBox` inside the `div` with the class `add-new-item`.
+
+```js
+var renderer = TestUtils.createRenderer();
+renderer.render(<TodoList items={items} />);
+expect(component, 'queried for', <div className="add-new-item"><InputBox queryTarget /></div>
+    'to have rendered', <InputBox placeholder="Enter something to do" />);
+```

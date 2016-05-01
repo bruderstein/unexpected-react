@@ -84,3 +84,21 @@ expect(<TodoList items={items} />,
        expect(renderer, 'to contain', <TodoItem item={{ id: 3, completed: true }} />);
    });
 ```
+
+## eventTarget
+
+You can add an `eventTarget` prop to the expected to trigger the event on a child component.
+e.g. This will trigger the click in the `<button>` inside the `TodoItem` with the `id` of `2`
+
+```js
+var todoList = TestUtils.renderIntoDocument(<TodoList items={items} />);
+
+expect(todoList, 
+    'with event click', 'on', <TodoItem id={2}><button className="complete" eventTarget /></TodoItem>
+    'to contain', 
+    <TodoItem id={2}>
+        <span>Completed!</span>
+    </TodoItem>);
+```
+
+When no `eventTarget` is specified, the event is triggered on the top level element specified in the `on` clause.
