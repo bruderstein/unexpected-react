@@ -159,7 +159,20 @@ after the event.</p>
   <div>&nbsp;&nbsp;&nbsp;<span style="color: #000000">.</span><span style="color: #000000">then</span><span style="color: #000000">(</span>renderer&nbsp;<span style="color: #a71d5d">=&gt;</span>&nbsp;<span style="color: #000000">{</span></div>
   <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #000000">expect</span><span style="color: #000000">(</span>renderer<span style="color: #000000">,</span>&nbsp;<span style="color: #df5000">'to&nbsp;contain'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #a71d5d">&lt;</span>TodoItem&nbsp;item<span style="color: #a71d5d">=</span><span style="color: #000000">{{</span>&nbsp;id<span style="color: #000000">:</span>&nbsp;<span style="color: #0086b3">3</span><span style="color: #000000">,</span>&nbsp;completed<span style="color: #000000">:</span>&nbsp;<span style="color: #0086b3">true</span>&nbsp;<span style="color: #000000">}}</span>&nbsp;<span style="color: #a71d5d">/&gt;</span><span style="color: #000000">);</span></div>
   <div>&nbsp;&nbsp;&nbsp;<span style="color: #000000">});</span></div>
-</div>
+</div><h2 id="eventtarget">eventTarget</h2>
+<p>You can add an <code>eventTarget</code> prop to the expected to trigger the event on a child component.
+e.g. This will trigger the click in the <code>&lt;button&gt;</code> inside the <code>TodoItem</code> with the <code>id</code> of <code>2</code></p>
+<div class="code lang-javascript">
+  <div><span style="color: #a71d5d">var</span>&nbsp;todoList&nbsp;<span style="color: #a71d5d">=</span>&nbsp;TestUtils<span style="color: #000000">.</span><span style="color: #000000">renderIntoDocument</span><span style="color: #000000">(</span><span style="color: #a71d5d">&lt;</span>TodoList&nbsp;items<span style="color: #a71d5d">=</span><span style="color: #000000">{</span>items<span style="color: #000000">}</span>&nbsp;<span style="color: #a71d5d">/&gt;</span><span style="color: #000000">);</span></div>
+  <div>&nbsp;</div>
+  <div><span style="color: #000000">expect</span><span style="color: #000000">(</span>todoList<span style="color: #000000">,</span>&nbsp;</div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #df5000">'with&nbsp;event&nbsp;click'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #df5000">'on'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #a71d5d">&lt;</span>TodoItem&nbsp;id<span style="color: #a71d5d">=</span><span style="color: #000000">{</span><span style="color: #0086b3">2</span><span style="color: #000000">}</span><span style="color: #a71d5d">&gt;&lt;</span>button&nbsp;className<span style="color: #a71d5d">=</span><span style="color: #df5000">&quot;complete&quot;</span>&nbsp;eventTarget&nbsp;<span style="color: #a71d5d">/&gt;&lt;/</span>TodoItem<span style="color: #a71d5d">&gt;</span></div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #df5000">'to&nbsp;contain'</span><span style="color: #000000">,</span>&nbsp;</div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #a71d5d">&lt;</span>TodoItem&nbsp;id<span style="color: #a71d5d">=</span><span style="color: #000000">{</span><span style="color: #0086b3">2</span><span style="color: #000000">}</span><span style="color: #a71d5d">&gt;</span></div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #a71d5d">&lt;</span>span<span style="color: #a71d5d">&gt;</span>Completed<span style="color: #a71d5d">!&lt;/</span>span<span style="color: #a71d5d">&gt;</span></div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #a71d5d">&lt;/</span>TodoItem<span style="color: #a71d5d">&gt;</span><span style="color: #000000">);</span></div>
+</div><p>When no <code>eventTarget</code> is specified, the event is triggered on the top level element specified in the <code>on</code> clause.</p>
+
         </div>
     </div>
 </section>

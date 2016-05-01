@@ -41,7 +41,64 @@
 against the shallow renderer (replaces <a href="https://github.com/bruderstein/unexpected-react-shallow">unexpected-react-shallow</a>)</p>
 <p>!<img src="https://cloud.githubusercontent.com/assets/91716/11253997/c5d2a9b4-8e3e-11e5-8da5-2df95598865c.png" alt="output_demo"></p>
 <p>See the blog post for an introduction: <a href="https://medium.com/@bruderstein/the-missing-piece-to-the-react-testing-puzzle-c51cd30df7a0">https://medium.com/@bruderstein/the-missing-piece-to-the-react-testing-puzzle-c51cd30df7a0</a></p>
-<h1 id="usage">Usage</h1>
+<h1 id="features">Features</h1>
+<ul>
+<li>Assert React component&#39;s output using the <a href="http://facebook.github.io/react/docs/test-utils.html#shallow-rendering">shallow renderer</a></li>
+<li>Assert React component&#39;s output using the full renderer and JSX &quot;expected&quot; values (e.g. <code>TestUtils.renderIntoDocument()</code>) </li>
+<li>Trigger events on components in both shallow and full renderers</li>
+<li>Locate components using JSX queries in both shallow and full renderers</li>
+<li>All assertions work identically with both shallow and full renderers, allowing you to mix and match in your tests, based on what you need.</li>
+</ul>
+<h1 id="examples">Examples</h1>
+<ul>
+<li><p>Checking a simple render</p>
+<div class="code lang-javascript">
+  <div><span style="color: #F92672">var</span>&nbsp;todoList&nbsp;<span style="color: #F92672">=</span>&nbsp;TestUtils<span style="color: #999">.</span>renderIntoDocument<span style="color: #999">(</span><span style="color: #F92672">&lt;</span>TodoList&nbsp;items<span style="color: #F92672">=</span><span style="color: #999">{</span>items<span style="color: #999">}</span>&nbsp;<span style="color: #F92672">/&gt;</span><span style="color: #999">);</span></div>
+  <div>expect<span style="color: #999">(</span>todoList<span style="color: #999">,</span>&nbsp;<span style="color: #E6DB74">'to&nbsp;have&nbsp;rendered'</span><span style="color: #999">,</span>&nbsp;</div>
+  <div>&nbsp;&nbsp;<span style="color: #F92672">&lt;</span>TodoList<span style="color: #F92672">&gt;</span></div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #F92672">&lt;</span>TodoItem&nbsp;id<span style="color: #F92672">=</span><span style="color: #999">{</span><span style="color: #66D9EF; font-weight: bold">1</span><span style="color: #999">}</span><span style="color: #F92672">&gt;</span></div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #F92672">&lt;</span>span<span style="color: #F92672">&gt;</span>Buy&nbsp;milk<span style="color: #F92672">&lt;/</span>span<span style="color: #F92672">&gt;</span></div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #F92672">&lt;/</span>TodoItem<span style="color: #F92672">&gt;</span></div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #F92672">&lt;</span>TodoItem&nbsp;id<span style="color: #F92672">=</span><span style="color: #999">{</span><span style="color: #66D9EF; font-weight: bold">2</span><span style="color: #999">}</span><span style="color: #F92672">&gt;</span></div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #F92672">&lt;</span>span<span style="color: #F92672">&gt;</span>Make&nbsp;milkshake<span style="color: #F92672">&lt;/</span>span<span style="color: #F92672">&gt;</span></div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #F92672">&lt;/</span>TodoItem<span style="color: #F92672">&gt;</span></div>
+  <div>&nbsp;&nbsp;<span style="color: #F92672">&lt;/</span>TodoList<span style="color: #F92672">&gt;</span><span style="color: #999">);</span></div>
+</div></li>
+<li><p>Triggering an event on a button inside a subcomponent (using the <code>eventTarget</code> prop to identify where the event should be triggered)</p>
+</li>
+</ul>
+<div class="code lang-javascript">
+  <div><span style="color: #F92672">var</span>&nbsp;todoList&nbsp;<span style="color: #F92672">=</span>&nbsp;TestUtils<span style="color: #999">.</span>renderIntoDocument<span style="color: #999">(</span><span style="color: #F92672">&lt;</span>TodoList&nbsp;items<span style="color: #F92672">=</span><span style="color: #999">{</span>items<span style="color: #999">}</span>&nbsp;<span style="color: #F92672">/&gt;</span><span style="color: #999">);</span></div>
+  <div>&nbsp;</div>
+  <div>expect<span style="color: #999">(</span>todoList<span style="color: #999">,</span>&nbsp;</div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #E6DB74">'with&nbsp;event&nbsp;click'</span><span style="color: #999">,</span>&nbsp;<span style="color: #E6DB74">'on'</span><span style="color: #999">,</span>&nbsp;<span style="color: #F92672">&lt;</span>TodoItem&nbsp;id<span style="color: #F92672">=</span><span style="color: #999">{</span><span style="color: #66D9EF; font-weight: bold">2</span><span style="color: #999">}</span><span style="color: #F92672">&gt;&lt;</span>button&nbsp;className<span style="color: #F92672">=</span><span style="color: #E6DB74">&quot;completed&quot;</span>&nbsp;eventTarget&nbsp;<span style="color: #F92672">/&gt;&lt;/</span>TodoItem<span style="color: #F92672">&gt;</span><span style="color: #999">,</span></div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #E6DB74">'to&nbsp;contain'</span><span style="color: #999">,</span>&nbsp;<span style="color: #F92672">&lt;</span>TodoItem&nbsp;id<span style="color: #F92672">=</span><span style="color: #999">{</span><span style="color: #66D9EF; font-weight: bold">2</span><span style="color: #999">}</span><span style="color: #F92672">&gt;&lt;</span>span&nbsp;className<span style="color: #F92672">=</span><span style="color: #E6DB74">&quot;completed&quot;</span><span style="color: #F92672">&gt;</span>Buy&nbsp;milk<span style="color: #F92672">&lt;/</span>span<span style="color: #F92672">&gt;&lt;/</span>TodoItem<span style="color: #F92672">&gt;</span><span style="color: #999">);</span>&nbsp;</div>
+</div><ul>
+<li>Locating a component with <code>queried for</code> then validating the render</li>
+</ul>
+<div class="code lang-javascript">
+  <div><span style="color: #F92672">var</span>&nbsp;renderer&nbsp;<span style="color: #F92672">=</span>&nbsp;TestUtils<span style="color: #999">.</span>createRenderer<span style="color: #999">();</span></div>
+  <div>renderer<span style="color: #999">.</span>render<span style="color: #999">(</span><span style="color: #F92672">&lt;</span>TodoList&nbsp;items<span style="color: #F92672">=</span><span style="color: #999">{</span>items<span style="color: #999">}</span>&nbsp;<span style="color: #F92672">/&gt;</span><span style="color: #999">);</span></div>
+  <div>&nbsp;</div>
+  <div><span style="color: #888">//&nbsp;Call&nbsp;the&nbsp;`onCompleted`&nbsp;callback&nbsp;for&nbsp;TodoItem&nbsp;2&nbsp;</span></div>
+  <div>expect<span style="color: #999">(</span>renderer<span style="color: #999">,</span>&nbsp;</div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #E6DB74">'with&nbsp;event&nbsp;completed'</span><span style="color: #999">,</span>&nbsp;<span style="color: #E6DB74">'on'</span><span style="color: #999">,</span>&nbsp;<span style="color: #F92672">&lt;</span>TodoItem&nbsp;id<span style="color: #F92672">=</span><span style="color: #999">{</span><span style="color: #66D9EF; font-weight: bold">2</span><span style="color: #999">}</span>&nbsp;<span style="color: #F92672">/&gt;</span><span style="color: #999">,</span></div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #E6DB74">'queried&nbsp;for'</span><span style="color: #999">,</span>&nbsp;<span style="color: #F92672">&lt;</span>TodoItem&nbsp;id<span style="color: #F92672">=</span><span style="color: #999">{</span><span style="color: #66D9EF; font-weight: bold">2</span><span style="color: #999">}</span>&nbsp;<span style="color: #F92672">/&gt;</span></div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #E6DB74">'to&nbsp;have&nbsp;rendered'</span><span style="color: #999">,</span>&nbsp;<span style="color: #F92672">&lt;</span>TodoItem&nbsp;id<span style="color: #F92672">=</span><span style="color: #999">{</span><span style="color: #66D9EF; font-weight: bold">2</span><span style="color: #999">}</span>&nbsp;completed<span style="color: #F92672">=</span><span style="color: #999">{</span><span style="color: #66D9EF; font-weight: bold">true</span><span style="color: #999">}</span>&nbsp;<span style="color: #F92672">/&gt;</span><span style="color: #999">);</span></div>
+</div><ul>
+<li>Locating a component and then checking the state of the component with the full renderer</li>
+</ul>
+<div class="code lang-javascript">
+  <div><span style="color: #F92672">var</span>&nbsp;todoList&nbsp;<span style="color: #F92672">=</span>&nbsp;TestUtils<span style="color: #999">.</span>renderIntoDocument<span style="color: #999">(</span><span style="color: #F92672">&lt;</span>TodoList&nbsp;items<span style="color: #F92672">=</span><span style="color: #999">{</span>items<span style="color: #999">}</span>&nbsp;<span style="color: #F92672">/&gt;</span><span style="color: #999">);</span></div>
+  <div>&nbsp;</div>
+  <div>expect<span style="color: #999">(</span>todoList<span style="color: #999">,</span>&nbsp;</div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #E6DB74">'with&nbsp;event&nbsp;click'</span><span style="color: #999">,</span>&nbsp;<span style="color: #E6DB74">'on'</span><span style="color: #999">,</span>&nbsp;<span style="color: #F92672">&lt;</span>TodoItem&nbsp;id<span style="color: #F92672">=</span><span style="color: #999">{</span><span style="color: #66D9EF; font-weight: bold">2</span><span style="color: #999">}</span><span style="color: #F92672">&gt;&lt;</span>button&nbsp;className<span style="color: #F92672">=</span><span style="color: #E6DB74">&quot;completed&quot;</span>&nbsp;eventTarget&nbsp;<span style="color: #F92672">/&gt;&lt;/</span>TodoItem<span style="color: #F92672">&gt;</span><span style="color: #999">,</span></div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #E6DB74">'queried&nbsp;for'</span><span style="color: #999">,</span>&nbsp;<span style="color: #F92672">&lt;</span>TodoItem&nbsp;id<span style="color: #F92672">=</span><span style="color: #999">{</span><span style="color: #66D9EF; font-weight: bold">2</span><span style="color: #999">}</span>&nbsp;<span style="color: #F92672">/&gt;</span><span style="color: #999">)</span></div>
+  <div>&nbsp;&nbsp;<span style="color: #999">.</span>then<span style="color: #999">(</span>todoItem2&nbsp;<span style="color: #F92672">=&gt;</span>&nbsp;<span style="color: #999">{</span></div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #888">&nbsp;//&nbsp;Here&nbsp;we're&nbsp;checking&nbsp;the&nbsp;state,&nbsp;but&nbsp;we&nbsp;could&nbsp;perform&nbsp;any&nbsp;operation&nbsp;on&nbsp;the&nbsp;instance&nbsp;of&nbsp;the&nbsp;component&nbsp;</span></div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;expect<span style="color: #999">(</span>todoItem2<span style="color: #999">.</span>state<span style="color: #999">,</span>&nbsp;<span style="color: #E6DB74">'to&nbsp;satisfy'</span><span style="color: #999">,</span>&nbsp;<span style="color: #999">{</span>&nbsp;completed<span style="color: #999">:</span>&nbsp;<span style="color: #66D9EF; font-weight: bold">true</span>&nbsp;<span style="color: #999">});</span></div>
+  <div>&nbsp;&nbsp;<span style="color: #999">});</span></div>
+</div><h1 id="usage">Usage</h1>
 <div class="code lang-">
   <div>npm&nbsp;install&nbsp;--save-dev&nbsp;unexpected&nbsp;unexpected-react</div>
 </div><p>If you want to assert over the whole virtual DOM, then you need to emulate the DOM 
@@ -210,7 +267,19 @@ test both scenarios with the full renderer. To demonstrate, all the following te
 </div><p>The first test shows the full virtual DOM that gets rendered. The second test skips the <code>&lt;App&gt;</code> &quot;wrapper&quot; 
 component, and leaves out the <code>&lt;span&gt;</code> children of the <code>&lt;Text&gt;</code> components. The third tests skips both 
 the <code>&lt;App&gt;</code> wrapper component, and the <code>&lt;Text&gt;</code> wrapper component.</p>
-<h2 id="cleaning-up">Cleaning up</h2>
+<h2 id="stateless-components">Stateless components</h2>
+<p>Because <a href="https://facebook.github.io/react/docs/reusable-components.html#stateless-functions">stateless components</a> can&#39;t be instantiated, <code>renderIntoDocument</code> won&#39;t return an instance back. 
+Using the shallow renderer works as shown in the first example. 
+For full rendering, they can be tested with a wrapper component as such:</p>
+<div class="code lang-">
+  <div>class&nbsp;StatelessWrapper&nbsp;extends&nbsp;React.Component&nbsp;{</div>
+  <div>&nbsp;&nbsp;render()&nbsp;{</div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;(this.props.children);</div>
+  <div>&nbsp;&nbsp;}</div>
+  <div>}</div>
+  <div>&nbsp;</div>
+  <div>var&nbsp;component&nbsp;=&nbsp;TestUtils.renderIntoDocument(&lt;StatelessWrapper&gt;&lt;StatelessComponent&nbsp;name=&quot;Daniel&quot;&nbsp;/&gt;&lt;/StatelessWrapper&gt;);</div>
+</div><h2 id="cleaning-up">Cleaning up</h2>
 <p>When using the normal renderer, unexpected-react makes use of <a href="https://npmjs.org/package/react-render-hook"><code>react-render-hook</code></a>,
 which utilises the code from the <a href="https://github.com/facebook/react-devtools">React devtools</a>. As there is no way for <code>react-render-hook</code> 
 to know when a test is completed, it has to keep a reference to every rendered component. Whilst this shouldn&#39;t normally be an issue,

@@ -123,7 +123,15 @@ As the spans for id and label are siblings, they don&#39;t need to be included t
 </div><p>Note that it is not possible to call an event using <code>with event</code> after using <code>queried for</code> in
 an assertion.  This is because the <code>queried for</code> extracts the rendered output from the shallow 
 renderer, so future events will be lost.</p>
-
+<h2 id="querytarget">queryTarget</h2>
+<p>If you want to find a target nested inside a parent element, use <code>queryTarget</code> in the query.
+e.g. This <code>queried for</code> clause returns the <code>InputBox</code> inside the <code>div</code> with the class <code>add-new-item</code>.</p>
+<div class="code lang-javascript">
+  <div><span style="color: #a71d5d">var</span>&nbsp;renderer&nbsp;<span style="color: #a71d5d">=</span>&nbsp;TestUtils<span style="color: #000000">.</span><span style="color: #000000">createRenderer</span><span style="color: #000000">();</span></div>
+  <div>renderer<span style="color: #000000">.</span><span style="color: #000000">render</span><span style="color: #000000">(</span><span style="color: #a71d5d">&lt;</span>TodoList&nbsp;items<span style="color: #a71d5d">=</span><span style="color: #000000">{</span>items<span style="color: #000000">}</span>&nbsp;<span style="color: #a71d5d">/&gt;</span><span style="color: #000000">);</span></div>
+  <div><span style="color: #000000">expect</span><span style="color: #000000">(</span>component<span style="color: #000000">,</span>&nbsp;<span style="color: #df5000">'queried&nbsp;for'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #a71d5d">&lt;</span>div&nbsp;className<span style="color: #a71d5d">=</span><span style="color: #df5000">&quot;add-new-item&quot;</span><span style="color: #a71d5d">&gt;&lt;</span>InputBox&nbsp;queryTarget&nbsp;<span style="color: #a71d5d">/&gt;&lt;/</span>div<span style="color: #a71d5d">&gt;</span></div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #df5000">'to&nbsp;have&nbsp;rendered'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #a71d5d">&lt;</span>InputBox&nbsp;placeholder<span style="color: #a71d5d">=</span><span style="color: #df5000">&quot;Enter&nbsp;something&nbsp;to&nbsp;do&quot;</span>&nbsp;<span style="color: #a71d5d">/&gt;</span><span style="color: #000000">);</span></div>
+</div>
         </div>
     </div>
 </section>
