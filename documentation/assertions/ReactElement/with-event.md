@@ -47,9 +47,27 @@ You can take the instance of the component after the event has been triggered by
 from `expect`.
 
 ```js
-expect(<TodoList items={items} />, 'with event mouseDown', { mouseX: 150, mouseY: 50 })
+expect(<TodoList items={items} />, 
+    'with event mouseDown', { mouseX: 150, mouseY: 50 })
     .then(todoList => {
         expect(todoList.state, 'to satisfy', { items: [ { clicked: true } ] });
     });
         
+```
+
+## eventTarget
+
+You can add an `eventTarget` prop to the expected to trigger the event on a child component.
+e.g.
+```js
+var renderer = TestUtils.createRenderer()
+renderer.render(<App />);
+
+expect(renderer, 
+    'with event', 'click', 'on', <div className="click-test"><button eventTarget /></div>, 
+    'to have rendered', 
+    <div>
+        <div className="other-button"><button>Not clicked</button></div>
+        <div className="click-test"><button>Button was clicked</button></div>
+    </div>);
 ```

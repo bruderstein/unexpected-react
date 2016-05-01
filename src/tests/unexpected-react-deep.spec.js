@@ -317,6 +317,16 @@ describe('unexpected-react (deep rendering)', () => {
                 '  </div>\n' +
                 '</CustomComp>');
         });
+        
+        it('matches an expect.it on JSX content', () => {
+
+            const component = TestUtils.renderIntoDocument(<CustomComp className="bar" childCount={2} />);
+            return expect(component, 'to have rendered',
+                <CustomComp>
+                    { expect.it('to contain', <span className="1" />)
+                        .and('to contain', <span className="2" />)}
+                </CustomComp>);
+        });
 
         it('highlights a difference with an async expect.it on an attribute', () => {
 
@@ -530,6 +540,15 @@ describe('unexpected-react (deep rendering)', () => {
                     expect(span, 'to have rendered', <span className="2">2</span>);
                 });
         });
+        
+        it('uses `queryTarget` as the target element', () => {
+
+            const component = TestUtils.renderIntoDocument(<CustomComp className="bar" childCount={3} />);
+            return expect(component, 'queried for', <div><span queryTarget className={ expect.it('to eventually have value', '2')} /></div>)
+                .then(span => {
+                    expect(span, 'to have rendered', <span className="2">2</span>);
+                });
+        })
 
     });
 
@@ -766,6 +785,16 @@ describe('unexpected-react (deep rendering)', () => {
                 'and with event', 'mouseDown', { mouseX: 15 })
                 .then(result => {
                     expect(result.state, 'to satisfy', { clickCount: 26, itemClickCount: 11 });
+                });
+        });
+
+        it('uses the `eventTarget` prop to identify the target for the event', () => {
+
+            const component = TestUtils.renderIntoDocument(<ClickableComponent />);
+
+            return expect(component, 'with event', 'mouseDown', { mouseX: 10 }, 'on', <div ><span className="item-click" eventTarget /></div>)
+                .then(result => {
+                    expect(result.state, 'to satisfy', { clickCount: 11, itemClickCount: 11 });
                 });
         });
 

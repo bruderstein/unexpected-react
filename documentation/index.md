@@ -14,6 +14,64 @@ against the shallow renderer (replaces [unexpected-react-shallow](https://github
 
 See the blog post for an introduction: https://medium.com/@bruderstein/the-missing-piece-to-the-react-testing-puzzle-c51cd30df7a0
 
+# Features
+
+* Assert React component's output using the [shallow renderer](http://facebook.github.io/react/docs/test-utils.html#shallow-rendering)
+* Assert React component's output using the full renderer and JSX "expected" values (e.g. `TestUtils.renderIntoDocument()`) 
+* Trigger events on components in both shallow and full renderers
+* Locate components using JSX queries in both shallow and full renderers
+* All assertions work identically with both shallow and full renderers, allowing you to mix and match in your tests, based on what you need.
+
+# Examples
+
+* Checking a simple render
+```js
+var todoList = TestUtils.renderIntoDocument(<TodoList items={items} />);
+expect(todoList, 'to have rendered', 
+    <TodoList>
+      <TodoItem id={1}>
+        <span>Buy milk</span>
+      </TodoItem>
+      <TodoItem id={2}>
+        <span>Make milkshake</span>
+      </TodoItem>
+    </TodoList>);
+```
+      
+* Triggering an event on a button inside a subcomponent (using the `eventTarget` prop to identify where the event should be triggered)
+```js
+var todoList = TestUtils.renderIntoDocument(<TodoList items={items} />);
+
+expect(todoList, 
+    'with event click', 'on', <TodoItem id={2}><button className="completed" eventTarget /></TodoItem>,
+    'to contain', <TodoItem id={2}><span className="completed">Buy milk</span></TodoItem>); 
+```
+
+* Locating a component with `queried for` then validating the render
+```js
+var renderer = TestUtils.createRenderer();
+renderer.render(<TodoList items={items} />);
+
+// Call the `onCompleted` callback for TodoItem 2 
+expect(renderer, 
+    'with event completed', 'on', <TodoItem id={2} />,
+    'queried for', <TodoItem id={2} />
+    'to have rendered', <TodoItem id={2} completed={true} />);
+```
+
+* Locating a component and then checking the state of the component with the full renderer
+```js
+var todoList = TestUtils.renderIntoDocument(<TodoList items={items} />);
+
+expect(todoList, 
+    'with event click', 'on', <TodoItem id={2}><button className="completed" eventTarget /></TodoItem>,
+    'queried for', <TodoItem id={2} />)
+  .then(todoItem2 => {
+     // Here we're checking the state, but we could perform any operation on the instance of the component 
+     expect(todoItem2.state, 'to satisfy', { completed: true });
+  });
+```
+
 # Usage
 
 ```

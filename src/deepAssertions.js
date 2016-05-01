@@ -168,7 +168,8 @@ function installInto(expect) {
             diffExtraChildren: exactly || withAllChildren,
             diffExtraAttributes: exactly,
             diffExactClasses: exactly,
-            diffExtraClasses: exactly
+            diffExtraClasses: exactly,
+            findTargetAttrib: 'queryTarget'
         };
 
         const containsResult = renderedHtmlLike.contains(jsxAdapter, subject, query, expect, options);
@@ -191,7 +192,7 @@ function installInto(expect) {
                 });
             }
 
-            return expect.shift(result.bestMatchItem);
+            return expect.shift(result.bestMatch.target || result.bestMatchItem);
         });
     });
 
@@ -270,7 +271,9 @@ function installInto(expect) {
         const containsResult = reactHtmlLike.contains(jsxAdapter, componentData, target, expect, {
             diffWrappers: exactly || withAllWrappers,
             diffExtraChildren: exactly || withAllChildren,
-            diffExtraAttributes: exactly
+            diffExtraAttributes: exactly,
+            diffExtraClasses: exactly,
+            findTargetAttrib: 'eventTarget'
         });
         
         return reactHtmlLike.withResult(containsResult, result => {
@@ -294,8 +297,11 @@ function installInto(expect) {
                 })
             }
 
+            if (result.bestMatch.target) {
+                console.log(result.bestMatch.target)
+            }
             const newSubject = Object.assign({}, subject, {
-                target: result.bestMatchItem
+                target: result.bestMatch.target || result.bestMatchItem
             });
             
             if (arguments.length > 3) {

@@ -22,3 +22,14 @@ expect(component, 'queried for', <TodoItem item={{ id: 3 }} />)
         expect(todoItem.props.label, 'to equal', 'Do something');
     });
 ```
+
+## queryTarget
+
+If you want to find a target nested inside a parent element, use `queryTarget` in the query.
+e.g. This `queried for` clause returns the `span` inside the `TodoItem`
+
+```js
+var component = TestUtils.renderIntoDocument(<TodoList items={items} />);
+expect(component, 'queried for', <TodoItem item={{ id: 3 }}><span className="label" queryTarget /></TodoItem>,
+    'to have rendered', <span className="label">Buy milk</span>);
+```
