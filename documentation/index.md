@@ -39,6 +39,7 @@ expect(todoList, 'to have rendered',
 ```
       
 * Triggering an event on a button inside a subcomponent (using the `eventTarget` prop to identify where the event should be triggered)
+
 ```js
 var todoList = TestUtils.renderIntoDocument(<TodoList items={items} />);
 
@@ -47,7 +48,9 @@ expect(todoList,
     'to contain', <TodoItem id={2}><span className="completed">Buy milk</span></TodoItem>); 
 ```
 
+
 * Locating a component with `queried for` then validating the render
+
 ```js
 var renderer = TestUtils.createRenderer();
 renderer.render(<TodoList items={items} />);
@@ -59,7 +62,9 @@ expect(renderer,
     'to have rendered', <TodoItem id={2} completed={true} />);
 ```
 
+
 * Locating a component and then checking the state of the component with the full renderer
+
 ```js
 var todoList = TestUtils.renderIntoDocument(<TodoList items={items} />);
 
