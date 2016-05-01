@@ -146,7 +146,8 @@ function installInto(expect) {
             diffExtraChildren: exactly || withAllChildren,
             diffExtraAttributes: exactly,
             diffExactClasses: exactly,
-            diffExtraClasses: exactly
+            diffExtraClasses: exactly,
+            findTargetAttrib: 'queryTarget'
         };
 
         const containsResult = jsxHtmlLike.contains(adapter, subject, query, expect, options);
@@ -169,7 +170,7 @@ function installInto(expect) {
                 });
             }
 
-            return expect.shift(result.bestMatchItem);
+            return expect.shift(result.bestMatch.target || result.bestMatchItem);
         });
     });
 
@@ -235,7 +236,8 @@ function installInto(expect) {
         const containsResult = jsxHtmlLike.contains(adapter, subject.renderer.getRenderOutput(), target, expect, {
             diffWrappers: exactly || withAllWrappers,
             diffExtraChildren: exactly || withAllChildren,
-            diffExtraAttributes: exactly
+            diffExtraAttributes: exactly,
+            findTargetAttrib: 'eventTarget'
         });
         return jsxHtmlLike.withResult(containsResult, result => {
             if (!result.found) {
@@ -251,8 +253,9 @@ function installInto(expect) {
             }
 
             const newSubject = Object.assign({}, subject, {
-                target: result.bestMatchItem
+                target: result.bestMatch.target || result.bestMatchItem
             });
+
             if (arguments.length > 3) {
                 return expect.shift(newSubject);
             } else {

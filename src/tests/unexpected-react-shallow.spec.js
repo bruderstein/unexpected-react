@@ -2025,6 +2025,22 @@ describe('unexpected-react-shallow', () => {
                     });
                 });
         });
+
+        it('passes the `queryTarget` forward as the target of the query', () => {
+            renderer.render(
+                <MyDiv className="foo">
+                    <MyDiv className="bar">
+                        <span>bar</span>
+                    </MyDiv>
+                    <MyDiv className="baz">
+                        <span>baz</span>
+                    </MyDiv>
+                </MyDiv>
+            );
+            expect(renderer, 'queried for', <MyDiv className="bar"><span queryTarget /></MyDiv>,
+                'to have exactly rendered', <span>bar</span>);
+
+        })
     });
      
 
@@ -2289,6 +2305,21 @@ describe('unexpected-react-shallow', () => {
                         </div>);
                 });
         });
+
+        it('uses `eventTarget` prop to call an event on a sub component', () => {
+
+            expect(<ClickableComponent />, 'with event', 'click', { increment: 5 }, 'on', <div><span className="item-click" eventTarget/></div>,
+                'and with event', 'aliensLanded', { increment: 7 })
+                .then(renderer => {
+                    // Using getRenderOutput() here to validate that the renderer and not the pending event wrapper is forwarded
+                    expect(renderer.getRenderOutput(), 'to have rendered',
+                        <div>
+                            <span className="main-click">Main clicked 7</span>
+                            <span className="item-click">Item clicked 5</span>
+                        </div>);
+                });
+        });
+        
 
     });
 
