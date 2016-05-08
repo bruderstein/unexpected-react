@@ -2,6 +2,8 @@ node_modules/
 wallaby.js
 bootstrap-unexpected-markdown.js
 site-build/
-demo(/
+demo/
+.travis.yml
+.coveralls.yml
 
 

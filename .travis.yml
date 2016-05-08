@@ -1,0 +1,7 @@
+sudo: false
+language: node_js
+node_js:
+    - "v4"
+script:
+    - npm test
+    - npm run coveralls

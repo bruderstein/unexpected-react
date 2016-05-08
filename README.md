@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/bruderstein/unexpected-react.svg?branch=master)](https://travis-ci.org/bruderstein/unexpected-react)
+[![Coverage Status](https://coveralls.io/repos/github/bruderstein/unexpected-react/badge.svg?branch=master)](https://coveralls.io/github/bruderstein/unexpected-react?branch=master)
+[![npm version](https://badge.fury.io/js/unexpected-react.svg)](https://badge.fury.io/js/unexpected-react) 
+
 # unexpected-react
 
 Plugin for [unexpected](https://unexpected.js.org) to allow for testing the full virtual DOM, and 

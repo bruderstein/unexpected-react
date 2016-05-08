@@ -10,7 +10,8 @@
     "lint": "eslint src",
     "generate-site": "generate-site --require ./bootstrap-unexpected-markdown.js",
     "deploy-site": "deploy-site.sh",
-    "test": "npm run test-main && npm run test-error"
+    "test": "npm run test-main && npm run test-error",
+    "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- --compilers js:babel/register src/tests/*.spec.js &&cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage || true"
   },
   "main": "lib/unexpected-react.js",
   "repository": "https://github.com/bruderstein/unexpected-react.git",
@@ -33,12 +34,15 @@
   "devDependencies": {
     "babel": "5.x.x",
     "babel-eslint": "^6.0.0",
+    "coveralls": "^2.11.9",
     "eslint": "^2.2.0",
     "eslint-plugin-react": "^3.8.0",
     "immutable": "^3.7.6",
+    "istanbul": "^0.4.3",
     "jsdom": "^6.5.1",
     "magicpen": "^5.7.0",
     "mocha": "^2.3.3",
+    "mocha-lcov-reporter": "^1.2.0",
     "object-assign": "^4.0.1",
     "react": "^15.0.0",
     "react-addons-test-utils": "^15.0.0",
