@@ -512,8 +512,8 @@ describe('unexpected-react (deep rendering)', () => {
                 'queried for <span className="2" /> to have rendered <span className="2">foo</span>\n' +
                 '\n' +
                 '<span className="2">\n' +
-                '  -2\n' +
-                '  +foo\n' +
+                '  2 // -2\n' +
+                '    // +foo\n' +
                 '</span>');
         });
 

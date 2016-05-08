@@ -86,14 +86,14 @@ describe('Test', function () {
         '    </LiElement>\n' +
         '    <LiElement name="Chocolate">\n' +
         '      <li>\n' +
-        '        -Chocolate\n' +
-        '        +Mustard\n' +
+        '        Chocolate // -Chocolate\n' +
+        '                  // +Mustard\n' +
         '      </li>\n' +
         '    </LiElement>\n' +
         '    <LiElement name="Mustard">\n' +
         '      <li>\n' +
-        '        -Mustard\n' +
-        '        +Chocolate\n' +
+        '        Mustard // -Mustard\n' +
+        '                // +Chocolate\n' +
         '      </li>\n' +
         '    </LiElement>\n' +
         '  </ul>\n' +

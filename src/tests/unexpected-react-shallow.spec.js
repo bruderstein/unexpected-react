@@ -270,8 +270,8 @@ describe('unexpected-react-shallow', () => {
              'to have rendered <div>Different content</div>\n' +
              '\n' +
              '<div>\n'+
-             '  -Some simple content\n' +
-             '  +Different content\n' +
+             '  Some simple content // -Some simple content\n' +
+             '                      // +Different content\n' +
              '</div>'
             );
 
@@ -880,8 +880,8 @@ describe('unexpected-react-shallow', () => {
                 '\n' +
                 '<div>\n' +
                 '  <ClassComponent>\n' +
-                '    -some text \n' +
-                '    +some text test\n' +
+                '    some text  // -some text \n' +
+                '               // +some text test\n' +
                 '    test // should be removed\n' +
                 '  </ClassComponent>\n' +
                 '</div>');
@@ -911,8 +911,8 @@ describe('unexpected-react-shallow', () => {
                 '\n' +
                 '<div>\n' +
                 '  <ClassComponent>\n' +
-                '    -some text foo\n' +
-                '    +some text bar\n' +
+                '    some text foo // -some text foo\n' +
+                '                  // +some text bar\n' +
                 '  </ClassComponent>\n' +
                 '</div>');
         });
@@ -995,8 +995,8 @@ describe('unexpected-react-shallow', () => {
                 '\n' +
                 '<div>\n' +
                 '  <ClassComponent>\n' +
-                '    -some text\n' +
-                '    +some text \n' +
+                '    some text // -some text\n' +
+                '              // +some text \n' +
                 '    // missing test\n' +
                 '  </ClassComponent>\n' +
                 '</div>');
@@ -1346,8 +1346,8 @@ describe('unexpected-react-shallow', () => {
                 "to contain 'some content three'\n" +
                 '\n' +
                 'the best match was\n' +
-                '-some content one\n' +
-                '+some content three');
+                'some content one // -some content one\n' +
+                '                 // +some content three');
         });
 
 
@@ -1362,8 +1362,8 @@ describe('unexpected-react-shallow', () => {
                 "to contain 'some content'\n" +
                 '\n' +
                 'the best match was\n' +
-                '-some content one\n' +
-                '+some content');
+                'some content one // -some content one\n' +
+                '                 // +some content');
         });
 
         it('finds a multi-part string', function () {
@@ -1382,8 +1382,8 @@ describe('unexpected-react-shallow', () => {
                 "to contain exactly 'button clicked 5 times'\n" +
                 '\n' +
                 'the best match was\n' +
-                '-button clicked \n' +
-                '+button clicked 5 times');
+                'button clicked  // -button clicked \n' +
+                '                // +button clicked 5 times');
         });
 
         it('does not find a part of a multi-part string', function () {
@@ -1396,8 +1396,8 @@ describe('unexpected-react-shallow', () => {
                 "to contain 'button clicked '\n" +
                 '\n' +
                 'the best match was\n' +
-                '-button clicked 5 times\n' +
-                '+button clicked ');
+                'button clicked 5 times // -button clicked 5 times\n' +
+                '                       // +button clicked ');
 
         });
 
@@ -1487,8 +1487,8 @@ describe('unexpected-react-shallow', () => {
                     'the best match was\n' +
                     '<ClassComponent className="candidate">\n' +
                     '  <span>\n' +
-                    '    -something else\n' +
-                    '    +cheese\n' +
+                    '    something else // -something else\n' +
+                    '                   // +cheese\n' +
                     '  </span>\n' +
                     '</ClassComponent>');
         });
