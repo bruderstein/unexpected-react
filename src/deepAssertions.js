@@ -297,9 +297,6 @@ function installInto(expect) {
                 })
             }
 
-            if (result.bestMatch.target) {
-                console.log(result.bestMatch.target)
-            }
             const newSubject = Object.assign({}, subject, {
                 target: result.bestMatch.target || result.bestMatchItem
             });
