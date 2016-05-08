@@ -68,7 +68,7 @@ describe('Select', () => {
     });
 
 
-    it('renders a particular option', () => {
+    it('renders a particular option with a matching id', () => {
 
         TestUtils.Simulate.click(findDOMNode(component));
 
@@ -77,8 +77,11 @@ describe('Select', () => {
         );
     });
 
-    it('renders a particular option', () => {
+    it('renders a particular option using a regex check', function () {
 
+        // Sometimes this test runs very slowly, I don't know why.
+        // Increasing the mocha timeout here to make sure we don't get wobbly results from Travis
+        this.timeout(5000); 
         TestUtils.Simulate.click(findDOMNode(component));
 
         return expect(component, 'to contain',
