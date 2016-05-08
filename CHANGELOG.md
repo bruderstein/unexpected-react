@@ -100,3 +100,6 @@ React v15 *is* properly supported, without peerDep warnings (thanks @choffmeiste
 * Add support for `eventTarget` in `on` clauses of `with event`
 * Add support for `queryTarget` in `queried for`
 
+## v3.2.1
+
+* Update to unexpected-htmllike 2.1.1 (improved output for text content diffs)
