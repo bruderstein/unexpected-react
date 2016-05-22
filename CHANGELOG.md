@@ -103,3 +103,24 @@ React v15 *is* properly supported, without peerDep warnings (thanks @choffmeiste
 ## v3.2.1
 
 * Update to unexpected-htmllike 2.1.1 (improved output for text content diffs)
+
+## v3.2.2
+
+* Fixed issue with `queried for` when the resulting promise is used, not returning the correct object. 
+  Note that if the result of the query is an HTMLElement, it is now (correctly) the HTMLElement, and not an opaque
+  object that could be used in a further `to have rendered` style assertion. As this should have been the case, although
+  the tests have been changed, this is considered a patch version issue as this was the intended behaviour - the tests 
+  were sadly wrong. (#26)
+  
+* Fixed issue that multiple events with arguments would not always use the correct object as the result of the promise.
+  e.g. 
+  
+```js
+expect(component,
+    'with event click', { /* ... */ },
+    'with event click', { /* ... */ })
+   .then(result => {
+      /* Here the result would have been undefined */
+    });
+```
+  
