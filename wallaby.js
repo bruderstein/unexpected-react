@@ -12,11 +12,15 @@ module.exports = function (wallaby) {
                 ignore: true
             },
             {
+                pattern: 'src/error-tests/*.spec.js',
+                ignore: true
+            },
+            {
                 pattern: 'src/react-devtools/**/*.js',
                 instrument: false
             },
             {
-                pattern: 'src/testHelpers/**/*',
+                pattern: 'src/testHelpers/**/*.js',
                 instrument: false
             },
             {
@@ -28,17 +32,17 @@ module.exports = function (wallaby) {
                 ignore: true
             }],
 
-        tests: ['src/**/*.spec.js'],
+        tests: ['src/**/tests/*.spec.js'],
         env: {
             type: 'node',
             runner: 'node'
         },
 
         compilers: {
-            '**/*.js': wallaby.compilers.babel({
+            'src/**/*.js': wallaby.compilers.babel({
                 babel: Babel
             }),
-            '**/*.jsx': wallaby.compilers.babel({
+            'src/**/*.jsx': wallaby.compilers.babel({
                 babel: Babel
             })
         }
