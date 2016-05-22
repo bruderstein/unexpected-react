@@ -173,6 +173,10 @@ function installInto(expect) {
         };
 
         const containsResult = renderedHtmlLike.contains(jsxAdapter, subject, query, expect, options);
+        
+        // Work out if we're at the end of the assertion 
+        // (need to shift the public instance of the component if we're at the end
+        const isEndOfAssertion = arguments.length === 3;
 
         return renderedHtmlLike.withResult(containsResult, function (result) {
 
@@ -191,8 +195,12 @@ function installInto(expect) {
                     }
                 });
             }
-
-            return expect.shift(result.bestMatch.target || result.bestMatchItem);
+            const resultElement = result.bestMatch.target || result.bestMatchItem;
+            if (isEndOfAssertion) {
+                return expect.shift(resultElement.element.getPublicInstance());
+            }
+            return expect.shift(resultElement);
+            
         });
     });
 
@@ -227,7 +235,7 @@ function installInto(expect) {
     });
     
     expect.addAssertion('<RenderedReactElementData> with event <string> <assertion?>', function (expect, subject, eventName) {
-        
+
         if (arguments.length > 3) {
             return expect.shift({
                 $$typeof: PENDING_DEEP_EVENT_TYPE,
@@ -349,7 +357,7 @@ function installInto(expect) {
 
         triggerEvent(subject.component, subject.target, subject.eventName, subject.eventArgs);
         if (arguments.length > 4) {
-            expect.shift({
+            return expect.shift({
                 $$typeof: PENDING_DEEP_EVENT_TYPE,
                 component: subject.component,
                 eventName: eventName,

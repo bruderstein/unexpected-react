@@ -528,7 +528,8 @@ describe('unexpected-react (deep rendering)', () => {
             const component = TestUtils.renderIntoDocument(<CustomComp className="bar" childCount={3} />);
             return expect(component, 'queried for', <span className="2" />)
                 .then(span => {
-                    expect(span, 'to have rendered', <span className="2">2</span>);
+                    expect(span, 'to be a', HTMLElement);
+                    expect(span, 'to satisfy', { className: '2'});
                 });
         });
         
@@ -537,7 +538,8 @@ describe('unexpected-react (deep rendering)', () => {
             const component = TestUtils.renderIntoDocument(<CustomComp className="bar" childCount={3} />);
             return expect(component, 'queried for', <span className={ expect.it('to eventually have value', '2')} />)
                 .then(span => {
-                    expect(span, 'to have rendered', <span className="2">2</span>);
+                    expect(span, 'to be a', HTMLElement);
+                    expect(span, 'to satisfy', { className: '2' });
                 });
         });
         
@@ -546,7 +548,8 @@ describe('unexpected-react (deep rendering)', () => {
             const component = TestUtils.renderIntoDocument(<CustomComp className="bar" childCount={3} />);
             return expect(component, 'queried for', <div><span queryTarget className={ expect.it('to eventually have value', '2')} /></div>)
                 .then(span => {
-                    expect(span, 'to have rendered', <span className="2">2</span>);
+                    expect(span, 'to be a', HTMLElement);
+                    expect(span, 'to satisfy', { className: '2' });
                 });
         })
 
@@ -874,6 +877,43 @@ describe('unexpected-react (deep rendering)', () => {
                                 <span>Is complete true</span>
                             </div>
                         );
+                    });
+            });
+
+            it('with event followed by queried for returns correct element', () => {
+
+                const component = TestUtils.renderIntoDocument(<TodoList />);
+                return expect(component, 
+                    'with event click', 'on', <TodoItem id={2}><div><button eventTarget /></div></TodoItem>,
+                    'queried for', <TodoItem id={2} />)
+                    .then(todoItem => {
+                        expect(todoItem.state, 'to satisfy', { isCompleted: 'true' })
+                    });
+            });
+            
+            it('with multiple events followed by queried for returns correct element', () => {
+
+                const component = TestUtils.renderIntoDocument(<TodoList />);
+                return expect(component,
+                    'with event click', 'on', <TodoItem id={2}><div><button eventTarget /></div></TodoItem>,
+                    'with event click', 'on', <TodoItem id={1}><div><button eventTarget /></div></TodoItem>,
+                    'queried for', <TodoItem id={2} />)
+                    .then(todoItem => {
+                        expect(todoItem.state, 'to satisfy', { isCompleted: 'true' })
+                    });
+            });
+            
+            it('with multiple events followed by queried for for a HTML element returns correct element', () => {
+                
+
+                const component = TestUtils.renderIntoDocument(<TodoList />);
+                return expect(component,
+                    'with event', 'click', {},
+                    'with event', 'click', {},
+                    'with event', 'click', {},
+                    'queried for', <TodoItem id={2}><div queryTarget /></TodoItem>)
+                    .then(div => {
+                        expect(div, 'to be a', HTMLElement)
                     });
             });
         });
