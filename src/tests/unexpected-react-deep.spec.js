@@ -597,7 +597,7 @@ describe('unexpected-react (deep rendering)', () => {
                     return (
                         <div onClick={this.handleMainClick} onMouseDown={this.handleMouseDown}>
                             <span className="main-click">Main clicked {this.state.clickCount}</span>
-                            <span className="item-click"
+                            <span className="item-click testfoo testbar"
                                   onClick={this.handleItemClick}
                                   onMouseDown={this.handleItemMouseDown}>Item clicked {this.state.itemClickCount || 0}</span>
                         </div>
@@ -689,6 +689,15 @@ describe('unexpected-react (deep rendering)', () => {
                 <span className="item-click">Item clicked 1</span>
             );
         });
+        
+        it('ignores extra classes by default in the `on` clause', () => {
+
+            const component = TestUtils.renderIntoDocument(<ClickableComponent />);
+            expect(component, 'with event', 'click', 'on', <span className="item-click testfoo" />,
+                'to contain',
+                <span className="item-click">Item clicked 2</span>
+            );
+        });
 
         it('calls click on a sub component with `queried for`', () => {
             const component = TestUtils.renderIntoDocument(<ClickableComponent />);
@@ -758,6 +767,7 @@ describe('unexpected-react (deep rendering)', () => {
                     expect(result.state, 'to satisfy', { itemClickCount: 2 });
                 });
         });
+        
         
         it('passes the resulting component as the resolution of the promise when using event arguments and `on`', () => {
 
@@ -904,7 +914,6 @@ describe('unexpected-react (deep rendering)', () => {
             });
             
             it('with multiple events followed by queried for for a HTML element returns correct element', () => {
-                
 
                 const component = TestUtils.renderIntoDocument(<TodoList />);
                 return expect(component,
@@ -913,7 +922,8 @@ describe('unexpected-react (deep rendering)', () => {
                     'with event', 'click', {},
                     'queried for', <TodoItem id={2}><div queryTarget /></TodoItem>)
                     .then(div => {
-                        expect(div, 'to be a', HTMLElement)
+                        expect(div, 'to be a', HTMLElement);
+                        expect(div, 'to satisfy', { tagName: 'DIV' })
                     });
             });
         });

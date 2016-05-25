@@ -1311,8 +1311,10 @@ describe('unexpected-react-shallow', () => {
                 'to equal <div><ClassComponent className="foobar" /></div>\n' +
                 '\n' +
                 '<div>\n' +
-                '  <ClassComponent className="foo" // missing class \'foobar\'\n' +
-                '                                  // extra class \'foo\'\n' +
+                '  <ClassComponent className="foo" // expected \'foo\' to equal \'foobar\'\n' +
+                '                                  //\n' +
+                '                                  // -foo\n' +
+                '                                  // +foobar\n' +
                 '  />\n' +
                 '</div>');
         });
@@ -1447,10 +1449,7 @@ describe('unexpected-react-shallow', () => {
                 'to contain <ClassComponent className="notexists" />\n' +
                 '\n' +
                 'the best match was\n' +
-                '<ClassComponent className="bar" // expected \'bar\' to equal \'notexists\'\n' +
-                '                                //\n' +
-                '                                // -bar\n' +
-                '                                // +notexists\n' +
+                '<ClassComponent className="bar" // missing class \'notexists\'\n' +
                 '/>');
         });
 
@@ -2080,7 +2079,7 @@ describe('unexpected-react-shallow', () => {
                     return (
                         <div onClick={this.handleMainClick} onAliensLanded={this.handleAliensLanded}>
                             <span className="main-click">Main clicked {this.state.clickCount}</span>
-                            <span className="item-click"
+                            <span className="item-click testfoo testbar"
                                   onClick={this.handleItemClick}>Item clicked {this.state.itemClickCount}</span>
                         </div>
                     );
@@ -2186,7 +2185,7 @@ describe('unexpected-react-shallow', () => {
             '<div onClick={function bound handleMainClick() { /* native code */ }}\n' +
             '   onAliensLanded={function bound handleAliensLanded() { /* native code */ }}>\n' +
             '  <span className="main-click">Main clicked 0</span>\n' +
-            '  <span className="item-click"\n' +
+            '  <span className="item-click testfoo testbar"\n' +
             '     onClick={function bound handleItemClick() { /* native code */ }}>\n' +
             '    Item clicked 0\n' +
             '  </span>\n' +
@@ -2195,10 +2194,7 @@ describe('unexpected-react-shallow', () => {
             '\n' +
             'Could not find the target for the event. The best match was\n' +
             '\n' +
-            '<span className="main-click" // expected \'main-click\' to equal \'not-exists\'\n' +
-            '                             //\n' +
-            '                             // -main-click\n' +
-            '                             // +not-exists\n' +
+            '<span className="main-click" // missing class \'not-exists\'\n' +
             '>\n' +
             '  Main clicked 0\n' +
             '</span>')

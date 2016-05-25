@@ -22,6 +22,16 @@ function checkAttached(expect) {
     }
 }
 
+function getDefaultOptions(flags) {
+    return {
+        diffWrappers: flags.exactly || flags.withAllWrappers,
+        diffExtraChildren: flags.exactly || flags.withAllChildren,
+        diffExtraAttributes: flags.exactly,
+        diffExactClasses: flags.exactly,
+        diffExtraClasses: flags.exactly
+    };
+}
+
 function installInto(expect) {
 
     expect.addAssertion(['<RenderedReactElement> to have [exactly] rendered <ReactElement>',
@@ -50,13 +60,8 @@ function installInto(expect) {
                 jsxAdapter.setOptions({ concatTextContent: true });
             }
 
-            var options = {
-                diffWrappers: exactly || withAllWrappers,
-                diffExtraChildren: exactly || withAllChildren,
-                diffExtraAttributes: exactly,
-                diffExactClasses: false, // TODO: This should be exactly - need to check the tests around this
-                diffExtraClasses: exactly
-            };
+            var options = getDefaultOptions({ exactly, withAllWrappers, withAllChildren });
+
             const diffResult = htmlLikeRenderedReactElement.diff(jsxAdapter, subject, element, expect, options);
 
             return htmlLikeRenderedReactElement.withResult(diffResult, result => {
@@ -103,13 +108,7 @@ function installInto(expect) {
             renderedReactElementAdapter.setOptions({ concatTextContent: true });
         }
 
-        var options = {
-            diffWrappers: exactly || withAllWrappers,
-            diffExtraChildren: exactly || withAllChildren,
-            diffExtraAttributes: exactly,
-            diffExactClasses: false,
-            diffExtraClasses: exactly
-        };
+        var options = getDefaultOptions({ exactly, withAllWrappers, withAllChildren })
 
         const containsResult = htmlLikeRenderedReactElement.contains(jsxAdapter, subject, element, expect, options);
 
@@ -163,14 +162,8 @@ function installInto(expect) {
         var renderedHtmlLike = new UnexpectedHtmlLike(adapter);
         var jsxAdapter = new ReactElementAdapter({ convertToString: true, concatTextContent: !exactly });
 
-        const options = {
-            diffWrappers: exactly || withAllWrappers,
-            diffExtraChildren: exactly || withAllChildren,
-            diffExtraAttributes: exactly,
-            diffExactClasses: exactly,
-            diffExtraClasses: exactly,
-            findTargetAttrib: 'queryTarget'
-        };
+        const options = getDefaultOptions({ exactly, withAllWrappers, withAllChildren });
+        options.findTargetAttrib = 'queryTarget';
 
         const containsResult = renderedHtmlLike.contains(jsxAdapter, subject, query, expect, options);
         
@@ -276,13 +269,9 @@ function installInto(expect) {
         const exactly = this.flags.exactly;
         const withAllChildren = this.flags['with all children'];
         const withAllWrappers = this.flags['with all wrappers'];
-        const containsResult = reactHtmlLike.contains(jsxAdapter, componentData, target, expect, {
-            diffWrappers: exactly || withAllWrappers,
-            diffExtraChildren: exactly || withAllChildren,
-            diffExtraAttributes: exactly,
-            diffExtraClasses: exactly,
-            findTargetAttrib: 'eventTarget'
-        });
+        const options = getDefaultOptions({ exactly, withAllChildren, withAllWrappers });
+        options.findTargetAttrib = 'eventTarget';
+        const containsResult = reactHtmlLike.contains(jsxAdapter, componentData, target, expect, options);
         
         return reactHtmlLike.withResult(containsResult, result => {
             

@@ -12,6 +12,15 @@ import TestUtils from 'react-addons-test-utils';
 const PENDING_SHALLOW_EVENT_TYPE = { PENDING_SHALLOW_EVENT: 'Pending shallow event' };
 const PENDING_QUERIED_FOR = { PENDING_QUERIED_FOR: 'Pending queried for' };
 
+function getDefaultOptions(flags) {
+    return {
+        diffWrappers: flags.exactly || flags.withAllWrappers,
+        diffExtraChildren: flags.exactly || flags.withAllChildren,
+        diffExtraAttributes: flags.exactly,
+        diffExactClasses: flags.exactly,
+        diffExtraClasses: flags.exactly
+    };
+}
 
 function installInto(expect) {
 
@@ -48,13 +57,7 @@ function installInto(expect) {
             adapter.setOptions({ concatTextContent: true });
         }
 
-        const options = {
-            diffWrappers: exactly || withAllWrappers,
-            diffExtraChildren: exactly || withAllChildren,
-            diffExtraAttributes: exactly,
-            diffExactClasses: false,
-            diffExtraClasses: exactly
-        };
+        const options = getDefaultOptions({ exactly, withAllWrappers, withAllChildren });
 
         const diffResult = jsxHtmlLike.diff(adapter, subject, expected, expect, options);
 
@@ -93,12 +96,8 @@ function installInto(expect) {
             adapter.setOptions({ concatTextContent: true });
         }
 
-        var options = {
-            diffWrappers: exactly || withAllWrappers,
-            diffExtraChildren: exactly || withAllChildren,
-            diffExtraAttributes: exactly
-        };
-
+        var options = getDefaultOptions({ exactly, withAllWrappers, withAllChildren });
+        
         const containsResult = jsxHtmlLike.contains(adapter, subject, expected, expect, options);
 
         return jsxHtmlLike.withResult(containsResult, result => {
@@ -141,15 +140,9 @@ function installInto(expect) {
             adapter.setOptions({ concatTextContent: true });
         }
 
-        const options = {
-            diffWrappers: exactly || withAllWrappers,
-            diffExtraChildren: exactly || withAllChildren,
-            diffExtraAttributes: exactly,
-            diffExactClasses: exactly,
-            diffExtraClasses: exactly,
-            findTargetAttrib: 'queryTarget'
-        };
-
+        const options = getDefaultOptions({ exactly, withAllWrappers, withAllChildren });
+        options.findTargetAttrib = 'queryTarget';
+        
         const containsResult = jsxHtmlLike.contains(adapter, subject, query, expect, options);
 
         return jsxHtmlLike.withResult(containsResult, function (result) {
@@ -230,15 +223,15 @@ function installInto(expect) {
     expect.addAssertion('<ReactPendingShallowEvent> on [exactly] [with all children] [with all wrappers] <ReactElement> <assertion?>', function (expect, subject, target) {
         const adapter = new ReactElementAdapter({ convertToString: true, concatTextContent: true });
         const jsxHtmlLike = new UnexpectedHtmlLike(adapter);
+        
         const exactly = this.flags.exactly;
         const withAllChildren = this.flags['with all children'];
         const withAllWrappers = this.flags['with all wrappers'];
-        const containsResult = jsxHtmlLike.contains(adapter, subject.renderer.getRenderOutput(), target, expect, {
-            diffWrappers: exactly || withAllWrappers,
-            diffExtraChildren: exactly || withAllChildren,
-            diffExtraAttributes: exactly,
-            findTargetAttrib: 'eventTarget'
-        });
+        
+        const options = getDefaultOptions({ exactly, withAllWrappers, withAllChildren });
+        options.findTargetAttrib = 'eventTarget';
+        
+        const containsResult = jsxHtmlLike.contains(adapter, subject.renderer.getRenderOutput(), target, expect, options);
         return jsxHtmlLike.withResult(containsResult, result => {
             if (!result.found) {
                 return expect.fail({
