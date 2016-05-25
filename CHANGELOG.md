@@ -124,3 +124,9 @@ expect(component,
     });
 ```
   
+  
+## v3.2.3
+
+* Fixed issue with default flags for `on` clauses in events. It now uses the same default matching flags as all other 
+assertions.  All assertions now use a single function to calculate the options, so the matching flags are always the same
+based on the `with all children`, `with all wrappers`, and `exactly` flags
