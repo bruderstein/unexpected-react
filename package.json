@@ -49,7 +49,7 @@
     "react-dom": "^15.0.0",
     "unexpected": "^10.13.2",
     "unexpected-documentation-site-generator": "^4.1.0",
-    "unexpected-markdown": "^1.4.1"
+    "unexpected-markdown": "^1.7.1"
   },
   "dependencies": {
     "magicpen-prism": "^2.2.1",
