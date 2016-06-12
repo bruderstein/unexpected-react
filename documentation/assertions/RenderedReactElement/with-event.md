@@ -94,7 +94,7 @@ e.g. This will trigger the click in the `<button>` inside the `TodoItem` with th
 var todoList = TestUtils.renderIntoDocument(<TodoList items={items} />);
 
 expect(todoList, 
-    'with event click', 'on', <TodoItem id={2}><button className="complete" eventTarget /></TodoItem>
+    'with event click', 'on', <TodoItem id={2}><button className="complete" eventTarget /></TodoItem>,
     'to contain', 
     <TodoItem id={2}>
         <span>Completed!</span>

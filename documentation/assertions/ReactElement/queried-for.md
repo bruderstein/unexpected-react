@@ -45,6 +45,6 @@ e.g. This `queried for` clause returns the `InputBox` inside the `div` with the 
 ```js
 var renderer = TestUtils.createRenderer();
 renderer.render(<TodoList items={items} />);
-expect(component, 'queried for', <div className="add-new-item"><InputBox queryTarget /></div>
+expect(component, 'queried for', <div className="add-new-item"><InputBox queryTarget /></div>,
     'to have rendered', <InputBox placeholder="Enter something to do" />);
 ```

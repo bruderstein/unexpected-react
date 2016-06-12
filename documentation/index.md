@@ -58,7 +58,7 @@ renderer.render(<TodoList items={items} />);
 // Call the `onCompleted` callback for TodoItem 2 
 expect(renderer, 
     'with event completed', 'on', <TodoItem id={2} />,
-    'queried for', <TodoItem id={2} />
+    'queried for', <TodoItem id={2} />,
     'to have rendered', <TodoItem id={2} completed={true} />);
 ```
 
