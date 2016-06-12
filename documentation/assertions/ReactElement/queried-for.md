@@ -24,7 +24,7 @@ You can use `to have rendered` or `to contain` with all the options as usual fol
 
 It is possible to use `queried for` to extract a part of a component.
 
-```js
+```js#async:true
 var renderer = TestUtils.createRenderer();
 renderer.render(<TodoList items={items} />);
 return expect(renderer, 'queried for', <TodoItem id={3} />)
