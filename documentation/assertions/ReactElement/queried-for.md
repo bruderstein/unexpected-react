@@ -2,22 +2,28 @@ This enables finding a particular component or element, to then perform further 
 
 e.g.
 ```js
+var renderer = TestUtils.createRenderer()
+renderer.render(
+  <TodoList>
+    <TodoItem id={1} label="Buy flowers for the wife"/>
+    <TodoItem id={2} label="Mow the lawn"/>
+    <TodoItem id={3} label="Buy groceries"/>
+  </TodoList>
+);
 
-var renderer = TestUtils.createRenderer();
-renderer.render(<TodoList items={items} />);
-expect(renderer, 'queried for', 
-    <div className="item">
-        <span className="id">3</span>
-    </div>,
+expect(
+    renderer, 'queried for', 
+    <TodoItem id={3}/>,
     'to have rendered', 
-    <div className="item">
-        <span>Do something</span>
-    </div>);
+    <TodoItem label="Buy groceries"/>
+);
 ```
 
-Here the `TodoList` component is rendering a div for each item, and then a span with the id and a span for the 
-item text. We're searching for the right div (with id 3), then checking the correct text is rendered.
-As the spans for id and label are siblings, they don't need to be included to "match". 
+Here the `TodoList` component is rendering a list of todo items. Here we're
+querying for the todo item with the id 3 and then we check that it has the
+expected text. This example show how you only mention exactly what you are
+searching for. If the assertion finds a match it is forwarded to the next
+assertion; otherwise it fails with a helpful message.
 
 You can use `to have rendered` or `to contain` with all the options as usual following a `queried for`.
 
@@ -25,11 +31,9 @@ You can use `to have rendered` or `to contain` with all the options as usual fol
 It is possible to use `queried for` to extract a part of a component.
 
 ```js#async:true
-var renderer = TestUtils.createRenderer();
-renderer.render(<TodoList items={items} />);
 return expect(renderer, 'queried for', <TodoItem id={3} />)
     .then(todoItem => {
-        expect(todoItem.props.title, 'to equal', 'Do something');
+        expect(todoItem.props.label, 'to equal', 'Buy groceries');
     });
 ```
 
@@ -40,11 +44,10 @@ renderer, so future events will be lost.
 ## queryTarget
 
 If you want to find a target nested inside a parent element, use `queryTarget` in the query.
-e.g. This `queried for` clause returns the `InputBox` inside the `div` with the class `add-new-item`.
+e.g. This `queried for` clause returns the `input` element inside the `div` with
+the class `add-new-item`.
 
 ```js
-var renderer = TestUtils.createRenderer();
-renderer.render(<TodoList items={items} />);
-expect(component, 'queried for', <div className="add-new-item"><InputBox queryTarget /></div>,
-    'to have rendered', <InputBox placeholder="Enter something to do" />);
+expect(renderer, 'queried for', <div className="add-new-item"><input queryTarget /></div>,
+    'to have rendered', <input placeholder="Enter something to do" />);
 ```
