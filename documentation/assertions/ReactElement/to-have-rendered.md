@@ -98,7 +98,6 @@ to have rendered with all children <div id="main"><span>one</span><span>three</s
 ```
 
 ```js
-
 // The span "two" is missing here, as is `className="parent"`
 // This will cause an assertion error,
 // due to `to have exactly rendered` being used
