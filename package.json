@@ -7,6 +7,7 @@
     "prepublish": "npm run build && npm test",
     "test-main": "mocha --compilers js:babel-core/register src/tests/*.spec.js",
     "test-error": "mocha --compilers js:babel-core/register src/error-tests/*.spec.js",
+    "test-documentation": "mocha --compilers js:babel-core/register,md:unexpected-markdown --require ./bootstrap-unexpected-markdown --recursive documentation",
     "lint": "eslint src",
     "generate-site": "generate-site --require ./bootstrap-unexpected-markdown.js",
     "deploy-site": "deploy-site.sh",
