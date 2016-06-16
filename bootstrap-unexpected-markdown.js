@@ -30,11 +30,13 @@ const TodoItem = React.createClass({
 
     render() {
         return (
-            <div className="item">
+            <div
+              className={`item ${ this.state.isCompleted ? 'completed' : 'incomplete'}`}
+              onClick={this.onClick}
+            >
                 <span className="id">{this.props.id}</span>
                 <span>{this.props.label}</span>
                 <span>Is complete {this.state.isCompleted}</span>
-                <button onClick={this.onClick}>Click me</button>
             </div>
         );
     }
@@ -63,3 +65,28 @@ const TodoList = React.createClass({
 
 global.TodoItem = TodoItem;
 global.TodoList = TodoList;
+
+const MyButton = React.createClass({
+    getInitialState () {
+        return {
+            count: 0
+        };
+    },
+
+    onClick () {
+        const { count } = this.state;
+        this.setState({ count: count + 1 });
+    },
+
+    render() {
+        const { count } = this.state;
+
+        return (
+            <button onClick={ this.onClick }>
+                Button was clicked { count } times
+            </button>
+        );
+    }
+});
+
+global.MyButton = MyButton;
