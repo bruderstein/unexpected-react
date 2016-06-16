@@ -3,12 +3,17 @@ testing the entire returned tree.  This allows you to test specific elements, wi
 writing brittle tests that break when the structure changes.
 
 Assuming the following component output
-```xml
-<div>
-  <span className="top">one</span>
-  <span className="middle">two</span>
-  <span className="bottom">three</span>
-</div>
+```js
+const MyComponent = () => (
+  <div>
+    <span className="top">one</span>
+    <span className="middle">two</span>
+    <span className="bottom">three</span>
+  </div>
+)
+
+var renderer = TestUtils.createRenderer()
+renderer.render(<MyComponent/>)
 ```
 
 ```js
@@ -26,7 +31,22 @@ You can override this behaviour by using `'to contain exactly'`, and `'to contai
 // This will fail, as `<span>two</span>` cannot be found in the renderers output, due to
 // the missing `className="middle"` prop
 expect(renderer, 'to contain exactly', <span>two</span>);
+```
 
+```output
+expected
+<div>
+  <span className="top">one</span>
+  <span className="middle">two</span>
+  <span className="bottom">three</span>
+</div>
+to contain exactly <span>two</span>
+
+the best match was
+<span className="middle" // className should be removed
+>
+  two
+</span>
 ```
 
 The same thing applies to children for `'to contain'` as for `'to have rendered'`.
