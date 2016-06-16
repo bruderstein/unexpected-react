@@ -36,7 +36,7 @@ const TodoItem = React.createClass({
             >
                 <span className="id">{this.props.id}</span>
                 <span className="label">{this.props.label}</span>
-                <span>Is complete {this.state.isCompleted}</span>
+                <span>{this.state.isCompleted ? 'Completed!' : 'Todo'}</span>
             </div>
         );
     }
