@@ -35,7 +35,7 @@ const TodoItem = React.createClass({
               onClick={this.onClick}
             >
                 <span className="id">{this.props.id}</span>
-                <span>{this.props.label}</span>
+                <span className="label">{this.props.label}</span>
                 <span>Is complete {this.state.isCompleted}</span>
             </div>
         );
