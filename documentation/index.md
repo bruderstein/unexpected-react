@@ -26,55 +26,76 @@ See the blog post for an introduction: https://medium.com/@bruderstein/the-missi
 
 * Checking a simple render
 ```js
-var todoList = TestUtils.renderIntoDocument(<TodoList items={items} />);
-expect(todoList, 'to have rendered', 
-    <TodoList>
+var todoList = TestUtils.renderIntoDocument(
+  <TodoList>
+    <TodoItem id={1} label="Buy flowers for the wife"/>
+    <TodoItem id={2} label="Mow the lawn"/>
+    <TodoItem id={3} label="Buy groceries"/>
+  </TodoList>
+);
+
+expect(
+  todoList,
+  'to have rendered', 
+  <TodoList>
+    <div className='items'>
       <TodoItem id={1}>
-        <span>Buy milk</span>
+        <span className="label">Buy flowers for the wife</span>
       </TodoItem>
       <TodoItem id={2}>
-        <span>Make milkshake</span>
+        <span className="label">Mow the lawn</span>
       </TodoItem>
-    </TodoList>);
+      <TodoItem id={3}>
+        <span className="label">Buy groceries</span>
+      </TodoItem>
+    </div>
+  </TodoList>
+);
 ```
       
 * Triggering an event on a button inside a subcomponent (using the `eventTarget` prop to identify where the event should be triggered)
 
 ```js
-var todoList = TestUtils.renderIntoDocument(<TodoList items={items} />);
-
-expect(todoList, 
-    'with event click', 'on', <TodoItem id={2}><button className="completed" eventTarget /></TodoItem>,
-    'to contain', <TodoItem id={2}><span className="completed">Buy milk</span></TodoItem>); 
+expect(
+  todoList, 
+  'with event click',
+  'on', <TodoItem id={2}><span className="label" eventTarget /></TodoItem>,
+  'to contain', 
+  <TodoItem id={2}>
+    <div className='completed'>
+      <span>Completed!</span>
+    </div>
+  </TodoItem>
+);
 ```
 
 
 * Locating a component with `queried for` then validating the render
 
 ```js
-var renderer = TestUtils.createRenderer();
-renderer.render(<TodoList items={items} />);
-
-// Call the `onCompleted` callback for TodoItem 2 
-expect(renderer, 
-    'with event completed', 'on', <TodoItem id={2} />,
-    'queried for', <TodoItem id={2} />,
-    'to have rendered', <TodoItem id={2} completed={true} />);
+expect(
+  todoList, 
+  'queried for', <TodoItem id={2} />,
+  'to have rendered',
+  <TodoItem id={2}>
+    <div className='completed'/>
+  </TodoItem>
+);
 ```
 
 
 * Locating a component and then checking the state of the component with the full renderer
 
-```js
-var todoList = TestUtils.renderIntoDocument(<TodoList items={items} />);
-
+```js#async:true
 expect(todoList, 
-    'with event click', 'on', <TodoItem id={2}><button className="completed" eventTarget /></TodoItem>,
-    'queried for', <TodoItem id={2} />)
-  .then(todoItem2 => {
-     // Here we're checking the state, but we could perform any operation on the instance of the component 
-     expect(todoItem2.state, 'to satisfy', { completed: true });
-  });
+  'with event click',
+  'on', <TodoItem id={1}><span className="label" eventTarget /></TodoItem>,
+  'queried for', <TodoItem id={1} />
+).then(todoItem => {
+  // Here we're checking the state, but we could perform
+  // any operation on the instance of the component.
+  expect(todoItem.state, 'to satisfy', { completed: true });
+});
 ```
 
 # Usage
@@ -90,7 +111,7 @@ very least, you'll need to disable the react-devtools)
 If you don't need the virtual DOM, and you're just using the [shallow renderer](http://facebook.github.io/react/docs/test-utils.html#shallow-rendering),
 then the order of the requires is not important, and you obviously don't need the `emulateDom.js` require.
 
-```js
+```js#evaluate:false
 // First require your DOM emulation file (see below)
 require( '../testHelpers/emulateDom');
 
@@ -105,13 +126,13 @@ var React = require('react/addons');
 // define our instance of the `expect` function to use
 const expect = unexpected.clone()
     .use(unexpectedReact);
-
 ```
 
 The `emulateDom` file depends on whether you want to use [`domino`](https://npmjs.com/package/domino), or [`jsdom`](https://npmjs.com/package/jsdom)
 
 For `jsdom`:
-```js
+
+```js#evaluate:false
 // emulateDom.js - jsdom variant
 
 if (typeof document === 'undefined') {
@@ -127,8 +148,10 @@ if (typeof document === 'undefined') {
     }
 }
 ```
+
 For `domino`:
-```js
+
+```js#evaluate:false
 // emulateDom.js - domino variant
 
 if (typeof document === 'undefined') {
@@ -161,42 +184,59 @@ and are missing things from v3, please raise an issue.
 For the shallow renderer, you can assert on the renderer itself (you can also write the same assertion for the result of `getRenderOutput()`)
 
 ```js
+var renderer = TestUtils.createRenderer();
 
-it('renders with content', function () {
+renderer.render(<MyButton />);
 
-    var renderer = TestUtils.createRenderer();
-
-    renderer.render(<SomeComponent id={125} />);
-
-    return expect(renderer, 'to have rendered',
-       <div id={125}>
-          Some simple content
-       </div>
-    );
-});
+expect(renderer, 'to have rendered',
+  <button>
+      Button was clicked 1 times
+  </button>
+);
 ```
 
 If this fails for some reason, you get a nicely formatted error, with the differences highlighted:
 
-![shallow_simple](https://raw.githubusercontent.com/bruderstein/unexpected-react/887855b3fe1cbdb166f9c45b62635f103fa638d1/demo/1.png)
+```output
+expected
+<button onClick={function bound onClick() { /* native code */ }}>
+  Button was clicked 0 times
+</button>
+to have rendered <button>Button was clicked 1 times</button>
 
+<button onClick={function bound onClick() { /* native code */ }}>
+  Button was clicked 0 times // -Button was clicked 0 times
+                             // +Button was clicked 1 times
+</button>
+```
 
 If you've emulated the DOM, you can write a similar test, but using `ReactDOM.render()` (or `TestUtils.renderIntoDocument()`)
 
 ```js
-it('renders with content', function () {
-
-    var component = TestUtils.renderIntoDocument(<SomeComponent id={125} />);
-
-    return expect(component, 'to have rendered',
-       <div id={125}>
-          Some simple content
-       </div>
-    );
-});
+var component = TestUtils.renderIntoDocument(<MyButton/>)
+expect(component, 'to have rendered',
+  <button>
+      Button was clicked 1 times
+  </button>
+);
 ```
 
-![deeprender_simple](https://raw.githubusercontent.com/bruderstein/unexpected-react/887855b3fe1cbdb166f9c45b62635f103fa638d1/demo/2.png)
+```output
+expected
+<MyButton>
+  <button onClick={function bound onClick() { /* native code */ }}>
+    Button was clicked 0 times
+  </button>
+</MyButton>
+to have rendered <button>Button was clicked 1 times</button>
+
+<MyButton>
+  <button onClick={function bound onClick() { /* native code */ }}>
+    Button was clicked 0 times // -Button was clicked 0 times
+                               // +Button was clicked 1 times
+  </button>
+</MyButton>
+```
 
 Note the major difference between the shallow renderer and the "normal" renderer, is that child components are also
 rendered.  That is easier to see with these example components:
@@ -231,48 +271,43 @@ nodes that appear in the actual render, but are not in the expected result), it 
 test both scenarios with the full renderer. To demonstrate, all the following tests will pass:
 
 ```js
+var component = TestUtils.renderIntoDocument(<App />);
 
-it('renders the Text components with the spans with the full renderer', function () {
+// renders the Text components with the spans with the full renderer
+expect(component, 'to have rendered', 
+  <App>
+    <div className="testing-is-fun">
+      <Text content="hello">
+        <span>hello</span>
+      </Text>
+      <Text content="world">
+        <span>world</span>
+      </Text>
+    </div>
+  </App>
+);
+```
 
-   var component = TestUtils.renderIntoDocument(<App />);
+```js
+// renders the Text nodes with the full renderer'
    
-   expect(component, 'to have rendered', 
-      <App>
-        <div className="testing-is-fun">
-          <Text content="hello">
-            <span>hello</span>
-          </Text>
-          <Text content="world">
-            <span>world</span>
-          </Text>
-        </div>
-      </App>
-   );
-});
+expect(component, 'to have rendered', 
+  <div className="testing-is-fun">
+      <Text content="hello" />
+      <Text content="world" />
+  </div>
+);
+```
 
-it('renders the Text nodes with the full renderer', function () {
+```js
+// renders the spans with the full renderer
 
-   var component = TestUtils.renderIntoDocument(<App />);
-   
-   expect(component, 'to have rendered', 
-      <div className="testing-is-fun">
-         <Text content="hello" />
-         <Text content="world" />
-      </div>
-   );
-});
-
-it('renders the spans with the full renderer', function () {
-
-   var component = TestUtils.renderIntoDocument(<App />);
-   
-   expect(component, 'to have rendered', 
-      <div className="testing-is-fun">
-         <span>hello</span>
-         <span>world</span>
-      </div>
-   );
-});
+expect(component, 'to have rendered', 
+  <div className="testing-is-fun">
+      <span>hello</span>
+      <span>world</span>
+  </div>
+);
 
 ```
 
@@ -286,11 +321,17 @@ Because [stateless components](https://facebook.github.io/react/docs/reusable-co
 Using the shallow renderer works as shown in the first example. 
 For full rendering, they can be tested with a wrapper component as such:
 
-```
+```js
 class StatelessWrapper extends React.Component {
   render() {
     return (this.props.children);
   }
+}
+
+var StatelessComponent = function (props) {
+  return (
+    <div>{ props.name }</div>
+  )
 }
 
 var component = TestUtils.renderIntoDocument(<StatelessWrapper><StatelessComponent name="Daniel" /></StatelessWrapper>);

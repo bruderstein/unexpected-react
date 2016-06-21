@@ -18,13 +18,13 @@ const TodoItem = React.createClass({
 
     getInitialState() {
         return {
-            isCompleted: 'false'
+            isCompleted: false
         };
     },
 
     onClick() {
         this.setState({
-            isCompleted: 'true'
+            isCompleted: true
         });
     },
 
