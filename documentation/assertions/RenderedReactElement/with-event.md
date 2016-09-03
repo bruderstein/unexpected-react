@@ -62,10 +62,10 @@ To call multiple events, simple list them one after the other:
 
 ```js
 expect(component,
-  'with event mouseDown', { mouseX: 150, mouseY: 50 },
-  'on', <TodoItem id={3} />,
-  'with event mouseDown', { mouseX: 50, mouseY: 50 },
-  'on', <TodoItem id={2} />,
+  'with event click', { mouseX: 150, mouseY: 50 },
+  'on', <TodoItem id={3}><div eventTarget /></TodoItem>,
+  'with event click', { mouseX: 50, mouseY: 50 },
+  'on', <TodoItem id={2}><div eventTarget /></TodoItem>,
   'to have rendered', 
   <TodoList>
     <div className="items">

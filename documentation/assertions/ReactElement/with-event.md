@@ -42,8 +42,8 @@ after the event.
 expect(
   renderer,
   'with event click',
-  'on', <TodoItem id={3}/>, 
-  'to contain', <span className="completed">Buy groceries</span>
+  'on', <TodoItem id={3} />,
+  'to contain', <TodoItem id={3} clicked={true} />
 );
 ```
 
@@ -53,8 +53,8 @@ To pass arguments to the event, simply include the event object after the event 
 expect(
   renderer,
   'with event mouseDown', { mouseX: 150, mouseY: 50 },
-  'on', <TodoItem item={{ id: 3}} />,
-  'to contain', <span className="incomplete">Buy groceries</span>
+  'on', <TodoItem id={2} />,
+  'to contain', <TodoItem id={2} clicked={false} />
 );
 ```
 

@@ -46,9 +46,30 @@ const TodoList = React.createClass({
     propTypes: {
         children: React.PropTypes.node
     },
+    
+    getInitialState() {
+        return { clicked: {} };
+    },
+    
+    onClick(index) {
+        // State mutation, this is not recommended, but saves us rebuilding each time
+        this.state.clicked[index] = true;
+        this.setState({
+            clicked: this.state.clicked
+        });
+    },
+    
+    noop() {},
 
     render() {
-        const { children } = this.props;
+        const children = this.props.children.map(child => {
+            return React.cloneElement(child, { 
+                onClick: this.onClick.bind(this, child.props.id),
+                clicked: !!this.state.clicked[child.props.id],
+                onMouseDown: this.noop
+            });
+        });
+        
 
         return (
             <div>
