@@ -1,21 +1,5 @@
 [
   {
-    "label": "queried for (RenderedReactElement)",
-    "url": "/assertions/RenderedReactElement/queried-for/"
-  },
-  {
-    "label": "with event (RenderedReactElement)",
-    "url": "/assertions/RenderedReactElement/with-event/"
-  },
-  {
-    "label": "to have rendered (RenderedReactElement)",
-    "url": "/assertions/RenderedReactElement/to-have-rendered/"
-  },
-  {
-    "label": "to contain (RenderedReactElement)",
-    "url": "/assertions/RenderedReactElement/to-contain/"
-  },
-  {
     "label": "queried for (ReactElement)",
     "url": "/assertions/ReactElement/queried-for/"
   },
@@ -30,5 +14,21 @@
   {
     "label": "with event (ReactElement)",
     "url": "/assertions/ReactElement/with-event/"
+  },
+  {
+    "label": "queried for (RenderedReactElement)",
+    "url": "/assertions/RenderedReactElement/queried-for/"
+  },
+  {
+    "label": "with event (RenderedReactElement)",
+    "url": "/assertions/RenderedReactElement/with-event/"
+  },
+  {
+    "label": "to have rendered (RenderedReactElement)",
+    "url": "/assertions/RenderedReactElement/to-have-rendered/"
+  },
+  {
+    "label": "to contain (RenderedReactElement)",
+    "url": "/assertions/RenderedReactElement/to-contain/"
   }
 ]

@@ -1,4 +1,4 @@
-/*global baseUrl, document, window, XMLHttpRequest, searchIndexPath*/
+/*global baseUrl, document, window, XMLHttpRequest*/
 function setupSearch(searchIndex) {
     var search = document.getElementById('search');
     var searchDropDown = document.getElementById('searchDropDown');
@@ -21,14 +21,14 @@ function setupSearch(searchIndex) {
     searchDropDown.addEventListener('mousedown', function (e) {
         if (e.button === 0 && e.target.hasAttribute('data-index')) {
             var index = e.target.getAttribute('data-index');
-            window.location.href = renderedMatches[index].url;
+            window.location.href = baseUrl + renderedMatches[index].url;
         }
     });
 
     searchDropDown.addEventListener('touchstart', function (e) {
         if (e.target.hasAttribute('data-index')) {
             var index = e.target.getAttribute('data-index');
-            window.location.href = renderedMatches[index].url;
+            window.location.href = baseUrl + renderedMatches[index].url;
         }
     });
 
@@ -40,7 +40,7 @@ function setupSearch(searchIndex) {
         if (matches.length > 0) {
 
             var html = matches.map(function (match, index) {
-                return '<li' + (activeIndex === index ? ' class="active"' : '') + ' data-index="' + index + '"'+  '>' + htmlEncode(match.label) + '</li>';
+                return '<li' + (activeIndex === index ? ' class="active"' : '') + ' data-index="' + index + '"' +  '>' + htmlEncode(match.label) + '</li>';
             }).join('');
 
 
@@ -155,21 +155,23 @@ function setupSearch(searchIndex) {
     search.style.visibility = 'visible';
 }
 
-var getJSON = function(url, successHandler, errorHandler) {
-  var xhr = new XMLHttpRequest();
-  xhr.open('get', url, true);
-  xhr.responseType = 'json';
-  xhr.onload = function() {
-    var status = xhr.status;
-    if (status === 200) {
-      if (successHandler) { successHandler(status, xhr.response); }
-    } else {
-      if (errorHandler) { errorHandler(status); }
-    }
-  };
-  xhr.send();
+var getJSON = function (url, successHandler, errorHandler) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('get', url, true);
+    xhr.responseType = 'json';
+    xhr.onload = function () {
+        var status = xhr.status;
+        if (status === 200) {
+            if (successHandler) { successHandler(status, xhr.response); }
+        } else {
+            if (errorHandler) { errorHandler(status); }
+        }
+    };
+    xhr.send();
 };
 
-getJSON(baseUrl + '/searchIndex.json', function(status, data) {
-    setupSearch(data);
+getJSON(baseUrl + '/searchIndex.json', function (status, data) {
+    if (data.length > 0) {
+        setupSearch(data);
+    }
 });
