@@ -11,7 +11,7 @@
     "lint": "eslint src",
     "generate-site": "generate-site --require ./bootstrap-unexpected-markdown.js",
     "deploy-site": "deploy-site.sh",
-    "test": "npm run test-main && npm run test-error",
+    "test": "npm run test-main && npm run test-error && npm run test-documentation",
     "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- --compilers js:babel-core/register src/tests/*.spec.js &&cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage || true"
   },
   "main": "lib/unexpected-react.js",
