@@ -25,6 +25,7 @@ See the blog post for an introduction: https://medium.com/@bruderstein/the-missi
 # Examples
 
 * Checking a simple render
+
 ```js
 var todoList = TestUtils.renderIntoDocument(
   <TodoList>
@@ -52,15 +53,15 @@ expect(
   </TodoList>
 );
 ```
-      
+
 * Triggering an event on a button inside a subcomponent (using the `eventTarget` prop to identify where the event should be triggered)
 
 ```js
 expect(
-  todoList, 
+  todoList,
   'with event click',
   'on', <TodoItem id={2}><span className="label" eventTarget /></TodoItem>,
-  'to contain', 
+  'to contain',
   <TodoItem id={2}>
     <div className='completed'>
       <span>Completed!</span>
@@ -74,7 +75,7 @@ expect(
 
 ```js
 expect(
-  todoList, 
+  todoList,
   'queried for', <TodoItem id={2} />,
   'to have rendered',
   <TodoItem id={2}>
@@ -87,7 +88,7 @@ expect(
 * Locating a component and then checking the state of the component with the full renderer
 
 ```js#async:true
-expect(todoList, 
+expect(todoList,
   'with event click',
   'on', <TodoItem id={1}><span className="label" eventTarget /></TodoItem>,
   'queried for', <TodoItem id={1} />

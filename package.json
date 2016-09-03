@@ -9,7 +9,7 @@
     "test-error": "mocha --compilers js:babel-core/register src/error-tests/*.spec.js",
     "test-documentation": "mocha --compilers js:babel-core/register,md:unexpected-markdown --require ./bootstrap-unexpected-markdown --recursive documentation",
     "lint": "eslint src",
-    "generate-site": "generate-site --require ./bootstrap-unexpected-markdown.js",
+    "generate-site": "generate-site --require ./bootstrap-documentation-generation.js",
     "deploy-site": "deploy-site.sh",
     "test": "npm run test-main && npm run test-error && npm run test-documentation",
     "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- --compilers js:babel-core/register src/tests/*.spec.js &&cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage || true"
@@ -38,6 +38,7 @@
     "babel-eslint": "^6.0.0",
     "babel-preset-es2015": "6.9.0",
     "babel-preset-react": "6.5.0",
+    "babel-register": "^6.14.0",
     "coveralls": "^2.11.9",
     "eslint": "^2.2.0",
     "eslint-plugin-react": "^3.8.0",

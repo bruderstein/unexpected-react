@@ -18,25 +18,25 @@ const TodoItem = React.createClass({
 
     getInitialState() {
         return {
-            isCompleted: false
+            completed: false
         };
     },
 
     onClick() {
         this.setState({
-            isCompleted: true
+            completed: true
         });
     },
 
     render() {
         return (
             <div
-              className={`item ${ this.state.isCompleted ? 'completed' : 'incomplete'}`}
+              className={`item ${ this.state.completed ? 'completed' : 'incomplete'}`}
               onClick={this.onClick}
             >
                 <span className="id">{this.props.id}</span>
                 <span className="label">{this.props.label}</span>
-                <span>{this.state.isCompleted ? 'Completed!' : 'Todo'}</span>
+                <span>{this.state.completed ? 'Completed!' : 'Todo'}</span>
             </div>
         );
     }
@@ -64,6 +64,7 @@ const TodoList = React.createClass({
     render() {
         const children = this.props.children.map(child => {
             return React.cloneElement(child, { 
+                key: child.props.id,
                 onClick: this.onClick.bind(this, child.props.id),
                 clicked: !!this.state.clicked[child.props.id],
                 onMouseDown: this.noop
