@@ -374,13 +374,13 @@ describe('unexpected-react-shallow', () => {
         it('matches content as undefined', function () {
 
             renderer.render(<ClassComponent content={undefined} />);
-            return expect(renderer, 'to have rendered', <div className="class-component"></div>);
+            return expect(renderer, 'to have rendered', <div className="class-component" />);
         });
 
         it('matches content as null', function () {
 
             renderer.render(<ClassComponent content={null} />);
-            return expect(renderer, 'to have rendered', <div className="class-component"></div>);
+            return expect(renderer, 'to have rendered', <div className="class-component" />);
         });
 
         it('highlights diffs on a nested custom component', function () {
@@ -1908,7 +1908,7 @@ describe('unexpected-react-shallow', () => {
             );
             expect(renderer, 'to contain',
                     <span>{ expect.it('to eventually equal', 'some Text') }</span>
-                )
+                );
 
             return expect(expect(renderer, 'to contain',
                     <span>{ expect.it('to eventually equal', 'some Text') }</span>
@@ -2003,7 +2003,7 @@ describe('unexpected-react-shallow', () => {
             return expect(renderer, 'queried for', <MyDiv className={ expect.it('to eventually equal', 'bar')} />, 'to have rendered',
                 <MyDiv className="bar">
                     <span>bar</span>
-                </MyDiv>)
+                </MyDiv>);
         });
 
         it('passes the component as the resolution of the promise', () => {
@@ -2039,7 +2039,7 @@ describe('unexpected-react-shallow', () => {
             expect(renderer, 'queried for', <MyDiv className="bar"><span queryTarget /></MyDiv>,
                 'to have exactly rendered', <span>bar</span>);
 
-        })
+        });
     });
      
 
@@ -2197,7 +2197,7 @@ describe('unexpected-react-shallow', () => {
             '<span className="main-click" // missing class \'not-exists\'\n' +
             '>\n' +
             '  Main clicked 0\n' +
-            '</span>')
+            '</span>');
         });
 
         it('triggers events on raw components without a renderer', () => {

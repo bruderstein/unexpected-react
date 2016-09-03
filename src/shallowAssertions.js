@@ -208,7 +208,7 @@ function installInto(expect) {
 
         const renderer = TestUtils.createRenderer();
         renderer.render(subject);
-        return expect.apply(expect, [renderer, 'with event'].concat(Array.prototype.slice.call(arguments, 2)))
+        return expect.apply(expect, [renderer, 'with event'].concat(Array.prototype.slice.call(arguments, 2)));
 
     });
     
@@ -216,7 +216,7 @@ function installInto(expect) {
 
         const renderer = TestUtils.createRenderer();
         renderer.render(subject);
-        return expect.apply(expect, [renderer, 'with event'].concat(Array.prototype.slice.call(arguments, 2)))
+        return expect.apply(expect, [renderer, 'with event'].concat(Array.prototype.slice.call(arguments, 2)));
     });
     
     
@@ -238,11 +238,11 @@ function installInto(expect) {
                     diff: function (output, diff, inspect) {
                         output.error('Could not find the target for the event. ');
                         if (result.bestMatch) {
-                            output.error('The best match was').nl().nl().append(jsxHtmlLike.render(result.bestMatch, output.clone(), diff, inspect))
+                            output.error('The best match was').nl().nl().append(jsxHtmlLike.render(result.bestMatch, output.clone(), diff, inspect));
                         }
                         return output;
                     }
-                })
+                });
             }
 
             const newSubject = Object.assign({}, subject, {
@@ -273,7 +273,7 @@ function installInto(expect) {
                     return output.error('No handler function prop ').text("'" + handlerPropName + "'").error(' on the target element');
 
                 }
-            })
+            });
         }
         handler(eventArgs);
         return renderer;

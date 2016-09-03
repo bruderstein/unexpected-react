@@ -493,7 +493,7 @@ describe('unexpected-react (deep rendering)', () => {
                 '  <span className="1">1</span>\n' +
                 '  <span className="2">2</span>\n' +
                 '  <span className="3">3</span>\n' +
-                '</div>')
+                '</div>');
         });
 
         it('errors correctly when the following assertion fails', () => {
@@ -529,7 +529,7 @@ describe('unexpected-react (deep rendering)', () => {
             return expect(component, 'queried for', <span className="2" />)
                 .then(span => {
                     expect(span, 'to be a', HTMLElement);
-                    expect(span, 'to satisfy', { className: '2'});
+                    expect(span, 'to satisfy', { className: '2' });
                 });
         });
         
@@ -551,7 +551,7 @@ describe('unexpected-react (deep rendering)', () => {
                     expect(span, 'to be a', HTMLElement);
                     expect(span, 'to satisfy', { className: '2' });
                 });
-        })
+        });
 
     });
 
@@ -716,7 +716,7 @@ describe('unexpected-react (deep rendering)', () => {
             expect(() => expect(component, 'with event', 'foo', 'to have rendered',
                 <div>
                     <span className="main-click">Main clicked 2</span>
-                </div>), 'to throw', /Event 'foo' is not supported by TestUtils.Simulate/)
+                </div>), 'to throw', /Event 'foo' is not supported by TestUtils.Simulate/);
         });
 
         it('calls events with event parameters', () => {
@@ -814,35 +814,39 @@ describe('unexpected-react (deep rendering)', () => {
         describe('combined with queried for', () => {
 
             const TodoItem = React.createClass({
+                propTypes: {
+                    label: React.PropTypes.string
+                },
+                
                 getInitialState() {
                     return {
                         isCompleted: 'false'
-                    }
+                    };
                 },
 
                 onClick() {
                     this.setState({
                         isCompleted: 'true'
-                    })
+                    });
                 },
 
                 render() {
-                    return <div>
+                    return (<div>
                         <span>{this.props.label}</span>
                         <span>Is complete {this.state.isCompleted}</span>
                         <button onClick={this.onClick}>Click me</button>
-                    </div>
+                    </div>);
                 }
             });
 
             const TodoList = React.createClass({
 
                 render() {
-                    return <div>
+                    return (<div>
                         <TodoItem id={1} label="one"/>
                         <TodoItem id={2} label="two"/>
                         <TodoItem id={3} label="three"/>
-                    </div>
+                    </div>);
                 }
             });
             
@@ -897,7 +901,7 @@ describe('unexpected-react (deep rendering)', () => {
                     'with event click', 'on', <TodoItem id={2}><div><button eventTarget /></div></TodoItem>,
                     'queried for', <TodoItem id={2} />)
                     .then(todoItem => {
-                        expect(todoItem.state, 'to satisfy', { isCompleted: 'true' })
+                        expect(todoItem.state, 'to satisfy', { isCompleted: 'true' });
                     });
             });
             
@@ -909,7 +913,7 @@ describe('unexpected-react (deep rendering)', () => {
                     'with event click', 'on', <TodoItem id={1}><div><button eventTarget /></div></TodoItem>,
                     'queried for', <TodoItem id={2} />)
                     .then(todoItem => {
-                        expect(todoItem.state, 'to satisfy', { isCompleted: 'true' })
+                        expect(todoItem.state, 'to satisfy', { isCompleted: 'true' });
                     });
             });
             
@@ -923,7 +927,7 @@ describe('unexpected-react (deep rendering)', () => {
                     'queried for', <TodoItem id={2}><div queryTarget /></TodoItem>)
                     .then(div => {
                         expect(div, 'to be a', HTMLElement);
-                        expect(div, 'to satisfy', { tagName: 'DIV' })
+                        expect(div, 'to satisfy', { tagName: 'DIV' });
                     });
             });
         });

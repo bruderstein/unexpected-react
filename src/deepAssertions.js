@@ -108,7 +108,7 @@ function installInto(expect) {
             renderedReactElementAdapter.setOptions({ concatTextContent: true });
         }
 
-        var options = getDefaultOptions({ exactly, withAllWrappers, withAllChildren })
+        var options = getDefaultOptions({ exactly, withAllWrappers, withAllChildren });
 
         const containsResult = htmlLikeRenderedReactElement.contains(jsxAdapter, subject, element, expect, options);
 
@@ -158,7 +158,7 @@ function installInto(expect) {
         var withAllChildren = this.flags['with all children'];
         var withAllWrappers = this.flags['with all wrappers'];
 
-        var adapter = new RenderedReactElementAdapter({ convertToString: true, concatTextContent: !exactly});
+        var adapter = new RenderedReactElementAdapter({ convertToString: true, concatTextContent: !exactly });
         var renderedHtmlLike = new UnexpectedHtmlLike(adapter);
         var jsxAdapter = new ReactElementAdapter({ convertToString: true, concatTextContent: !exactly });
 
@@ -291,7 +291,7 @@ function installInto(expect) {
                             diff: output.error('Could not find the target.')
                         };
                     }
-                })
+                });
             }
 
             const newSubject = Object.assign({}, subject, {
