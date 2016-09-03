@@ -7,7 +7,6 @@ there is a prop with the name `on[EventName]`, where the first letter of the eve
 e.g. with a button that counts it's own clicks
 
 ```js
-
 var renderer = TestUtils.createRenderer()
 renderer.render(<MyButton />);
 
@@ -23,35 +22,57 @@ event name.
 expect(<MyButton />, 'with event click', 'to have rendered', <button>Button was clicked 1 times</button>);
 ```
 
+Given the following todo list:
+
+```js
+var renderer = TestUtils.createRenderer()
+renderer.render(
+  <TodoList>
+    <TodoItem id={1} label="Buy flowers for the wife"/>
+    <TodoItem id={2} label="Mow the lawn"/>
+    <TodoItem id={3} label="Buy groceries"/>
+  </TodoList>
+);
+```
+
 If you want to trigger an event on a specific component, (i.e. not the top level component), use `on` 
 after the event.
 
 ```js
-expect(<TodoList items={items} />, 'with event click', 'on', <TodoItem item={{ id: 3}} />, 
-    'to contain', <span className="TodoItem--completed">do something</span>);
+expect(
+  renderer,
+  'with event click',
+  'on', <TodoItem id={3} />,
+  'to contain', <TodoItem id={3} clicked={true} />
+);
 ```
 
 To pass arguments to the event, simply include the event object after the event name
 
 ```js
-expect(<TodoList items={items} />, 'with event mouseDown', { mouseX: 150, mouseY: 50 },
-    'on', <TodoItem item={{ id: 3}} />,
-    'to contain', <span className="TodoItem--completed">do something</span>);
+expect(
+  renderer,
+  'with event mouseDown', { mouseX: 150, mouseY: 50 },
+  'on', <TodoItem id={2} />,
+  'to contain', <TodoItem id={2} clicked={false} />
+);
 ```
 
 This will call the function passed in the `onMouseDown` prop of the `<TodoItem>`.
 
 
 
-You can take the instance of the component after the event has been triggered by using the promise returned
-from `expect`.
+You can take the renderer after the event has been triggered by using the promise returned
+from `expect`.  This is often used to test that spy or mock callbacks have been called (using for instance [sinon.js](http://sinonjs.org)).
 
-```js
-expect(<TodoList items={items} />, 
-    'with event mouseDown', { mouseX: 150, mouseY: 50 })
-    .then(todoList => {
-        expect(todoList.state, 'to satisfy', { items: [ { clicked: true } ] });
-    });
+```js#async:true
+return expect(
+  renderer,
+  'with event click', 'on', <TodoItem id={2} />
+).then(renderer => {
+  const todoListInstance = renderer.getMountedInstance();
+  expect(todoListInstance.state, 'to satisfy', { clicked: { 2: true } });
+});
         
 ```
 
