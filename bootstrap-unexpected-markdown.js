@@ -84,8 +84,33 @@ const TodoList = React.createClass({
     }
 });
 
+const App = React.createClass({
+
+    getInitialState() {
+        return { clickTestClicked: false };
+    },
+    
+    onClickTest() {
+        this.setState({ clickTestClicked: true });
+    },
+    
+    render() {
+        return (
+            <div>
+                    <div className="other-button"><button>Not clicked</button></div>
+                    <div className="click-test">
+                        <button className="click-test" onClick={this.onClickTest}>
+                            {this.state.clickTestClicked ? 'Button was clicked' : 'Not clicked'}
+                        </button>
+                    </div>
+            </div>
+        );
+    }
+});
+
 global.TodoItem = TodoItem;
 global.TodoList = TodoList;
+global.App = App;
 
 const MyButton = React.createClass({
     getInitialState () {

@@ -62,15 +62,16 @@ This will call the function passed in the `onMouseDown` prop of the `<TodoItem>`
 
 
 
-You can take the instance of the component after the event has been triggered by using the promise returned
-from `expect`.
+You can take the renderer after the event has been triggered by using the promise returned
+from `expect`.  This is often used to test that spy or mock callbacks have been called (using for instance [sinon.js](http://sinonjs.org)).
 
 ```js#async:true
 return expect(
   renderer,
-  'with event mouseDown', { mouseX: 150, mouseY: 50 }
-).then(todoList => {
-  expect(todoList.state, 'to satisfy', { items: [ { clicked: true } ] });
+  'with event click', 'on', <TodoItem id={2} />
+).then(renderer => {
+  const todoListInstance = renderer.getMountedInstance();
+  expect(todoListInstance.state, 'to satisfy', { clicked: { 2: true } });
 });
         
 ```
