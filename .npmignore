@@ -5,5 +5,6 @@ site-build/
 demo/
 .travis.yml
 .coveralls.yml
+yarn.lock
 
 
