@@ -18,9 +18,10 @@ See the blog post for an introduction: https://medium.com/@bruderstein/the-missi
 
 * Assert React component's output using the [shallow renderer](http://facebook.github.io/react/docs/test-utils.html#shallow-rendering)
 * Assert React component's output using the full renderer and JSX "expected" values (e.g. `TestUtils.renderIntoDocument()`) 
-* Trigger events on components in both shallow and full renderers
-* Locate components using JSX queries in both shallow and full renderers
-* All assertions work identically with both shallow and full renderers, allowing you to mix and match in your tests, based on what you need.
+* Assert React component's output using the test renderer ([react-test-renderer](https://www.npmjs.com/package/react-test-renderer) (require `unexpected-react/test-renderer`)
+* Trigger events on components in shallow, full and test renderers
+* Locate components using JSX queries in shallow, full and test renderers
+* All assertions work identically with the shallow, full and test renderers, allowing you to mix and match in your tests, based on what you need.
 
 # Examples
 
@@ -99,11 +100,91 @@ expect(todoList,
 });
 ```
 
+* Calling an event and validating the output using the test renderer
+
+```js#evaluate:false
+const unexpected = require('unexpected');
+const React = require('react');
+const TestRenderer = require('react-test-renderer');
+const expect = unexpected.clone().use(require('unexpected-react/test-renderer'));
+
+describe('ClickCounterButton', function () {
+  
+  it('shows the increased click count after a click event', function () {
+    const renderer = TestRenderer.create(<ClickCounterButton />);
+    expect(renderer, 
+        'with event', 'click',
+        'to have rendered',
+        <button>Clicked {1} time</button>
+    );
+  });
+});
+```
 # Usage
 
 ```
 npm install --save-dev unexpected unexpected-react
 ```
+
+## Initialising
+
+### With the shallow renderer
+
+```js#evaluate:false
+
+var unexpected = require('unexpected');
+var unexpectedReact = require('unexpected-react');
+
+var React = require('react');
+var ReactTestUtils = require('react-addons-test-utils');
+
+// Require the component we want to test
+var MyComponent = require('../MyComponent');
+
+// Declare our `expect` instance to use unexpected-react
+var expect = unexpected.clone()
+    .use(unexpectedReact);
+    
+describe('MyComponent', function () {
+    it('renders a button', function () {
+        var renderer = ReactTestUtils.createRenderer();
+        renderer.render(<MyComponent />);
+        expect(renderer, 'to have rendered', <button>Click me</button>);
+    });
+});
+
+```
+
+### With the [test renderer](https://www.npmjs.com/package/react-test-renderer)
+
+If you want to use the [react-test-renderer](https://www.npmjs.com/package/react-test-renderer), then **`require('unexpected-react/test-renderer')`**
+
+```js#evaluate:false
+
+var unexpected = require('unexpected');
+
+// Note that for the test-renderer, we need a different `require`
+var unexpectedReact = require('unexpected-react/test-renderer');
+
+var React = require('react');
+var TestRenderer = require('react-test-renderer');
+
+var MyComponent = require('../MyComponent');
+
+// define our instance of the `expect` function to use unexpected-react
+const expect = unexpected.clone()
+    .use(unexpectedReact);
+    
+
+describe('MyComponent', function () {
+    it('renders a button', function () {
+        var renderer = TestRenderer.create(<MyComponent />);
+        expect(renderer, 'to have rendered', <button>Click me</button>);
+    });
+});
+```
+
+### With the full virtual DOM (all custom components AND the DOM elements)
 
 If you want to assert over the whole virtual DOM, then you need to emulate the DOM 
 (note this library is not designed for use in the browser - it may be possible, but at the 
@@ -111,6 +192,11 @@ very least, you'll need to disable the react-devtools)
 
 If you don't need the virtual DOM, and you're just using the [shallow renderer](http://facebook.github.io/react/docs/test-utils.html#shallow-rendering),
 then the order of the requires is not important, and you obviously don't need the `emulateDom.js` require.
+
+The **order of `require`'s is important**. `unexpected-react` must be required **before** `react` is required. That means `unexpected-react` must be required
+before any other file is required that requires React (e.g. your components!)
+
+(You can also use the shallow renderer interchangeably with this setup)
 
 ```js#evaluate:false
 // First require your DOM emulation file (see below)
@@ -122,12 +208,33 @@ var unexpected = require('unexpected');
 var unexpectedReact = require('unexpected-react');
 
 // then react
-var React = require('react/addons');
+var React = require('react');
 
-// define our instance of the `expect` function to use
+// ...and optionally the addons
+var TestUtils = require('react-addons-test-utils');
+
+// then our component(s)
+var MyComponent = require('../MyComponent);
+
+// define our instance of the `expect` function to use unexpected-react
 const expect = unexpected.clone()
     .use(unexpectedReact);
+    
+describe('MyComponent', function () {
+    it('renders a button', function () {
+        var component = TestUtils.renderIntoDocument(<MyComponent />);
+
+        // All custom components and DOM elements are included in the tree,
+        // so you can assert to whatever level you wish
+        expect(component, 'to have rendered', 
+          <MyComponent>
+            <button>Click me</button>
+          </MyComponent>);
+    });
+});
 ```
+
+## Emulating the DOM
 
 The `emulateDom` file depends on whether you want to use [`domino`](https://npmjs.com/package/domino), or [`jsdom`](https://npmjs.com/package/jsdom)
 
@@ -169,8 +276,6 @@ if (typeof document === 'undefined') {
     }
 }
 ```
-
-From that point on, you can `require` the components you want to test, and write your tests.
 
 # React Compatibility
 
@@ -351,6 +456,7 @@ if you use a test runner that keeps the process alive (such as [wallaby.js](http
 * [DONE] ~~There are some performance optimisations to do. The performance suffers a bit due to the possible asynchronous nature of the inline assertions. Most of the time these will be synchronous, and hence we don't need to pay the price.~~
 * [DONE] ~~`queried for` implementation~~
 * [DONE] ~~Directly calling events on both the shallow renderer, and the full virtual DOM renderer~~
+* Support Snapshot testing in Jest
 * Cleanup output - where there are no differences to highlight, we could skip the branch
 
 # Contributing

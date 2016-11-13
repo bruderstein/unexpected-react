@@ -1,10 +1,12 @@
 node_modules/
 wallaby.js
+wallaby-testrenderer.js
 bootstrap-unexpected-markdown.js
 site-build/
 demo/
 .travis.yml
 .coveralls.yml
+.eslintrc
 yarn.lock
 
 
