@@ -134,3 +134,9 @@ based on the `with all children`, `with all wrappers`, and `exactly` flags
 ## v3.2.4
 
 * Fixed and updated the docs, and with huge thanks to @sunesimonsen all the examples in the docs are now tested
+
+## v3.3.0
+
+* Added support for the [react-test-renderer](https://www.npmjs.org/package/react-test-renderer)
+* Fixed issue #28 (immutable lists mixed with other child components)
+
