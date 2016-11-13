@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+    <link rel="stylesheet" href="../../../static/normalize.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../../static/main.css" type="text/css" media="screen" />
+    <link rel="shortcut icon" type="image/vnd.microsoft.icon" href="../../../static/bug-icon-black.ico">
+    <title>RenderedReactElement - to contain</title>
+</head>
+<body class="sidebar-hidden has-sidebar"> 
+    <header>
+        <div class="logo-icon"></div>
+        <nav>
+            <ul>
+                <li class="menu-toggle-item">
+                    <button class="menu-toggle" onclick="toggleSidebar()"></button>
+                </li>
+                
+                <li class=""><a href="../../..">unexpected-react</a></li>
+                
+                
+                <li class="active"><a href="../queried-for">Assertions</a></li>
+                
+                
+                
+            </ul>
+        </nav>
+        <div class="search" style="visibility: hidden">
+            <input id="search" placeholder="Search..." value="">
+            <div id="searchDropDown" class="dropDown">
+                <ul id="searchResults"></ul>
+            </div>
+        </div>
+    </header>
+
+<section id="assertions">
+    <nav id="assertion-menu" class="sidebar js-remember-scroll-position">
+    
+        <h3 class=""><a href="..">RenderedReactElement</a></h3>
+        <ul>
+            
+            <li class="">
+                <a href="../queried-for">queried for</a>
+            </li>
+            
+            <li class="active">
+                <a href="">to contain</a>
+            </li>
+            
+            <li class="">
+                <a href="../to-have-rendered">to have rendered</a>
+            </li>
+            
+            <li class="">
+                <a href="../with-event">with event</a>
+            </li>
+            
+        </ul>
+    
+</nav>
+
+    <div class="main" tabindex="-1">
+        <div class="content">
+            <h1>to contain</h1>
+            
+                <ul class="declarations">
+                
+                    <li>&lt;RenderedReactElement&gt; [not] to contain [with all children] [with all wrappers] &lt;ReactElement|string&gt;</li>
+                
+                    <li>&lt;RenderedReactElement&gt; [not] to contain [exactly] &lt;ReactElement|string&gt;</li>
+                
+                </ul>
+            
+            <p>It&#39;s possible to check for a part of the subtree, without
+testing the entire returned tree.  This allows you to test specific elements, without
+writing brittle tests that break when the structure changes.</p>
+<p>Assuming the following component output</p>
+<div class="code lang-javascript"><div>class&nbsp;MyComponent&nbsp;extends&nbsp;React<span style="color: #000000">.</span>Component&nbsp;<span style="color: #000000">{</span></div><div>&nbsp;&nbsp;render&nbsp;<span style="color: #000000">()</span>&nbsp;<span style="color: #000000">{</span></div><div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #a71d5d">return</span>&nbsp;<span style="color: #000000">(</span></div><div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #a71d5d">&lt;</span>div<span style="color: #a71d5d">&gt;</span></div><div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #a71d5d">&lt;</span>span&nbsp;className<span style="color: #a71d5d">=</span><span style="color: #df5000">&quot;top&quot;</span><span style="color: #a71d5d">&gt;</span>one<span style="color: #a71d5d">&lt;/</span>span<span style="color: #a71d5d">&gt;</span></div><div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #a71d5d">&lt;</span>span&nbsp;className<span style="color: #a71d5d">=</span><span style="color: #df5000">&quot;middle&quot;</span><span style="color: #a71d5d">&gt;</span>two<span style="color: #a71d5d">&lt;/</span>span<span style="color: #a71d5d">&gt;</span></div><div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #a71d5d">&lt;</span>span&nbsp;className<span style="color: #a71d5d">=</span><span style="color: #df5000">&quot;bottom&quot;</span><span style="color: #a71d5d">&gt;</span>three<span style="color: #a71d5d">&lt;/</span>span<span style="color: #a71d5d">&gt;</span></div><div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #a71d5d">&lt;/</span>div<span style="color: #a71d5d">&gt;</span></div><div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #000000">);</span></div><div>&nbsp;&nbsp;<span style="color: #000000">}</span></div><div><span style="color: #000000">};</span></div><div>&nbsp;</div><div><span style="color: #a71d5d">var</span>&nbsp;component&nbsp;<span style="color: #a71d5d">=</span>&nbsp;TestUtils<span style="color: #000000">.</span><span style="color: #000000">renderIntoDocument</span><span style="color: #000000">(</span></div><div>&nbsp;&nbsp;<span style="color: #a71d5d">&lt;</span>MyComponent<span style="color: #a71d5d">/&gt;</span></div><div><span style="color: #000000">);</span></div></div><div class="code lang-javascript"><div><span style="color: #969896">//&nbsp;This&nbsp;will&nbsp;pass,&nbsp;as&nbsp;`&lt;span&nbsp;className=&quot;middle&quot;&gt;two&lt;/span&gt;`&nbsp;can&nbsp;be&nbsp;found&nbsp;in&nbsp;the&nbsp;component's&nbsp;output</span></div><div><span style="color: #000000">expect</span><span style="color: #000000">(</span>component<span style="color: #000000">,</span>&nbsp;<span style="color: #df5000">'to&nbsp;contain'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #a71d5d">&lt;</span>span<span style="color: #a71d5d">&gt;</span>two<span style="color: #a71d5d">&lt;/</span>span<span style="color: #a71d5d">&gt;</span><span style="color: #000000">);</span></div></div><p>Notice that the extra <code>className=&quot;middle&quot;</code> in the <code>&lt;span className=&quot;middle&quot;&gt;two&lt;/span&gt;</code> is ignored,
+in a similar way to the <code>to have rendered</code> assertion.</p>
+<p>You can override this behaviour by using <code>&#39;to contain exactly&#39;</code>, and <code>&#39;to contain with all children&#39;</code></p>
+<div class="code lang-javascript"><div><span style="color: #969896">//&nbsp;This&nbsp;will&nbsp;fail,&nbsp;as&nbsp;`&lt;span&gt;two&lt;/span&gt;`&nbsp;cannot&nbsp;be&nbsp;found&nbsp;in&nbsp;the&nbsp;renderers&nbsp;output,&nbsp;due&nbsp;to</span></div><div><span style="color: #969896">//&nbsp;the&nbsp;missing&nbsp;`className=&quot;middle&quot;`&nbsp;prop</span></div><div><span style="color: #000000">expect</span><span style="color: #000000">(</span>component<span style="color: #000000">,</span>&nbsp;<span style="color: #df5000">'to&nbsp;contain&nbsp;exactly'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #a71d5d">&lt;</span>span<span style="color: #a71d5d">&gt;</span>two<span style="color: #a71d5d">&lt;/</span>span<span style="color: #a71d5d">&gt;</span><span style="color: #000000">);</span></div></div><div class="output"><div><span style="color: red; font-weight: bold">expected</span>&nbsp;<span style="color: #0086b3">undefined</span>&nbsp;<span style="color: red; font-weight: bold">to&nbsp;contain&nbsp;exactly</span>&nbsp;<span style="color: #000000">&lt;</span><span style="color: #63a35c">span</span><span style="color: #000000">&gt;</span><div style="display: inline-block; vertical-align: top"><div>two</div></div><span style="color: #000000">&lt;/</span><span style="color: #63a35c">span</span><span style="color: #000000">&gt;</span></div><div>&nbsp;&nbsp;<span style="color: red; font-weight: bold">No&nbsp;matching&nbsp;assertion,&nbsp;did&nbsp;you&nbsp;mean:</span></div><div>&nbsp;&nbsp;&lt;ReactElement&gt;&nbsp;[not]&nbsp;to&nbsp;contain&nbsp;[exactly]&nbsp;&lt;ReactElement|string&gt;</div><div>&nbsp;&nbsp;&lt;ReactPendingDeepEvent&gt;&nbsp;[not]&nbsp;to&nbsp;contain&nbsp;[exactly]&nbsp;&lt;ReactElement&gt;</div><div>&nbsp;&nbsp;&lt;ReactPendingShallowEvent&gt;&nbsp;[not]&nbsp;to&nbsp;contain&nbsp;[exactly]&nbsp;&lt;ReactElement&gt;</div><div>&nbsp;&nbsp;&lt;ReactShallowRenderer&gt;&nbsp;[not]&nbsp;to&nbsp;contain&nbsp;[exactly]&nbsp;&lt;ReactElement|string&gt;</div><div>&nbsp;&nbsp;&lt;RenderedReactElement&gt;&nbsp;[not]&nbsp;to&nbsp;contain&nbsp;[exactly]&nbsp;&lt;ReactElement|string&gt;</div><div>&nbsp;&nbsp;&lt;RenderedReactElementData&gt;&nbsp;[not]&nbsp;to&nbsp;contain&nbsp;[exactly]&nbsp;&lt;ReactElement|string&gt;</div></div><p>The same thing applies to children for <code>&#39;to contain&#39;</code> as for <code>&#39;to have rendered&#39;</code>.</p>
+
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    baseUrl = '../../..';
+</script>
+<script type="text/javascript" src="../../../static/toggleSidebar.js"></script>
+<script type="text/javascript" src="../../../static/rememberScrollPosition.js"></script>
+<script type="text/javascript" src="../../../static/focusMain.js"></script>
+<script type="text/javascript" src="../../../static/search.js"></script>
+</body>
+</html>
+

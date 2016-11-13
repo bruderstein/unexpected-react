@@ -20,6 +20,10 @@
     "url": "/assertions/RenderedReactElement/queried-for/"
   },
   {
+    "label": "to contain (RenderedReactElement)",
+    "url": "/assertions/RenderedReactElement/to-contain/"
+  },
+  {
     "label": "with event (RenderedReactElement)",
     "url": "/assertions/RenderedReactElement/with-event/"
   },
@@ -28,7 +32,19 @@
     "url": "/assertions/RenderedReactElement/to-have-rendered/"
   },
   {
-    "label": "to contain (RenderedReactElement)",
-    "url": "/assertions/RenderedReactElement/to-contain/"
+    "label": "queried for (ReactTestRenderer)",
+    "url": "/assertions/ReactTestRenderer/queried-for/"
+  },
+  {
+    "label": "to contain (ReactTestRenderer)",
+    "url": "/assertions/ReactTestRenderer/to-contain/"
+  },
+  {
+    "label": "to have rendered (ReactTestRenderer)",
+    "url": "/assertions/ReactTestRenderer/to-have-rendered/"
+  },
+  {
+    "label": "with event (ReactTestRenderer)",
+    "url": "/assertions/ReactTestRenderer/with-event/"
   }
 ]
