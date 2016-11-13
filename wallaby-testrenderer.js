@@ -36,7 +36,7 @@ module.exports = function (wallaby) {
                 ignore: true
             }],
 
-        tests: ['src/**/tests/*.spec.js'],
+        tests: ['src/**/testrenderer-tests/*.spec.js'],
         env: {
             type: 'node',
             runner: 'node'
