@@ -17,9 +17,10 @@ See the blog post for an introduction: https://medium.com/@bruderstein/the-missi
 
 * Assert React component's output using the [shallow renderer](http://facebook.github.io/react/docs/test-utils.html#shallow-rendering)
 * Assert React component's output using the full renderer and JSX "expected" values (e.g. `TestUtils.renderIntoDocument()`) 
-* Trigger events on components in both shallow and full renderers
-* Locate components using JSX queries in both shallow and full renderers
-* All assertions work identically with both shallow and full renderers, allowing you to mix and match in your tests, based on what you need.
+* Assert React component's output using the test renderer ([react-test-renderer](https://www.npmjs.com/package/react-test-renderer) (require `unexpected-react/test-renderer`)
+* Trigger events on components in shallow, full and test renderers
+* Locate components using JSX queries in shallow, full and test renderers
+* All assertions work identically with the shallow, full and test renderers, allowing you to mix and match in your tests, based on what you need.
 
 # Examples
 
@@ -70,6 +71,26 @@ expect(todoList,
   });
 ```
 
+* Calling an event and validating the output using the test renderer
+```js
+const unexpected = require('unexpected');
+const React = require('react');
+const TestRenderer = require('react-test-renderer');
+const expect = unexpected.clone().use(require('unexpected-react/test-renderer');
+
+describe('ClickCounterButton', function () {
+  
+  it('shows the increased click count after a click event', function () {
+    const renderer = TestRenderer.create(<ClickCounterButton />);
+    expect(renderer, 
+        'with event', 'click',
+        'to have rendered',
+        <button>Clicked {1} time</button>
+    );
+  });
+});
+```
+
 # Usage
 
 ```
@@ -82,6 +103,9 @@ very least, you'll need to disable the react-devtools)
 
 If you don't need the virtual DOM, and you're just using the [shallow renderer](http://facebook.github.io/react/docs/test-utils.html#shallow-rendering),
 then the order of the requires is not important, and you obviously don't need the `emulateDom.js` require.
+
+If you want to use the [react-test-renderer](https://www.npmjs.com/package/react-test-renderer), then use `require('unexpected-react/test-renderer')`,
+and do not require `react-dom` or the `react-addons-test-utils` package.
 
 ```js
 // First require your DOM emulation file (see below)
@@ -292,6 +316,7 @@ if you use a test runner that keeps the process alive (such as [wallaby.js](http
 the inline assertions. Most of the time these will be synchronous, and hence we don't need to pay the price.
 * (DONE) `queried for` implementation
 * (DONE) Directly calling events on both the shallow renderer, and the full virtual DOM renderer
+* Support snapshot testing in Jest
 * Improve output further
 
 # Contributing

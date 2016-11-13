@@ -1,13 +1,11 @@
-/*global unexpected:true, TestUtils:true, React:true, sinon:true*/
-
-require( './src/testHelpers/emulateDom');
+/*global unexpected:true, React:true, TestRenderer:true, sinon:true*/
 
 global.unexpected = require('unexpected');
 unexpected.output.preferredWidth = 80;
-unexpected.use(require('./src/unexpected-react'));
+unexpected.use(require('./src/test-renderer'));
 
-global.TestUtils = require('react-addons-test-utils');
 global.React = require('react');
+global.TestRenderer = require('react-test-renderer');
 
 
 const TodoItem = React.createClass({
@@ -26,6 +24,9 @@ const TodoItem = React.createClass({
         this.setState({
             completed: true
         });
+        if (this.props.onClick) {
+            this.props.onClick();
+        }
     },
 
     render() {
@@ -34,6 +35,7 @@ const TodoItem = React.createClass({
               id={'todo-' + this.props.id}
               className={`item ${ this.state.completed ? 'completed' : 'incomplete'}`}
               onClick={this.onClick}
+              onMouseDown={this.props.onMouseDown}
             >
                 <span className="id">{this.props.id}</span>
                 <span className="label">{this.props.label}</span>
