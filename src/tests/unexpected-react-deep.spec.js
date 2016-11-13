@@ -70,7 +70,7 @@ class CustomComp extends React.Component {
 CustomComp.propTypes = {
     childCount: PropTypes.number,
     className: PropTypes.string,
-    useEvents: PropTypes.boolean
+    useEvents: PropTypes.bool
 };
 
 class WrapperComp extends React.Component {
