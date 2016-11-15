@@ -248,6 +248,23 @@ AssertionGenerator.prototype.installInto = function installInto(expect) {
         return expect.shift(subject.renderer);
       }
   });
+  
+  expect.addAssertion(`<${actualPendingEventTypeName}> [and] with event <string> <object> <assertion?>`,
+    function (expect, subject, eventName, eventArgs) {
+      
+      triggerEvent(subject.renderer, subject.target, subject.eventName, subject.eventArgs);
+      if (arguments.length > 4) {
+        return expect.shift({
+          $$typeof: PENDING_EVENT_IDENTIFIER,
+          renderer: subject.renderer,
+          eventName: eventName,
+          eventArgs: eventArgs
+        });
+      } else {
+        triggerEvent(subject.renderer, null, eventName, eventArgs);
+        return expect.shift(subject.renderer);
+      }
+    });
 
   expect.addAssertion([`<${actualPendingEventTypeName}> [not] to contain [exactly] <${expectedTypeName}>`,
     `<${actualPendingEventTypeName}> [not] to contain [with all children] [with all wrappers] <${expectedTypeName}>`],
@@ -306,6 +323,22 @@ AssertionGenerator.prototype.installInto = function installInto(expect) {
           .concat(Array.prototype.slice.call(arguments, 3)));
     }
   );
+  
+  // More generic assertions
+  expect.addAssertion(`<${actualTypeName}> to equal <${expectedTypeName}>`, function (expect, subject, expected) {
+    expect(getRenderOutput(subject), 'to equal', expected);
+  });
+  expect.addAssertion(`<${actualRenderOutputType}> to equal <${expectedTypeName}>`, function (expect, subject, expected) {
+    expect(subject, 'to have exactly rendered', expected);
+  });
+  
+  expect.addAssertion(`<${actualTypeName}> to satisfy <${expectedTypeName}>`, function (expect, subject, expected) {
+    expect(getRenderOutput(subject), 'to satisfy', expected);
+  });
+  
+  expect.addAssertion(`<${actualRenderOutputType}> to satisfy <${expectedTypeName}>`, function (expect, subject, expected) {
+    expect(subject, 'to have rendered', expected);
+  });
   
 };
 
