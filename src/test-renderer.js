@@ -10,7 +10,6 @@ module.exports = {
     
     types.installInto(expect);
     testRendererAssertions.installInto(expect);
-    
   },
   
   clearAll() {
