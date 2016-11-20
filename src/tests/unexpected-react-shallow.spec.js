@@ -2290,7 +2290,7 @@ describe('unexpected-react-shallow', () => {
         
         it('passes the renderer with the event triggered as the fulfillment of the promise with multiple events', () => {
 
-            expect(<ClickableComponent />, 'with event', 'click', { increment: 5 }, 'on', <span className="item-click" />,
+            return expect(<ClickableComponent />, 'with event', 'click', { increment: 5 }, 'on', <span className="item-click" />,
                 'and with event', 'aliensLanded', { increment: 7 })
                 .then(renderer => {
                     // Using getRenderOutput() here to validate that the renderer and not the pending event wrapper is forwarded
@@ -2304,8 +2304,8 @@ describe('unexpected-react-shallow', () => {
 
         it('uses `eventTarget` prop to call an event on a sub component', () => {
 
-            expect(<ClickableComponent />, 'with event', 'click', { increment: 5 }, 'on', <div><span className="item-click" eventTarget/></div>,
-                'and with event', 'aliensLanded', { increment: 7 })
+            return expect(<ClickableComponent />, 'with event', 'click', { increment: 5 }, 'on', <div><span className="item-click" eventTarget/></div>,
+                 'with event', 'aliensLanded', { increment: 7 })
                 .then(renderer => {
                     // Using getRenderOutput() here to validate that the renderer and not the pending event wrapper is forwarded
                     expect(renderer.getRenderOutput(), 'to have rendered',

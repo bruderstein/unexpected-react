@@ -4,6 +4,7 @@ import UnexpectedHtmlLike from 'unexpected-htmllike';
 import RenderedReactElementAdapter from 'unexpected-htmllike-reactrendered-adapter';
 import ReactElementAdapter from 'unexpected-htmllike-jsx-adapter';
 import TestRendererAdapter from 'unexpected-htmllike-testrenderer-adapter';
+import RawAdapter from 'unexpected-htmllike-raw-adapter';
 import * as TestRendererTypeWrapper from './test-renderer-type-wrapper';
 
 function installInto(expect) {
@@ -14,6 +15,8 @@ function installInto(expect) {
     const htmlLikeReactElement = UnexpectedHtmlLike(reactElementAdapter);
     const testRendererAdapter = new TestRendererAdapter({ convertToString: true, concatTextContent: true });
     const htmlLikeTestRenderer = UnexpectedHtmlLike(testRendererAdapter);
+    const rawAdapter = new RawAdapter({ convertToString: true, concatTextContent: true });
+    const htmlLikeRaw = UnexpectedHtmlLike(rawAdapter);
 
     expect.addType({
 
@@ -138,6 +141,18 @@ function installInto(expect) {
 
         inspect: function (value, depth, output, inspect) {
             return htmlLikeTestRenderer.inspect(TestRendererTypeWrapper.getRendererOutputJson(value), depth, output, inspect);
+        }
+    });
+    
+    expect.addType({
+        name: 'ReactRawObjectElement',
+        base: 'object',
+        identify: function (value) {
+            return rawAdapter.isRawElement(value);
+        },
+        
+        inspect: function (value, depth, output, inspect) { 
+            return htmlLikeRaw.inspect(value, depth, output, inspect);
         }
     });
 }

@@ -43,7 +43,7 @@ AssertionGenerator.prototype.installInto = function installInto(expect) {
     ActualAdapter, ExpectedAdapter 
   } = this._options;
 
-  const actualPendingEventTypeName = actualTypeName + 'PendingEvent';
+  const actualPendingEventTypeName = actualTypeName + 'PendingEvent_' + expectedTypeName;
 
   const PENDING_EVENT_IDENTIFIER = { dummy: actualTypeName + 'PendingEventIdentifier' };
   
