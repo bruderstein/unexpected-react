@@ -6,17 +6,17 @@
  * These tests should never break, without breaking other more specific tests somewhere else
  */
 
-const EmulateDom = require( '../testHelpers/emulateDom');
+const EmulateDom = require( '../helpers/emulateDom');
 
 const Unexpected = require('unexpected');
-const UnexpectedReact = require('../unexpected-react');
+const UnexpectedReact = require('../../unexpected-react');
 
 const React = require('react');
 const TestUtils = require('react-addons-test-utils');
 const { findDOMNode } = require('react-dom');
 
-const Select = require('./components/Select');
-const SelectOption = require('./components/SelectOption');
+const Select = require('./../components/Select');
+const SelectOption = require('./../components/SelectOption');
 
 const expect = Unexpected.clone()
     .use(UnexpectedReact);
@@ -81,7 +81,7 @@ describe('Select', () => {
 
         // Sometimes this test runs very slowly, I don't know why.
         // Increasing the mocha timeout here to make sure we don't get wobbly results from Travis
-        this.timeout(5000); 
+        //this.timeout(5000); 
         TestUtils.Simulate.click(findDOMNode(component));
 
         return expect(component, 'to contain',

@@ -1,6 +1,6 @@
-import RawAdapter from 'unexpected-htmllike-raw-adapter';
+import ReactElementAdapter from 'unexpected-htmllike-jsx-adapter';
 import TestRendererAdapter from 'unexpected-htmllike-testrenderer-adapter';
-import * as TestRendererTypeWrapper from './test-renderer-type-wrapper';
+import * as TestRendererTypeWrapper from '../types/test-renderer-type-wrapper';
 import AssertionGenerator from './AssertionGenerator';
 
 
@@ -27,9 +27,9 @@ function installInto(expect) {
   
   const assertionGenerator = new AssertionGenerator({
     ActualAdapter: TestRendererAdapter,
-    ExpectedAdapter: RawAdapter,
+    ExpectedAdapter: ReactElementAdapter,
     actualTypeName: 'ReactTestRenderer',
-    expectedTypeName: 'ReactRawObjectElement',
+    expectedTypeName: 'ReactElement',
     getRenderOutput: renderer => TestRendererTypeWrapper.getTestRendererOutputWrapper(renderer),
     actualRenderOutputType: 'ReactTestRendererOutput',
     getDiffInputFromRenderOutput: renderOutput => TestRendererTypeWrapper.getRendererOutputJson(renderOutput),

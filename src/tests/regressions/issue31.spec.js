@@ -1,5 +1,5 @@
 const Unexpected = require('unexpected');
-const UnexpectedReact = require('../unexpected-react');
+const UnexpectedReact = require('../../unexpected-react');
 
 const expect = Unexpected
   .clone()

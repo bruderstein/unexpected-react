@@ -8,15 +8,7 @@ module.exports = function (wallaby) {
         files: [
             'src/**/*.js',
             {
-                pattern: 'src/**/tests/*.spec.js',
-                ignore: true
-            },
-            {
-                pattern: 'src/error-tests/*.spec.js',
-                ignore: true
-            },
-            {
-                pattern: 'src/testrenderer-tests/*.spec.js',
+                pattern: 'src/tests/**/*.spec.js',
                 ignore: true
             },
             {
@@ -36,7 +28,7 @@ module.exports = function (wallaby) {
                 ignore: true
             }],
 
-        tests: ['src/**/testrenderer-tests/*.spec.js'],
+        tests: ['src/tests/testRenderer/**/*.spec.js'],
         env: {
             type: 'node',
             runner: 'node'

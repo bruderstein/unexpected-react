@@ -1,7 +1,7 @@
-import types from './types';
-import * as testRendererAssertions from './testRendererAssertions';
-import * as testRendererAgainstRawAssertions from './testRendererAgainstRawAssertions';
-import * as jestSnapshotAssertions from './jestSnapshotTestRendererAssertions';
+import types from './types/types';
+import * as testRendererAssertions from './assertions/testRendererAssertions';
+import * as testRendererAgainstRawAssertions from './assertions/testRendererAgainstRawAssertions';
+import * as jestSnapshotAssertions from './assertions/jestSnapshotTestRendererAssertions';
 
 module.exports = {
   name: 'unexpected-react-test-renderer',

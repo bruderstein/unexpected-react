@@ -2,7 +2,7 @@ var Unexpected = require('unexpected');
 
 var React = require('react');
 var ReactTestRenderer = require('react-test-renderer');
-var UnexpectedReactTest = require('../test-renderer');
+var UnexpectedReactTest = require('../../test-renderer');
 
 var PropTypes = React.PropTypes;
 

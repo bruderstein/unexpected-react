@@ -1,5 +1,5 @@
 var Unexpected = require('unexpected');
-var UnexpectedReact = require('../unexpected-react');
+var UnexpectedReact = require('../../unexpected-react');
 
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');

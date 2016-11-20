@@ -3,13 +3,13 @@
  * These tests can therefore not be run in conjunction with the other tests, and must be run separately
  */
 
-const EmulateDom = require( '../testHelpers/emulateDom');
+const EmulateDom = require( '../helpers/emulateDom');
 
 const React = require('react');
 const TestUtils = require('react-addons-test-utils');
 
 const Unexpected = require('unexpected');
-const UnexpectedReact = require('../unexpected-react');
+const UnexpectedReact = require('../../unexpected-react');
 
 const expect = Unexpected.clone()
     .use(UnexpectedReact);

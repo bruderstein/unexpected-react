@@ -5,9 +5,9 @@
   "scripts": {
     "build": "babel src -d lib",
     "prepublish": "npm run build && npm test",
-    "test-main": "mocha --compilers js:babel-core/register src/tests/*.spec.js",
-    "test-error": "mocha --compilers js:babel-core/register src/error-tests/*.spec.js",
-    "test-testrenderer": "mocha --compilers js:babel-core/register src/testrenderer-tests/*.spec.js",
+    "test-main": "mocha --compilers js:babel-core/register src/tests/general/*.spec.js src/tests/regressions/*.spec.js",
+    "test-error": "mocha --compilers js:babel-core/register src/tests/errors/*.spec.js",
+    "test-testrenderer": "mocha --compilers js:babel-core/register src/tests/testRenderer/*.spec.js",
     "test-documentation": "npm run test-documentation-index && npm run test-documentation-standard && npm run test-documentation-testrenderer",
     "test-documentation-index": "mocha --compilers js:babel-core/register,md:unexpected-markdown --require ./bootstrap-unexpected-markdown documentation",
     "test-documentation-standard": "mocha --compilers js:babel-core/register,md:unexpected-markdown --require ./bootstrap-unexpected-markdown --recursive documentation/assertions/ReactElement documentation/assertions/RenderedReactElement",

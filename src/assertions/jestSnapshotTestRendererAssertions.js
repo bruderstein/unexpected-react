@@ -1,4 +1,4 @@
-import { compareSnapshot } from './snapshots';
+import { compareSnapshot } from '../helpers/snapshots';
 
 
 function installInto(expect) {

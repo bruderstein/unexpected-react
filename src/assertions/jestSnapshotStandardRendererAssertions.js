@@ -1,7 +1,7 @@
 import RawAdapter from 'unexpected-htmllike-raw-adapter';
 import ReactElementAdapter from 'unexpected-htmllike-jsx-adapter';
 import RenderedReactElementAdapter from 'unexpected-htmllike-reactrendered-adapter';
-import { compareSnapshot } from './snapshots';
+import { compareSnapshot } from '../helpers/snapshots';
 
 
 function installInto(expect) {

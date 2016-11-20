@@ -1,4 +1,4 @@
-import unexpectedReact from '../unexpected-react';
+import unexpectedReact from '../../unexpected-react';
 import React, { Component } from 'react';
 import { createRenderer } from 'react-addons-test-utils';
 import unexpected from 'unexpected';
