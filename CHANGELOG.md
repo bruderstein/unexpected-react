@@ -140,3 +140,7 @@ based on the `with all children`, `with all wrappers`, and `exactly` flags
 * Added support for the [react-test-renderer](https://www.npmjs.org/package/react-test-renderer)
 * Fixed issue #28 (immutable lists mixed with other child components)
 
+## v3.3.1
+
+* Added missing `test-renderer` file for `require`ing
+
