@@ -1,3 +1,0 @@
-exports[`undefined`] = {"type":"div","props":{},"children":[{"type":"button","props":{"className":"one"},"children":["Clicked ",0," times"]},{"type":"button","props":{"className":"two"},"children":["Clicked ",0," times"]}]};
-
-exports[`snaphot-tests stores a basic snapshot`] = {"type":"div","props":{},"children":[{"type":"button","props":{"className":"one"},"children":["Clicked ",0," times"]},{"type":"button","props":{"className":"two"},"children":["Clicked ",0," times"]}]};

@@ -27,8 +27,10 @@ function installInto(expect) {
   
   const assertionGenerator = new AssertionGenerator({
     ActualAdapter: TestRendererAdapter,
+    QueryAdapter: ReactElementAdapter,
     ExpectedAdapter: ReactElementAdapter,
     actualTypeName: 'ReactTestRenderer',
+    queryTypeName: 'ReactElement',
     expectedTypeName: 'ReactElement',
     getRenderOutput: renderer => TestRendererTypeWrapper.getTestRendererOutputWrapper(renderer),
     actualRenderOutputType: 'ReactTestRendererOutput',
@@ -38,6 +40,7 @@ function installInto(expect) {
   });
   assertionGenerator.installInto(expect);
   
+  return assertionGenerator;
 }
 
 export { installInto };

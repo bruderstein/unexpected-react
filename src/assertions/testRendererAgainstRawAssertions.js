@@ -3,41 +3,45 @@ import TestRendererAdapter from 'unexpected-htmllike-testrenderer-adapter';
 import * as TestRendererTypeWrapper from '../types/test-renderer-type-wrapper';
 import AssertionGenerator from './AssertionGenerator';
 
-
-function installInto(expect) {
+function triggerEvent(renderer, target, eventName, eventArgs) {
   
-  function triggerEvent(renderer, target, eventName, eventArgs) {
-    
-    if (!target) {
-      target = renderer.toJSON();
-    }
-    
-    const handlerPropName = 'on' + eventName[0].toUpperCase() + eventName.substr(1);
-    const handler = target.props[handlerPropName];
-    if (typeof handler !== 'function') {
-      return expect.fail({
-        diff: function (output) {
-          return output.error('No handler function prop ').text("'" + handlerPropName + "'").error(' on the target element');
-        }
-      });
-    }
-    handler(eventArgs);
-    return renderer;
+  if (!target) {
+    target = renderer.toJSON();
   }
   
-  const assertionGenerator = new AssertionGenerator({
-    ActualAdapter: TestRendererAdapter,
-    ExpectedAdapter: RawAdapter,
-    actualTypeName: 'ReactTestRenderer',
-    expectedTypeName: 'ReactRawObjectElement',
-    getRenderOutput: renderer => TestRendererTypeWrapper.getTestRendererOutputWrapper(renderer),
-    actualRenderOutputType: 'ReactTestRendererOutput',
-    getDiffInputFromRenderOutput: renderOutput => TestRendererTypeWrapper.getRendererOutputJson(renderOutput),
-    rewrapResult: (renderer, target) => TestRendererTypeWrapper.rewrapResult(renderer, target),
-    triggerEvent: triggerEvent
-  });
-  assertionGenerator.installInto(expect);
-  
+  const handlerPropName = 'on' + eventName[0].toUpperCase() + eventName.substr(1);
+  const handler = target.props[handlerPropName];
+  if (typeof handler !== 'function') {
+    return expect.fail({
+      diff: function (output) {
+        return output.error('No handler function prop ').text("'" + handlerPropName + "'").error(' on the target element');
+      }
+    });
+  }
+  handler(eventArgs);
+  return renderer;
 }
 
-export { installInto };
+const assertionGeneratorOptions = {
+  ActualAdapter: TestRendererAdapter,
+  ExpectedAdapter: RawAdapter,
+  actualTypeName: 'ReactTestRenderer',
+  expectedTypeName: 'ReactRawObjectElement',
+  getRenderOutput: renderer => TestRendererTypeWrapper.getTestRendererOutputWrapper(renderer),
+  actualRenderOutputType: 'ReactTestRendererOutput',
+  getDiffInputFromRenderOutput: renderOutput => TestRendererTypeWrapper.getRendererOutputJson(renderOutput),
+  rewrapResult: (renderer, target) => TestRendererTypeWrapper.rewrapResult(renderer, target),
+  triggerEvent: triggerEvent
+};
+
+function installInto(expect) {
+  const assertionGenerator = new AssertionGenerator(assertionGeneratorOptions);
+  assertionGenerator.installInto(expect);
+}
+
+function installAsAlternative(expect, mainAssertionGenerator) {
+  const assertionGenerator = new AssertionGenerator({ mainAssertionGenerator, ...assertionGeneratorOptions });
+  assertionGenerator.installAlternativeExpected(expect);
+}
+
+export { installInto, installAsAlternative, triggerEvent };

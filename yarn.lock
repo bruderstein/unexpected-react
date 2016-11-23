@@ -517,6 +517,10 @@ babel-plugin-syntax-jsx@^6.3.13, babel-plugin-syntax-jsx@^6.8.0:
   version "6.18.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-syntax-jsx/-/babel-plugin-syntax-jsx-6.18.0.tgz#0af32a9a6e13ca7a3fd5069e62d7b0f58d0d8946"
 
+babel-plugin-syntax-object-rest-spread@^6.8.0:
+  version "6.13.0"
+  resolved "https://registry.npmjs.org/babel-plugin-syntax-object-rest-spread/-/babel-plugin-syntax-object-rest-spread-6.13.0.tgz#fd6536f2bce13836ffa3a5458c4903a597bb3bf5"
+
 babel-plugin-transform-es2015-arrow-functions@^6.3.13:
   version "6.8.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-es2015-arrow-functions/-/babel-plugin-transform-es2015-arrow-functions-6.8.0.tgz#5b63afc3181bdc9a8c4d481b5a4f3f7d7fef3d9d"
@@ -667,6 +671,13 @@ babel-plugin-transform-flow-strip-types@^6.3.13:
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-flow-strip-types/-/babel-plugin-transform-flow-strip-types-6.18.0.tgz#4d3e642158661e9b40db457c004a30817fa32592"
   dependencies:
     babel-plugin-syntax-flow "^6.18.0"
+    babel-runtime "^6.0.0"
+
+babel-plugin-transform-object-rest-spread:
+  version "6.19.0"
+  resolved "https://registry.npmjs.org/babel-plugin-transform-object-rest-spread/-/babel-plugin-transform-object-rest-spread-6.19.0.tgz#f6ac428ee3cb4c6aa00943ed1422ce813603b34c"
+  dependencies:
+    babel-plugin-syntax-object-rest-spread "^6.8.0"
     babel-runtime "^6.0.0"
 
 babel-plugin-transform-react-display-name@^6.3.13:
@@ -856,6 +867,10 @@ block-stream@*:
   resolved "https://registry.yarnpkg.com/block-stream/-/block-stream-0.0.9.tgz#13ebfe778a03205cfe03751481ebb4b3300c126a"
   dependencies:
     inherits "~2.0.0"
+
+bluebird:
+  version "3.4.6"
+  resolved "https://registry.npmjs.org/bluebird/-/bluebird-3.4.6.tgz#01da8d821d87813d158967e743d5fe6c62cf8c0f"
 
 boolbase@~1.0.0:
   version "1.0.0"
@@ -1950,6 +1965,12 @@ form-data@~2.1.1:
     combined-stream "^1.0.5"
     mime-types "^2.1.12"
 
+formatio@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.npmjs.org/formatio/-/formatio-1.1.1.tgz#5ed3ccd636551097383465d996199100e86161e9"
+  dependencies:
+    samsam "~1.1"
+
 front-matter@~0.2.0:
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/front-matter/-/front-matter-0.2.3.tgz#48fbaa2de1856ca475b5d38dff0b2d6d125196db"
@@ -2488,6 +2509,10 @@ inherits@1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-1.0.2.tgz#ca4309dadee6b54cc0b8d247e8d7c7a0975bdc9b"
 
+inherits@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.npmjs.org/inherits/-/inherits-2.0.1.tgz#b17d08d326b4423e568eff719f91b0b1cbdf69f1"
+
 ini@^1.3.4, ini@~1.3.0:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.4.tgz#0537cb79daf59b59a1a517dff706c86ec039162e"
@@ -2866,6 +2891,15 @@ jest-diff@^17.0.1:
     jest-matcher-utils "^17.0.1"
     pretty-format "~4.2.1"
 
+jest-diff@^17.0.3:
+  version "17.0.3"
+  resolved "https://registry.npmjs.org/jest-diff/-/jest-diff-17.0.3.tgz#8fb31efab3b314d7b61b7b66b0bdea617ef1c02f"
+  dependencies:
+    chalk "^1.1.3"
+    diff "^3.0.0"
+    jest-matcher-utils "^17.0.3"
+    pretty-format "~4.2.1"
+
 jest-environment-jsdom@^17.0.0:
   version "17.0.0"
   resolved "https://registry.npmjs.org/jest-environment-jsdom/-/jest-environment-jsdom-17.0.0.tgz#d543000de994857bbe88afa8fd40756363757488"
@@ -2912,6 +2946,13 @@ jest-matcher-utils@^17.0.1:
     chalk "^1.1.3"
     pretty-format "~4.2.1"
 
+jest-matcher-utils@^17.0.3:
+  version "17.0.3"
+  resolved "https://registry.npmjs.org/jest-matcher-utils/-/jest-matcher-utils-17.0.3.tgz#f108e49b956e152c6626dcc0aba864f59ab7b0d3"
+  dependencies:
+    chalk "^1.1.3"
+    pretty-format "~4.2.1"
+
 jest-matchers@^17.0.1:
   version "17.0.1"
   resolved "https://registry.npmjs.org/jest-matchers/-/jest-matchers-17.0.1.tgz#1558a185017eaf1a8d0bcbc0b7d9dbe665dc7a1e"
@@ -2920,9 +2961,21 @@ jest-matchers@^17.0.1:
     jest-matcher-utils "^17.0.1"
     jest-util "^17.0.0"
 
+"jest-matchers@>=16.0.0 <18.0.0":
+  version "17.0.3"
+  resolved "https://registry.npmjs.org/jest-matchers/-/jest-matchers-17.0.3.tgz#88b95348c919343db86d08f12354a8650ae7eddf"
+  dependencies:
+    jest-diff "^17.0.3"
+    jest-matcher-utils "^17.0.3"
+    jest-util "^17.0.2"
+
 jest-mock@^17.0.0:
   version "17.0.0"
   resolved "https://registry.npmjs.org/jest-mock/-/jest-mock-17.0.0.tgz#2475c3fec5d3ac117e2f59d40e1f6311ab9aae40"
+
+jest-mock@^17.0.2:
+  version "17.0.2"
+  resolved "https://registry.npmjs.org/jest-mock/-/jest-mock-17.0.2.tgz#3dfe9221afd9aa61b3d9992840813a358bb2f429"
 
 jest-resolve-dependencies@^17.0.1:
   version "17.0.1"
@@ -2982,6 +3035,17 @@ jest-util@^17.0.0:
     jest-mock "^17.0.0"
     mkdirp "^0.5.1"
 
+jest-util@^17.0.2:
+  version "17.0.2"
+  resolved "https://registry.npmjs.org/jest-util/-/jest-util-17.0.2.tgz#9fd9da8091e9904fb976da7e4d8912ca26968638"
+  dependencies:
+    chalk "^1.1.1"
+    diff "^3.0.0"
+    graceful-fs "^4.1.6"
+    jest-file-exists "^17.0.0"
+    jest-mock "^17.0.2"
+    mkdirp "^0.5.1"
+
 jodid25519@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/jodid25519/-/jodid25519-1.0.2.tgz#06d4912255093419477d425633606e0e90782967"
@@ -3003,6 +3067,10 @@ js-beautify@~1.5.4:
 js-tokens@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-2.0.0.tgz#79903f5563ee778cc1162e6dcf1a0027c97f9cb5"
+
+js-writer:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/js-writer/-/js-writer-1.0.0.tgz#2406489ebc0bab95bff82330bb3bdb2c11b194cc"
 
 js-yaml@^3.5.1, js-yaml@3.x:
   version "3.7.0"
@@ -3741,6 +3809,10 @@ log-symbols@^1.0.2:
   dependencies:
     chalk "^1.0.0"
 
+lolex@1.3.2:
+  version "1.3.2"
+  resolved "https://registry.npmjs.org/lolex/-/lolex-1.3.2.tgz#7c3da62ffcb30f0f5a80a2566ca24e45d8a01f31"
+
 longest@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/longest/-/longest-1.0.1.tgz#30a0b2da38f73770e8294a0d22e6625ed77d0097"
@@ -4046,6 +4118,13 @@ mocha@^2.3.3:
     mkdirp "0.5.1"
     supports-color "1.2.0"
     to-iso-string "0.0.2"
+
+mock-fs:
+  version "3.12.1"
+  resolved "https://registry.npmjs.org/mock-fs/-/mock-fs-3.12.1.tgz#ff27824cd6ab263a7eb05a115239d41d3631f5f8"
+  dependencies:
+    rewire "2.5.2"
+    semver "5.3.0"
 
 moment@^2.5.1:
   version "2.16.0"
@@ -4829,6 +4908,10 @@ restore-cursor@^1.0.1:
     exit-hook "^1.0.0"
     onetime "^1.0.0"
 
+rewire@2.5.2:
+  version "2.5.2"
+  resolved "https://registry.npmjs.org/rewire/-/rewire-2.5.2.tgz#6427de7b7feefa7d36401507eb64a5385bc58dc7"
+
 right-align@^0.1.1:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/right-align/-/right-align-0.1.3.tgz#61339b722fe6a3515689210d24e14c96148613ef"
@@ -4850,6 +4933,14 @@ run-async@^0.1.0:
 rx-lite@^3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/rx-lite/-/rx-lite-3.1.2.tgz#19ce502ca572665f3b647b10939f97fd1615f102"
+
+samsam@~1.1:
+  version "1.1.3"
+  resolved "https://registry.npmjs.org/samsam/-/samsam-1.1.3.tgz#9f5087419b4d091f232571e7fa52e90b0f552621"
+
+samsam@1.1.2:
+  version "1.1.2"
+  resolved "https://registry.npmjs.org/samsam/-/samsam-1.1.2.tgz#bec11fdc83a9fda063401210e40176c3024d1567"
 
 sane@~1.4.1:
   version "1.4.1"
@@ -4880,7 +4971,7 @@ semver@^4.0.3, semver@^4.1.0:
   version "4.3.6"
   resolved "https://registry.yarnpkg.com/semver/-/semver-4.3.6.tgz#300bc6e0e86374f7ba61068b5b1ecd57fc6532da"
 
-semver@^5.1.0, semver@^5.3.0, semver@~5.3.0, "semver@2 || 3 || 4 || 5":
+semver@^5.1.0, semver@^5.3.0, semver@~5.3.0, "semver@2 || 3 || 4 || 5", semver@5.3.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.3.0.tgz#9b2ce5d3de02d17c6012ad326aa6b4d0cf54f94f"
 
@@ -4927,6 +5018,15 @@ simple-fmt@~0.1.0:
 simple-is@~0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/simple-is/-/simple-is-0.2.0.tgz#2abb75aade39deb5cc815ce10e6191164850baf0"
+
+sinon:
+  version "1.17.6"
+  resolved "https://registry.npmjs.org/sinon/-/sinon-1.17.6.tgz#a43116db59577c8296356afee13fafc2332e58e1"
+  dependencies:
+    formatio "1.1.1"
+    lolex "1.3.2"
+    samsam "1.1.2"
+    util ">=0.10.3 <1"
 
 slash@^1.0.0:
   version "1.0.0"
@@ -5400,6 +5500,10 @@ unexpected-markdown@^1.2.0, unexpected-markdown@^1.7.1:
     source-map "0.5.1"
     source-map-support "0.4.0"
 
+unexpected-sinon:
+  version "10.5.0"
+  resolved "https://registry.npmjs.org/unexpected-sinon/-/unexpected-sinon-10.5.0.tgz#d67e8a7a35a13fc55002cb1f7c216193a824dd78"
+
 unexpected@^10.13.2:
   version "10.18.1"
   resolved "https://registry.yarnpkg.com/unexpected/-/unexpected-10.18.1.tgz#d79dfa0fb3984b4c6b0f4672e116763e1edcedd0"
@@ -5440,6 +5544,12 @@ user-home@^2.0.0:
 util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
+
+"util@>=0.10.3 <1":
+  version "0.10.3"
+  resolved "https://registry.npmjs.org/util/-/util-0.10.3.tgz#7afb1afe50805246489e3db7fe0ed379336ac0f9"
+  dependencies:
+    inherits "2.0.1"
 
 v8flags@^2.0.10, v8flags@^2.0.2:
   version "2.0.11"

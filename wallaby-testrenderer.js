@@ -12,11 +12,15 @@ module.exports = function (wallaby) {
                 ignore: true
             },
             {
+                pattern: 'src/tests/testRenderer/fixtures/*.snapshot',
+                instrument: false
+            },
+            {
                 pattern: 'src/react-devtools/**/*.js',
                 instrument: false
             },
             {
-                pattern: 'src/testHelpers/**/*.js',
+                pattern: 'src/tests/helpers/**/*.js',
                 instrument: false
             },
             {
@@ -31,7 +35,10 @@ module.exports = function (wallaby) {
         tests: ['src/tests/testRenderer/**/*.spec.js'],
         env: {
             type: 'node',
-            runner: 'node'
+            runner: 'node',
+            workers: {
+                recycle: false
+            }
         },
 
         compilers: {

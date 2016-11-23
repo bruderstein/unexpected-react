@@ -1,0 +1,3 @@
+
+exports['single test name 1'] = { type: 'button', props: {  }, children: [ 'Clicked ', 0, ' times' ] };
+exports['single test name 2'] = { type: 'button', props: {  }, children: [ 'Clicked ', 1, ' times' ] };

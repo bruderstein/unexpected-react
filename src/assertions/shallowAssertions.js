@@ -28,8 +28,10 @@ function installInto(expect) {
     
     const assertionGenerator = new AssertionGenerator({
         ActualAdapter: ReactElementAdapter,
+        QueryAdapter: ReactElementAdapter,
         ExpectedAdapter: ReactElementAdapter,
         actualTypeName: 'ReactShallowRenderer',
+        queryTypeName: 'ReactElement',
         expectedTypeName: 'ReactElement',
         getRenderOutput: renderer => renderer.getRenderOutput(),
         actualRenderOutputType: 'ReactElement',
