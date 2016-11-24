@@ -5,7 +5,6 @@ const expect = Unexpected
   .clone()
   .use(UnexpectedReact);
 
-
 describe('issue 31 - asserting on objects with no prototype', function () {
 
   it('handles objects without __prop__', function () {
@@ -20,4 +19,5 @@ describe('issue 31 - asserting on objects with no prototype', function () {
       name: 'Chuck Norris'
     });
   });
+
 });
