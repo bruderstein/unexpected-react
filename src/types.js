@@ -108,33 +108,34 @@ function installInto(expect) {
             output.append(inspect(value.getRenderOutput()));
         }
     });
-    
-    
-    
+
+
+
     expect.addType({
        name: 'ReactTestRenderer',
        base: 'object',
        identify: function (value) {
            return value && typeof value === 'object' &&
+               typeof value.hasOwnProperty === 'function' &&
                value.hasOwnProperty('_component') &&
                typeof value.toJSON === 'function' &&
                typeof value.unmount === 'function' &&
                typeof value.update === 'function' &&
                typeof value.getInstance === 'function';
        },
-    
+
         inspect: function (value, depth, output, inspect) {
             output.append(inspect(TestRendererTypeWrapper.getTestRendererOutputWrapper(value)));
         }
     });
-    
+
     expect.addType({
         name: 'ReactTestRendererOutput',
         base: 'object',
         identify: function (value) {
             return TestRendererTypeWrapper.isTestRendererOutputWrapper(value);
         },
-        
+
         inspect: function (value, depth, output, inspect) {
             return htmlLikeTestRenderer.inspect(TestRendererTypeWrapper.getRendererOutputJson(value), depth, output, inspect);
         }
