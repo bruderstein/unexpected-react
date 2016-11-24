@@ -116,7 +116,8 @@ function installInto(expect) {
        base: 'object',
        identify: function (value) {
            return value && typeof value === 'object' &&
-               ({}).hasOwnProperty.call(value, '_component') &&
+               typeof value.hasOwnProperty === 'function' &&
+               value.hasOwnProperty('_component') &&
                typeof value.toJSON === 'function' &&
                typeof value.unmount === 'function' &&
                typeof value.update === 'function' &&
