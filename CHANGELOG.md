@@ -144,3 +144,7 @@ based on the `with all children`, `with all wrappers`, and `exactly` flags
 
 * Added missing `test-renderer` file for `require`ing
 
+## v3.3.2
+
+* Fix issue with asserting against objects that do not have `Object` as their prototype (thanks to Martin Eigenmann @eigenmannmartin for reporting and fixing!)
+
