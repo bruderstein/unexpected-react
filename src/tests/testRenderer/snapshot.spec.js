@@ -13,12 +13,13 @@ import Sinon from 'sinon';
 import { injectLoader } from '../../helpers/snapshotLoader';
 import Unexpected from 'unexpected';
 import UnexpectedSinon from 'unexpected-sinon';
-
 // Note: These are imported later than the others, so that jasmine is mocked for the jest-matchers, but
 // unexpected does not think it's running under jasmine
 import mockJasmine from '../helpers/mock-jasmine';
 import JestMatchers from 'jest-matchers';
 import UnexpectedReactTest from '../../test-renderer-jest'
+import functionFixtures from './fixtures/functions';
+import { injectStateHooks } from '../../helpers/snapshots';
 
 function loadSnapshotMock(snapshotPath) {
   const snapModule = new Module(snapshotPath, null);
@@ -43,10 +44,10 @@ const fixtures = {};
 describe('snapshots', function () {
 
   const PATH_TO_TESTS = '/path/to/tests';
-  let state;
+  let state, removeUncheckedKeysStub;
 
-  before(function () {
-    return fs.readdirAsync(path.join(__dirname, 'fixtures'))
+  before(function (done) {
+    fs.readdirAsync(path.join(__dirname, 'fixtures'))
       .then(dirList => {
         return Promise.all(dirList.map(entry => {
           return fs.readFileAsync(path.join(__dirname, 'fixtures', entry))
@@ -54,10 +55,12 @@ describe('snapshots', function () {
               fixtures[path.basename(entry, '.snapshot')] = data.toString('utf-8');
             });
         }));
-      })
+      }).then(() => done())
+      .catch(e => done(e));
   });
 
   beforeEach(function () {
+    removeUncheckedKeysStub = Sinon.stub();
     state = {
       testPath: '/tmp/changeme.js',
       currentTestName: 'foo',
@@ -65,11 +68,13 @@ describe('snapshots', function () {
         added: 0,
         updated: 0,
         unmatched: 0,
-        update: undefined
+        update: undefined,
+        removeUncheckedKeys: removeUncheckedKeysStub
       }
     };
     JestMatchers.setState(state);
     Sinon.spy(fs, 'writeFileSync');
+    injectStateHooks();
   });
   
   afterEach(function () {
@@ -77,8 +82,8 @@ describe('snapshots', function () {
   });
   beforeEach(function () {
     mockFs({
-      [PATH_TO_TESTS + '/__snapshots__/single.spec.unexpected.snap.js']: fixtures.single,
-      [PATH_TO_TESTS + '/__snapshots__/multitests.spec.unexpected.snap.js']: fixtures.multiple
+      [PATH_TO_TESTS + '/__snapshots__/single.spec.unexpected-snap']: fixtures.single,
+      [PATH_TO_TESTS + '/__snapshots__/multiple.spec.unexpected-snap']: fixtures.multiple
     });
   });
   
@@ -110,6 +115,21 @@ describe('snapshots', function () {
     expect(fs.writeFileSync, 'was not called')
   });
   
+  it('updates the `matched` count', function () {
+    
+    initState({
+      testPath: 'single.spec.js',
+      testName: 'single test name'
+    });
+    
+    const renderer = ReactTestRenderer.create(<ClickCounter />);
+    
+    expect(renderer, 'to match snapshot');
+    expect(state.snapshotState, 'to satisfy', {
+      matched: 1
+    });
+  });
+  
   it('passes multiple test snapshots', function () {
     
     initState({
@@ -134,7 +154,7 @@ describe('snapshots', function () {
       });
       const renderer = ReactTestRenderer.create(<ClickCounter />);
       
-      snapshotPath = path.join(PATH_TO_TESTS, '__snapshots__/single.spec.unexpected.snap.js');
+      snapshotPath = path.join(PATH_TO_TESTS, '__snapshots__/single.spec.unexpected-snap');
       expect(renderer, 'to match snapshot');
     });
     
@@ -219,12 +239,13 @@ describe('snapshots', function () {
       expect(renderer, 'to match snapshot');
     });
     
-    it('does not increment `updated` or `added`', function () {
+    it('increments `matched`', function () {
       
       expect(state, 'to satisfy', {
         snapshotState: {
           updated: 0,
           added: 0,
+          matched: 1,
           update: true
         }
       });
@@ -241,7 +262,7 @@ describe('snapshots', function () {
         update: true
       });
       const renderer = ReactTestRenderer.create(<ClickCounter />);
-      snapshotPath = path.join(PATH_TO_TESTS, '__snapshots__/single.spec.unexpected.snap.js');
+      snapshotPath = path.join(PATH_TO_TESTS, '__snapshots__/single.spec.unexpected-snap');
       expect(renderer, 'with event click', 'to match snapshot');
     });
   
@@ -277,5 +298,159 @@ describe('snapshots', function () {
     
   });
   
+  describe('with functions', function () {
+    it('compares with a snapshot with a normal function', function () {
+  
+      initState({
+        testPath: 'withFunctions.spec.js',
+        testName: 'with functions',
+      });
+      let renderer = ReactTestRenderer.create(<ClickCounter onMouseDown={functionFixtures.anonymous()} />);
+      expect(renderer, 'to match snapshot');
+      
+      // Now reset state back such that it actually tests the snapshot
+      initState({
+        testPath: 'withFunctions.spec.js',
+        testName: 'with functions',
+      });
+      // Rerender, with a new instance of the anonymous function
+      renderer = ReactTestRenderer.create(<ClickCounter onMouseDown={functionFixtures.anonymous()} />);
+      expect(renderer, 'to match snapshot');
+    });
+  
+    it('compares with a snapshot with a bound function', function () {
+    
+      initState({
+        testPath: 'withFunctions.spec.js',
+        testName: 'with functions',
+      });
+      let renderer = ReactTestRenderer.create(<ClickCounter onMouseDown={functionFixtures.boundContentArgs()} />);
+      expect(renderer, 'to match snapshot');
+    
+      // Now reset state back such that it actually tests the snapshot
+      initState({
+        testPath: 'withFunctions.spec.js',
+        testName: 'with functions',
+      });
+      // Rerender, with a new instance of the function
+      renderer = ReactTestRenderer.create(<ClickCounter onMouseDown={functionFixtures.boundContentArgs()} />);
+      expect(renderer, 'to match snapshot');
+    });
+  
+    it('fails with a snapshot with a normal function when the expected is bound', function () {
+    
+      initState({
+        testPath: 'withFunctions.spec.js',
+        testName: 'with functions',
+      });
+      let renderer = ReactTestRenderer.create(<ClickCounter onMouseDown={functionFixtures.boundContentArgs()} />);
+      // Create the snapshot with the bound function
+      expect(renderer, 'to match snapshot');
+    
+      // Now reset state back such that it actually tests the snapshot
+      initState({
+        testPath: 'withFunctions.spec.js',
+        testName: 'with functions',
+      });
+      // Rerender, with a different unbound function
+      renderer = ReactTestRenderer.create(<ClickCounter onMouseDown={functionFixtures.namedContentArgs()} />);
+      expect(
+        () => expect(renderer, 'to match snapshot'),
+        'to throw',
+        [
+          'expected',
+          '<button onClick={function bound onClick() { /* native code */ }}',
+          '   onMouseDown={function doStuff(a, b) { return a + b; }}>',
+          '  Clicked 0 times',
+          '</button>',
+          'to match snapshot',
+          '',
+          '<button onClick={function bound onClick() { /* native code */ }}',
+          '   onMouseDown={function doStuff(a, b) { return a + b; }} // expected function doStuff(a, b) { return a + b; }',
+          '                                                          // to satisfy function bound3() { /* bound - native code */ }',
+          '                                                          //',
+          '                                                          // -function doStuff(a, b) { return a + b; }',
+          '                                                          // +function bound3() { /* bound - native code */ }',
+          '>',
+          '  Clicked 0 times',
+          '</button>'
+        ].join('\n')
+      );
+    });
+  });
+  
+  describe('removing unused keys', function () {
+    
+    it('removes the unused snapshot file when removeUnusedKeys is called', function () {
+      initState({
+        testPath: 'single.spec.js',
+        testName: 'single test name',
+        update: true
+      });
+      Sinon.spy(fs, 'unlinkSync');
+      
+      try {
+        // removeUncheckedKeys is called by Jest when update is true
+        state.snapshotState.removeUncheckedKeys();
+        expect(fs.unlinkSync, 'to have calls satisfying', [
+          [path.join(PATH_TO_TESTS, '__snapshots__/single.spec.unexpected-snap')]
+        ]);
+      } finally {
+        fs.unlinkSync.restore();
+      }
+      // TODO: we need to test the various paths of removing some tests and not others,
+      // and removing just one snapshot from a test of multiple snapshots, and
+      // failing the first snapshot (should not remove the second, although that might be ok, as it will never throw...)
+      // Removing the whole file when it's not touched
+      // As the snapshotState is monkey-patched by the require('./snapshots'), we may need to manually
+      // call the monkey patch injection from these tests. However, the integration-jests should catch out if that
+      // ever breaks. They will need to have some combinations of not calling a snapshot from a test.
+
+      // Unused snapshot files are an unknown. How can we work out if we need to remove a file?
+      // That _may_ be part of the `save()` call, which we could maybe also monkeypatch, to identify
+      // what needs saving, and remove all others.  Need to find where jest does that. Does it assume _a_ test
+      // ran in the directory, so all directories with tests are checked, or does it just search for __snapshots__
+      // Looks like snapshot.cleanup() in jest-snapshot/index.js.
+      // Monkey patching that could be awkward (works in npm3, not in npm2). Might need to do some fancy require footwork
+      // to check ../jest/node_modules/jest-matchers first then 'jest-matchers', and the same with jest-snapshot
+    });
+    
+    it('removes the unused keys of a test where only some are used', function () {
+  
+      initState({
+        testPath: 'multiple.spec.js',
+        testName: 'multi test two',
+        update: true
+      });
+      
+      const renderer = ReactTestRenderer.create(<ClickCounter />);
+      expect(renderer, 'with event click', 'to match snapshot');
+  
+      const originalSnapshot = loadSnapshotMock(path.join(PATH_TO_TESTS, '__snapshots__/multiple.spec.unexpected-snap'));
+      
+      state.snapshotState.removeUncheckedKeys();
+      const newSnapshot = loadSnapshotMock(path.join(PATH_TO_TESTS, '__snapshots__/multiple.spec.unexpected-snap'));
+  
+      expect(Object.keys(originalSnapshot), 'to equal', [ 'multi test one 1', 'multi test two 1', 'multi test two 2' ]);
+      expect(Object.keys(newSnapshot), 'to equal', [ 'multi test two 1']);
+    });
+    
+    it('calls the original removeUncheckedKeys', function () {
+      initState({
+        testPath: 'multiple.spec.js',
+        testName: 'multi test two',
+        update: true
+      });
+  
+      const renderer = ReactTestRenderer.create(<ClickCounter />);
+      expect(renderer, 'with event click', 'to match snapshot');
+  
+      state.snapshotState.removeUncheckedKeys();
+      
+      expect(removeUncheckedKeysStub, 'to have calls satisfying', [
+        { args: [], 'this': state.snapshotState }
+      ]);
+    });
+  });
 });
 

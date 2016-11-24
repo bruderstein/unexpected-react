@@ -6,14 +6,18 @@ module.exports = function (wallaby) {
 
     return {
         files: [
+            {
+              pattern: 'src/tests/testRenderer/fixtures/*.js',
+              instrument: false
+            },
             'src/**/*.js',
             {
                 pattern: 'src/tests/**/*.spec.js',
                 ignore: true
             },
             {
-                pattern: 'src/tests/testRenderer/fixtures/*.snapshot',
-                instrument: false
+              pattern: 'src/tests/testRenderer/fixtures/*.snapshot',
+              instrument: false
             },
             {
                 pattern: 'src/react-devtools/**/*.js',
@@ -40,6 +44,7 @@ module.exports = function (wallaby) {
                 recycle: false
             }
         },
+      debug:true,
 
         compilers: {
             'src/**/*.js': wallaby.compilers.babel({

@@ -16,7 +16,9 @@ export default class ClickCounter extends Component {
   
   render() {
     return (
-      <button className={this.props.className} onClick={this.onClick}>Clicked {this.state.count} times</button>
+      <button className={this.props.className} onClick={this.onClick} onMouseDown={this.props.onMouseDown}>
+        Clicked {this.state.count} times
+      </button>
     );
   }
 }

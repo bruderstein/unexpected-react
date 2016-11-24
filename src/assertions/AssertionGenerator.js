@@ -242,8 +242,6 @@ AssertionGenerator.prototype._installQueriedFor = function (expect) {
 
 AssertionGenerator.prototype._installPendingEventType = function (expect) {
   
-  const { actualTypeName } = this._options;
-  
   const actualPendingEventTypeName = this._actualPendingEventTypeName;
   
   const PENDING_EVENT_IDENTIFIER = this._PENDING_EVENT_IDENTIFIER;
@@ -262,7 +260,7 @@ AssertionGenerator.prototype._installPendingEventType = function (expect) {
 
 AssertionGenerator.prototype._installWithEvent = function (expect) {
   
-  const { actualTypeName, expectedTypeName, triggerEvent } = this._options;
+  const { actualTypeName, triggerEvent } = this._options;
   
   const actualPendingEventTypeName = this._actualPendingEventTypeName;
   

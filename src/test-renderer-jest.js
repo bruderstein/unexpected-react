@@ -2,6 +2,8 @@ import types from './types/types';
 import * as testRendererAssertions from './assertions/testRendererAssertions';
 import * as testRendererAgainstRawAssertions from './assertions/testRendererAgainstRawAssertions';
 import * as jestSnapshotAssertions from './assertions/jestSnapshotTestRendererAssertions';
+import * as snapshotFunctionType from './assertions/snapshotFunctionType';
+import * as snapshotFunctionAssertions from './assertions/snapshotFunctionAssertions';
 
 module.exports = {
   name: 'unexpected-react-test-renderer',
@@ -28,7 +30,10 @@ module.exports = {
     const mainAssertionGenerator = testRendererAssertions.installInto(expect);
     testRendererAgainstRawAssertions.installAsAlternative(expect, mainAssertionGenerator);
     
-    jestSnapshotAssertions.installInto(expect)
+    jestSnapshotAssertions.installInto(expect);
+    snapshotFunctionType.installInto(expect);
+    snapshotFunctionAssertions.installInto(expect);
+    
   },
   
   clearAll() {

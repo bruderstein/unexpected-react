@@ -15,6 +15,7 @@ function installInto(expect) {
   expect.addAssertion('<ReactTestRendererPendingEvent> to [exactly] match snapshot [with all children] [with all wrappers]',
     function (expect, subject) {
       triggerEvent(subject.renderer, subject.target, subject.eventName, subject.eventArgs);
+      expect.errorMode = 'bubble';
       expect(subject.renderer, 'to [exactly] match snapshot [with all children] [with all wrappers]');
     }
   );
