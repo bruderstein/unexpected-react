@@ -4,27 +4,27 @@ import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import AssertionGenerator from './AssertionGenerator';
 
+function triggerEvent(expect, renderer, target, eventName, eventArgs) {
+  
+  if (!target) {
+    target = renderer.getRenderOutput();
+  }
+  
+  const handlerPropName = 'on' + eventName[0].toUpperCase() + eventName.substr(1);
+  const handler = target.props[handlerPropName];
+  if (typeof handler !== 'function') {
+    return expect.fail({
+      diff: function (output) {
+        return output.error('No handler function prop ').text("'" + handlerPropName + "'").error(' on the target element');
+      }
+    });
+  }
+  handler(eventArgs);
+  return renderer;
+}
+
 
 function installInto(expect) {
-    
-    function triggerEvent(renderer, target, eventName, eventArgs) {
-        
-        if (!target) {
-            target = renderer.getRenderOutput();
-        }
-        
-        const handlerPropName = 'on' + eventName[0].toUpperCase() + eventName.substr(1);
-        const handler = target.props[handlerPropName];
-        if (typeof handler !== 'function') {
-            return expect.fail({
-                diff: function (output) {
-                    return output.error('No handler function prop ').text("'" + handlerPropName + "'").error(' on the target element');
-                }
-            });
-        }
-        handler(eventArgs);
-        return renderer;
-    }
     
     const assertionGenerator = new AssertionGenerator({
         ActualAdapter: ReactElementAdapter,
@@ -37,7 +37,7 @@ function installInto(expect) {
         actualRenderOutputType: 'ReactElement',
         getDiffInputFromRenderOutput: renderOutput => renderOutput,
         rewrapResult: (renderer, target) => target,
-        triggerEvent: triggerEvent
+        triggerEvent: triggerEvent.bind(null, expect)
     });
     assertionGenerator.installInto(expect);
     
@@ -53,6 +53,8 @@ function installInto(expect) {
         renderer.render(subject);
         return expect.apply(expect, [ renderer, 'with event' ].concat(Array.prototype.slice.call(arguments, 2)));
     });
+    
+    return assertionGenerator;
 } 
 
-export { installInto as installInto };
+export { installInto, triggerEvent };
