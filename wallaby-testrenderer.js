@@ -7,7 +7,7 @@ module.exports = function (wallaby) {
     return {
         files: [
             {
-              pattern: 'src/tests/testRenderer/fixtures/*.js',
+              pattern: 'src/tests/fixtures/*.js',
               instrument: false
             },
             'src/**/*.js',
@@ -16,7 +16,7 @@ module.exports = function (wallaby) {
                 ignore: true
             },
             {
-              pattern: 'src/tests/testRenderer/fixtures/*.snapshot',
+              pattern: 'src/tests/fixtures/*.snapshot',
               instrument: false
             },
             {
