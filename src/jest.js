@@ -3,6 +3,10 @@ import RenderHook from 'react-render-hook';
 import types from './types/types';
 import * as deepAssertions from './assertions/deepAssertions';
 import * as shallowAssertions from './assertions/shallowAssertions';
+import * as shallowAgainstRawAssertions from './assertions/shallowAgainstRawAssertions';
+import * as jestSnapshotStandardRendererAssertions from './assertions/jestSnapshotStandardRendererAssertions';
+import * as snapshotFunctionType from './assertions/snapshotFunctionType';
+import * as snapshotFunctionAssertions from './assertions/snapshotFunctionAssertions';
 
 
 module.exports = {
@@ -13,9 +17,13 @@ module.exports = {
     expect.installPlugin(require('magicpen-prism'));
     
     types.installInto(expect);
-    shallowAssertions.installInto(expect);
-    deepAssertions.installInto(expect);
+    const mainAssertionGenerator = shallowAssertions.installInto(expect);
+    shallowAgainstRawAssertions.installAsAlternative(expect, mainAssertionGenerator);
     
+    deepAssertions.installInto(expect);
+    jestSnapshotStandardRendererAssertions.installInto(expect);
+    snapshotFunctionType.installInto(expect);
+    snapshotFunctionAssertions.installInto(expect);
   },
   
   clearAll() {
