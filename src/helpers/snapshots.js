@@ -1,5 +1,6 @@
 import fs from 'fs'
 import matchers from 'jest-matchers';
+import jestSnapshot from 'jest-snapshot';
 import jsWriter from 'js-writer';
 import mkdirp from 'mkdirp';
 import path from 'path';
@@ -24,7 +25,8 @@ class UnexpectedSnapshotState {
       snapshot = this._files[testPath] = {
         testCounter: {},
         uncheckedKeys: (content && new Set(Object.keys(content))) || new Set(),
-        allTests: content || {}
+        allTests: content || {},
+        failedTests: new Set()
       }
     }
     const count = (snapshot.testCounter[testName] || 0) + 1;
@@ -57,6 +59,11 @@ class UnexpectedSnapshotState {
     }).join('\n\n');
     fs.writeFileSync(snapshotPath, fileContent);
   }
+  
+  markTestAsFailed(testPath, testName) {
+    const snapshot = this._files[testPath];
+    snapshot.failedTests.add(testName);
+  }
 }
 
 function getSnapshotPath(testPath) {
@@ -87,6 +94,7 @@ function compareSnapshot(expect, flags, subjectAdapter, subjectRenderer, subject
       expect(subjectRenderer, 'to have rendered', rawAdapter.deserialize(snapshot));
       state.snapshotState.matched = (state.snapshotState.matched || 0) + 1;
     }, function (err) {
+      state.unexpectedSnapshot.markTestAsFailed(state.testPath, state.currentTestName);
       if (state.snapshotState.update === true) {
         state.snapshotState.updated++;
         state.unexpectedSnapshot.saveSnapshot(state.testPath, state.currentTestName, rawAdapter.serialize(subjectAdapter, subjectOutput));
@@ -109,9 +117,13 @@ function injectStateHooks() {
       let isDirty = false;
       const snapshot = state.unexpectedSnapshot && state.unexpectedSnapshot._files[state.testPath];
       if (snapshot && snapshot.uncheckedKeys.size) {
-        isDirty = true;
         snapshot.uncheckedKeys.forEach(key => {
-          delete snapshot.allTests[key]
+          const testName = /(.*)\s[0-9]+$/.exec(key)[1];
+          
+          if (!snapshot.failedTests.has(testName)) {
+            isDirty = true;
+            delete snapshot.allTests[key]
+          }
         });
       }
       
@@ -125,8 +137,9 @@ function injectStateHooks() {
           // We're ignoring file-not-found exceptions, and errors deleting
         }
         
-        if (state.unexpectedSnapshot)
-        delete state.unexpectedSnapshot._files[state.testPath];
+        if (state.unexpectedSnapshot) {
+          delete state.unexpectedSnapshot._files[state.testPath];
+        }
       } else if (isDirty) {
         state.unexpectedSnapshot.saveSnapshot(state.testPath, state.currentTestName);
       }

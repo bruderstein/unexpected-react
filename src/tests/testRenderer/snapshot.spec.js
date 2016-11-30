@@ -18,7 +18,7 @@ import UnexpectedSinon from 'unexpected-sinon';
 import mockJasmine from '../helpers/mock-jasmine';
 import JestMatchers from 'jest-matchers';
 import UnexpectedReactTest from '../../test-renderer-jest'
-import functionFixtures from './fixtures/functions';
+import functionFixtures from '../fixtures/functions';
 import { injectStateHooks } from '../../helpers/snapshots';
 
 function loadSnapshotMock(snapshotPath) {
@@ -47,10 +47,10 @@ describe('snapshots', function () {
   let state, removeUncheckedKeysStub;
 
   before(function (done) {
-    fs.readdirAsync(path.join(__dirname, 'fixtures'))
+    fs.readdirAsync(path.join(__dirname, '../fixtures'))
       .then(dirList => {
         return Promise.all(dirList.map(entry => {
-          return fs.readFileAsync(path.join(__dirname, 'fixtures', entry))
+          return fs.readFileAsync(path.join(__dirname, '../fixtures', entry))
             .then(data => {
               fixtures[path.basename(entry, '.snapshot')] = data.toString('utf-8');
             });
@@ -398,21 +398,7 @@ describe('snapshots', function () {
       } finally {
         fs.unlinkSync.restore();
       }
-      // TODO: we need to test the various paths of removing some tests and not others,
-      // and removing just one snapshot from a test of multiple snapshots, and
-      // failing the first snapshot (should not remove the second, although that might be ok, as it will never throw...)
-      // Removing the whole file when it's not touched
-      // As the snapshotState is monkey-patched by the require('./snapshots'), we may need to manually
-      // call the monkey patch injection from these tests. However, the integration-jests should catch out if that
-      // ever breaks. They will need to have some combinations of not calling a snapshot from a test.
-
-      // Unused snapshot files are an unknown. How can we work out if we need to remove a file?
-      // That _may_ be part of the `save()` call, which we could maybe also monkeypatch, to identify
-      // what needs saving, and remove all others.  Need to find where jest does that. Does it assume _a_ test
-      // ran in the directory, so all directories with tests are checked, or does it just search for __snapshots__
-      // Looks like snapshot.cleanup() in jest-snapshot/index.js.
-      // Monkey patching that could be awkward (works in npm3, not in npm2). Might need to do some fancy require footwork
-      // to check ../jest/node_modules/jest-matchers first then 'jest-matchers', and the same with jest-snapshot
+      
     });
     
     it('removes the unused keys of a test where only some are used', function () {
@@ -452,5 +438,44 @@ describe('snapshots', function () {
       ]);
     });
   });
+  
+  it('leaves snapshots of tests that failed', function () {
+  
+    initState({
+      testPath: 'multiple.spec.js',
+      testName: 'multi test two'
+    });
+  
+    const renderer = ReactTestRenderer.create(<ClickCounter />);
+    expect(
+      () => expect(renderer, 'to match snapshot'),
+      'to throw');
+  
+    const originalSnapshot = loadSnapshotMock(path.join(PATH_TO_TESTS, '__snapshots__/multiple.spec.unexpected-snap'));
+  
+    state.snapshotState.removeUncheckedKeys();
+    const newSnapshot = loadSnapshotMock(path.join(PATH_TO_TESTS, '__snapshots__/multiple.spec.unexpected-snap'));
+  
+    expect(Object.keys(originalSnapshot), 'to equal', [ 'multi test one 1', 'multi test two 1', 'multi test two 2' ]);
+    expect(Object.keys(newSnapshot), 'to equal', [ 'multi test two 1', 'multi test two 2' ]);
+  });
+  
+  it('removes a file if there are no snapshots', function () {
+  
+    initState({
+      testPath: 'multiple.spec.js',
+      testName: 'multi test two'
+    });
+    Sinon.spy(fs, 'unlinkSync');
+    try {
+      state.snapshotState.removeUncheckedKeys();
+      expect(fs.unlinkSync, 'to have calls satisfying', function () {
+        fs.unlinkSync(path.join(PATH_TO_TESTS, '__snapshots__/multiple.spec.unexpected-snap'));
+      });
+    } finally {
+      fs.unlinkSync.restore();
+    }
+  });
 });
+
 
