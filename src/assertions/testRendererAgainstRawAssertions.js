@@ -3,7 +3,7 @@ import TestRendererAdapter from 'unexpected-htmllike-testrenderer-adapter';
 import * as TestRendererTypeWrapper from '../types/test-renderer-type-wrapper';
 import AssertionGenerator from './AssertionGenerator';
 
-function triggerEvent(renderer, target, eventName, eventArgs) {
+function triggerEvent(expect, renderer, target, eventName, eventArgs) {
   
   if (!target) {
     target = renderer.toJSON();
@@ -22,25 +22,28 @@ function triggerEvent(renderer, target, eventName, eventArgs) {
   return renderer;
 }
 
-const assertionGeneratorOptions = {
-  ActualAdapter: TestRendererAdapter,
-  ExpectedAdapter: RawAdapter,
-  actualTypeName: 'ReactTestRenderer',
-  expectedTypeName: 'ReactRawObjectElement',
-  getRenderOutput: renderer => TestRendererTypeWrapper.getTestRendererOutputWrapper(renderer),
-  actualRenderOutputType: 'ReactTestRendererOutput',
-  getDiffInputFromRenderOutput: renderOutput => TestRendererTypeWrapper.getRendererOutputJson(renderOutput),
-  rewrapResult: (renderer, target) => TestRendererTypeWrapper.rewrapResult(renderer, target),
-  triggerEvent: triggerEvent
+function getOptions(expect) {
+  return {
+    ActualAdapter: TestRendererAdapter,
+    ExpectedAdapter: RawAdapter,
+    actualTypeName: 'ReactTestRenderer',
+    expectedTypeName: 'ReactRawObjectElement',
+    getRenderOutput: renderer => TestRendererTypeWrapper.getTestRendererOutputWrapper(renderer),
+    actualRenderOutputType: 'ReactTestRendererOutput',
+    getDiffInputFromRenderOutput: renderOutput => TestRendererTypeWrapper.getRendererOutputJson(renderOutput),
+    rewrapResult: (renderer, target) => TestRendererTypeWrapper.rewrapResult(renderer, target),
+    triggerEvent: triggerEvent.bind(expect)
+  };
 };
 
 function installInto(expect) {
-  const assertionGenerator = new AssertionGenerator(assertionGeneratorOptions);
+  const assertionGenerator = new AssertionGenerator(getOptions(expect));
   assertionGenerator.installInto(expect);
 }
 
 function installAsAlternative(expect, mainAssertionGenerator) {
-  const assertionGenerator = new AssertionGenerator({ mainAssertionGenerator, ...assertionGeneratorOptions });
+  const generatorOptions = getOptions(expect);
+  const assertionGenerator = new AssertionGenerator({ mainAssertionGenerator, ...generatorOptions });
   assertionGenerator.installAlternativeExpected(expect);
 }
 
