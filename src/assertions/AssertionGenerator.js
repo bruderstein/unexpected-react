@@ -25,9 +25,11 @@ function getDefaultOptions(flags) {
  * @param options.actualRenderOutputType {string} the unexpected type for the actual output value
  * @param options.getRenderOutput {function} called with the actual value, and returns the `actualRenderOutputType` type
  * @param options.getDiffInputFromRenderOutput {function} called with the value from `getRenderOutput`, result passed to HtmlLike diff
- * @param options.rewrapResult {function} called with the `actual` value (usually the renderer), and the found result 
+ * @param options.rewrapResult {function} called with the `actual` value (usually the renderer), and the found result
+ * @param options.wrapResultForReturn {function} called with the `actual` value (usually the renderer), and the found result
  * from HtmlLike `contains()` call (usually the same type returned from `getDiffInputFromRenderOutput`. Used to create a
- * value that contains both the original renderer and the target or partial result. Used by `queried for`
+ * value that can be passed back to the user as the result of the promise. Used by `queried for` when no further assertion is
+ * provided, therefore the return value is provided as the result of the promise. If this is not present, `rewrapResult` is used.
  * @param options.triggerEvent {function} called the `actual` value (renderer), the optional target (or null) as the result
  * from the HtmlLike `contains()` call target, the eventName, and optional eventArgs when provided (undefined otherwise)
  * @constructor
@@ -183,17 +185,17 @@ AssertionGenerator.prototype._installQueriedFor = function (expect) {
   const {
     actualTypeName, queryTypeName,
     getRenderOutput, actualRenderOutputType,
-    getDiffInputFromRenderOutput, rewrapResult,
+    getDiffInputFromRenderOutput, rewrapResult, wrapResultForReturn,
     ActualAdapter, QueryAdapter
   } = this._options;
   
   expect.addAssertion([`<${actualTypeName}> queried for [exactly] <${queryTypeName}> <assertion?>`,
     `<${actualTypeName}> queried for [with all children] [with all wrapppers] <${queryTypeName}> <assertion?>`
   ], function (expect, subject, query, assertion) {
-    return expect.apply(expect,
-      [
-        getRenderOutput(subject), 'queried for [exactly] [with all children] [with all wrappers]', query
-      ].concat(Array.prototype.slice.call(arguments, 3)));
+      return expect.apply(expect,
+        [
+          getRenderOutput(subject), 'queried for [exactly] [with all children] [with all wrappers]', query
+        ].concat(Array.prototype.slice.call(arguments, 3)));
   });
   
   expect.addAssertion([`<${actualRenderOutputType}> queried for [exactly] <${queryTypeName}> <assertion?>`,
@@ -216,6 +218,8 @@ AssertionGenerator.prototype._installQueriedFor = function (expect) {
     
     const containsResult = testHtmlLike.contains(queryAdapter, getDiffInputFromRenderOutput(subject), query, expect, options);
     
+    const args = arguments;
+    
     return testHtmlLike.withResult(containsResult, function (result) {
       
       if (!result.found) {
@@ -234,7 +238,19 @@ AssertionGenerator.prototype._installQueriedFor = function (expect) {
         });
       }
       
-      return expect.shift(rewrapResult(subject, result.bestMatch.target || result.bestMatchItem));
+      if (args.length > 3) {
+        // There is an assertion continuation...
+        expect.errorMode = 'nested'
+        const s = rewrapResult(subject, result.bestMatch.target || result.bestMatchItem);
+        return expect.apply(null,
+          [
+            rewrapResult(subject, result.bestMatch.target || result.bestMatchItem)
+          ].concat(Array.prototype.slice.call(args, 3)))
+        return expect.shift(rewrapResult(subject, result.bestMatch.target || result.bestMatchItem));
+      }
+      // There is no assertion continuation, so we need to wrap the result for public consumption
+      // i.e. create a value that we can give back from the `expect` promise
+      return expect.shift((wrapResultForReturn || rewrapResult)(subject, result.bestMatch.target || result.bestMatchItem));
     });
   });
   
@@ -260,7 +276,8 @@ AssertionGenerator.prototype._installPendingEventType = function (expect) {
 
 AssertionGenerator.prototype._installWithEvent = function (expect) {
   
-  const { actualTypeName, triggerEvent } = this._options;
+  const { actualTypeName, actualRenderOutputType, triggerEvent, canTriggerEventsOnOutputType } = this._options;
+  let { wrapResultForReturn = (value) => value } = this._options;
   
   const actualPendingEventTypeName = this._actualPendingEventTypeName;
   
@@ -275,7 +292,7 @@ AssertionGenerator.prototype._installWithEvent = function (expect) {
       }].concat(assertion));
     } else {
       triggerEvent(subject, null, eventName);
-      return expect.shift(subject);
+      return expect.shift(wrapResultForReturn(subject));
     }
   });
   
@@ -293,6 +310,39 @@ AssertionGenerator.prototype._installWithEvent = function (expect) {
       return expect.shift(subject);
     }
   });
+  
+  if (canTriggerEventsOnOutputType) {
+    
+    expect.addAssertion(`<${actualRenderOutputType}> with event <string> <assertion?>`, function (expect, subject, eventName, ...assertion) {
+      if (arguments.length > 3) {
+        return expect.apply(null, [{
+          $$typeof: PENDING_EVENT_IDENTIFIER,
+          renderer: subject,
+          eventName: eventName,
+          isOutputType: true
+        }].concat(assertion));
+      } else {
+        triggerEvent(subject, null, eventName);
+        return expect.shift(wrapResultForReturn(subject));
+      }
+    });
+    
+    expect.addAssertion(`<${actualRenderOutputType}> with event <string> <object> <assertion?>`, function (expect, subject, eventName, args) {
+      if (arguments.length > 4) {
+        return expect.shift({
+          $$typeof: PENDING_EVENT_IDENTIFIER,
+          renderer: subject,
+          eventName: eventName,
+          eventArgs: args,
+          isOutputType: true
+        });
+      } else {
+        triggerEvent(subject, null, eventName, args);
+        return expect.shift(subject);
+      }
+    });
+    
+  }
   
   expect.addAssertion(`<${actualPendingEventTypeName}> [and] with event <string> <assertion?>`,
     function (expect, subject, eventName) {

@@ -735,7 +735,7 @@ describe('unexpected-react (deep rendering)', () => {
             expect(() => expect(component, 'with event', 'click', 'on', <span className="not exists" />, 'to have rendered',
                 <div>
                     <span>This is never checked</span>
-                </div>), 'to throw', /Could not find the target. The best match was/);
+                </div>), 'to throw', /Could not find the target for the event. The best match was/);
         });
         
         it('passes the resulting component as the resolution of the promise', () => {
