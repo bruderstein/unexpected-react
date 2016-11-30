@@ -16,16 +16,26 @@ class UnexpectedSnapshotState {
     
   }
   
-  getSnapshot(testPath, testName) {
+  getSnapshot(testPath, testName, expect) {
     let snapshot = this._files[testPath];
     if (!snapshot) {
       const snapshotPath = getSnapshotPath(testPath);
       let content = loadSnapshot(snapshotPath);
+      let contentOutput = {};
+      if (content) {
+        Object.keys(content).reduce((agg, testKey) => {
+          agg[testKey] = expect.output.clone().annotationBlock(function () {
+            this.append(expect.inspect(content[testKey]));
+          }).toString();
+          return agg;
+        }, contentOutput)
+      }
       
       snapshot = this._files[testPath] = {
         testCounter: {},
         uncheckedKeys: (content && new Set(Object.keys(content))) || new Set(),
         allTests: content || {},
+        contentOutput: contentOutput,
         failedTests: new Set()
       }
     }
@@ -37,13 +47,21 @@ class UnexpectedSnapshotState {
     return snapshot.allTests[keyName] || null;
   }
   
-  saveSnapshot(testPath, testName, tree) {
+  saveSnapshot(testPath, testName, tree, expect) {
     
     const snapshotPath = getSnapshotPath(testPath);
     const snapshot = this._files[testPath];
-    const count = snapshot.testCounter[testName] || 1;
     
-    snapshot.allTests[testName + ' ' + count] = tree;
+    // If we've been passed a new tree, update the current snapshot
+    // Otherwise, we're just saving the file
+    if (tree) {
+      const count = snapshot.testCounter[testName] || 1;
+  
+      snapshot.allTests[testName + ' ' + count] = tree;
+      snapshot.contentOutput[testName + ' ' + count] = expect.output.clone().annotationBlock(function () {
+        this.append(expect.inspect(tree));
+      }).toString();
+    }
     const dir = path.dirname(snapshotPath);
     let exists;
     try {
@@ -55,7 +73,8 @@ class UnexpectedSnapshotState {
       mkdirp.sync(dir);
     }
     const fileContent = Object.keys(snapshot.allTests).map(test => {
-      return 'exports[`' + test + '`] = ' + jsWriter(snapshot.allTests[test]) + ';';
+      const display = snapshot.contentOutput[test] || '// Display unavailable (this is probably a bug in unexpected-react, please report it!)';
+      return `/////////////////// ${test} ///////////////////\n\n${display}\n\nexports[\`${test}\`] = ${jsWriter(snapshot.allTests[test])};\n// ===========================================================================\n`;
     }).join('\n\n');
     fs.writeFileSync(snapshotPath, fileContent);
   }
@@ -84,10 +103,10 @@ function compareSnapshot(expect, flags, subjectAdapter, subjectRenderer, subject
     state.unexpectedSnapshot = new UnexpectedSnapshotState(state.snapshotState);
   }
 
-  const snapshot = state.unexpectedSnapshot.getSnapshot(state.testPath, state.currentTestName);
+  const snapshot = state.unexpectedSnapshot.getSnapshot(state.testPath, state.currentTestName, expect);
   if (snapshot === null) {
     // Write and save
-    state.unexpectedSnapshot.saveSnapshot(state.testPath, state.currentTestName, rawAdapter.serialize(subjectAdapter, subjectOutput));
+    state.unexpectedSnapshot.saveSnapshot(state.testPath, state.currentTestName, rawAdapter.serialize(subjectAdapter, subjectOutput), expect);
     state.snapshotState.added++;
   } else {
     expect.withError(() => {
@@ -97,7 +116,7 @@ function compareSnapshot(expect, flags, subjectAdapter, subjectRenderer, subject
       state.unexpectedSnapshot.markTestAsFailed(state.testPath, state.currentTestName);
       if (state.snapshotState.update === true) {
         state.snapshotState.updated++;
-        state.unexpectedSnapshot.saveSnapshot(state.testPath, state.currentTestName, rawAdapter.serialize(subjectAdapter, subjectOutput));
+        state.unexpectedSnapshot.saveSnapshot(state.testPath, state.currentTestName, rawAdapter.serialize(subjectAdapter, subjectOutput), expect);
       } else {
         state.snapshotState.unmatched++;
         expect.fail(err);

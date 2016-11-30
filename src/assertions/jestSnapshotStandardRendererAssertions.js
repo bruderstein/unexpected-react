@@ -1,7 +1,9 @@
+import ReactRenderHook from 'react-render-hook';
 import RawAdapter from 'unexpected-htmllike-raw-adapter';
 import ReactElementAdapter from 'unexpected-htmllike-jsx-adapter';
 import RenderedReactElementAdapter from 'unexpected-htmllike-reactrendered-adapter';
 import { triggerEvent } from './shallowAssertions';
+import { triggerEvent as triggerDeepEvent } from './deepAssertions'
 import { compareSnapshot } from '../helpers/snapshots';
 
 
@@ -25,7 +27,14 @@ function installInto(expect) {
 
   expect.addAssertion('<RenderedReactElement> to [exactly] match snapshot [with all children] [with all wrappers]',
     function (expect, subject) {
-      compareSnapshot(expect, this.flags, rawAdapter.convertFromOther(renderedReactAdapter, subject));
+      compareSnapshot(expect, this.flags, renderedReactAdapter, subject, ReactRenderHook.findComponent(subject));
+    }
+  );
+  expect.addAssertion('<RenderedReactElementPendingEvent> to [exactly] match snapshot [with all children] [with all wrappers]',
+    function (expect, subject) {
+      triggerDeepEvent(expect, subject.renderer, subject.target, subject.eventName, subject.eventArgs);
+      console.log(subject.renderer)
+      expect(subject.renderer, 'to [exactly] match snapshot [with all children] [with all wrappers]');
     }
   );
 }

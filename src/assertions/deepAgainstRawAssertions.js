@@ -2,55 +2,32 @@ import RenderHook from 'react-render-hook';
 import UnexpectedHtmlLike from 'unexpected-htmllike';
 import RenderedReactElementAdapter from 'unexpected-htmllike-reactrendered-adapter';
 import ReactElementAdapter from 'unexpected-htmllike-jsx-adapter';
+import RawAdapter from 'unexpected-htmllike-raw-adapter';
 import React from 'react';
-import TestUtils from 'react-addons-test-utils';
 import { findDOMNode } from 'react-dom';
 import AssertionGenerator from './AssertionGenerator';
+import { triggerEvent } from './deepAssertions';
 
 function checkAttached(expect) {
-    if (!RenderHook.isAttached) {
-        expect.errorMode = 'bubble';
-        expect.fail(output => {
-            return output.error('The global rendering hook is not attached')
-                .nl().text('This probably means React was required before unexpected-react. Check that unexpected-react is required first');
-        });
-    }
-}
-
-function triggerEvent(expect, component, target, eventName, eventArgs) {
-  let componentData;
-  if (component && component.element &&
-    component.data &&
-    component.data.type &&
-    component.data.nodeType) {
-    componentData = component;
-  } else {
-    componentData = RenderHook.findComponent(component);
-  }
-  let targetDOM = findDOMNode(componentData.element.getPublicInstance());
-  if (target) {
-    targetDOM = findDOMNode(target.element.getPublicInstance());
-  }
-  if (typeof TestUtils.Simulate[eventName] !== 'function') {
-    
-    return expect.fail({
-      diff: function (output) {
-        return output.error('Event ').text("'" + eventName + "'").error(' is not supported by TestUtils.Simulate');
-      }
+  if (!RenderHook.isAttached) {
+    expect.errorMode = 'bubble';
+    expect.fail(output => {
+      return output.error('The global rendering hook is not attached')
+        .nl().text('This probably means React was required before unexpected-react. Check that unexpected-react is required first');
     });
   }
-  TestUtils.Simulate[eventName](targetDOM, eventArgs);
 }
 
-function installInto(expect) {
+
+function getOptions(expect) {
   
-  const assertionGenerator = new AssertionGenerator({
+  return {
     ActualAdapter: RenderedReactElementAdapter,
     QueryAdapter: ReactElementAdapter,
-    ExpectedAdapter: ReactElementAdapter,
+    ExpectedAdapter: RawAdapter,
     actualTypeName: 'RenderedReactElement',
     queryTypeName: 'ReactElement',
-    expectedTypeName: 'ReactElement',
+    expectedTypeName: 'ReactRawObjectElement',
     getRenderOutput: component => {
       if (component && component.element &&
         component.data &&
@@ -69,12 +46,24 @@ function installInto(expect) {
     wrapResultForReturn: (component, target) => ((target && target.element.getPublicInstance()) || component),
     triggerEvent: triggerEvent.bind(null, expect),
     canTriggerEventsOnOutputType: true
-  });
+  };
+}
+
+function installInto(expect) {
+  const assertionGenerator = new AssertionGenerator(getOptions(expect));
   assertionGenerator.installInto(expect);
   
   expect.addAssertion('<ReactModule> to have been injected', function (expect) {
     checkAttached(expect);
   });
+  
+  return assertionGenerator;
 }
 
-export { installInto, triggerEvent };
+function installAsAlternative(expect, mainAssertionGenerator) {
+  const generatorOptions = getOptions(expect);
+  const assertionGenerator = new AssertionGenerator({ mainAssertionGenerator, ...generatorOptions });
+  assertionGenerator.installAlternativeExpected(expect);
+}
+
+export { installInto, installAsAlternative, triggerEvent };

@@ -2,6 +2,7 @@ import RenderHook from 'react-render-hook';
 
 import types from './types/types';
 import * as deepAssertions from './assertions/deepAssertions';
+import * as deepAgainstRawAssertions from './assertions/deepAgainstRawAssertions';
 import * as shallowAssertions from './assertions/shallowAssertions';
 import * as shallowAgainstRawAssertions from './assertions/shallowAgainstRawAssertions';
 import * as jestSnapshotStandardRendererAssertions from './assertions/jestSnapshotStandardRendererAssertions';
@@ -20,7 +21,8 @@ module.exports = {
     const mainAssertionGenerator = shallowAssertions.installInto(expect);
     shallowAgainstRawAssertions.installAsAlternative(expect, mainAssertionGenerator);
     
-    deepAssertions.installInto(expect);
+    const deepMainAssertionGenerator = deepAssertions.installInto(expect);
+    deepAgainstRawAssertions.installAsAlternative(expect, deepMainAssertionGenerator);
     jestSnapshotStandardRendererAssertions.installInto(expect);
     snapshotFunctionType.installInto(expect);
     snapshotFunctionAssertions.installInto(expect);

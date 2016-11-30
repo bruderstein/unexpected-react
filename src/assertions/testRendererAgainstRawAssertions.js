@@ -34,7 +34,7 @@ function getOptions(expect) {
     rewrapResult: (renderer, target) => TestRendererTypeWrapper.rewrapResult(renderer, target),
     triggerEvent: triggerEvent.bind(expect)
   };
-};
+}
 
 function installInto(expect) {
   const assertionGenerator = new AssertionGenerator(getOptions(expect));
