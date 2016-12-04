@@ -4760,9 +4760,9 @@ unexpected-htmllike:
     array-changes-async "^2.2.0"
     object-assign "^4.0.1"
 
-unexpected-htmllike-jsx-adapter@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/unexpected-htmllike-jsx-adapter/-/unexpected-htmllike-jsx-adapter-1.0.0.tgz#519bb39a906d0b202112ae03dda0cbf28c6d00e5"
+unexpected-htmllike-jsx-adapter@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/unexpected-htmllike-jsx-adapter/-/unexpected-htmllike-jsx-adapter-1.0.1.tgz#2377ac9076b6dc15f3662f4dd310120f0c2fbaa0"
   dependencies:
     object-assign "^4.0.1"
 
