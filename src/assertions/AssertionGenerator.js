@@ -9,7 +9,7 @@ function getDefaultOptions(flags) {
     diffExtraChildren: flags.exactly || flags.withAllChildren,
     diffExtraAttributes: flags.exactly,
     diffExactClasses: flags.exactly,
-    diffExtraClasses: flags.exactly
+    diffExtraClasses: flags.exactly || flags.withAllClasses
   };
 }
 
@@ -69,20 +69,21 @@ AssertionGenerator.prototype._installEqualityAssertions = function (expect) {
   
   
   expect.addAssertion([`<${actualTypeName}> to have [exactly] rendered <${expectedTypeName}>`,
-      `<${actualTypeName}> to have rendered [with all children] [with all wrappers] <${expectedTypeName}>`],
+      `<${actualTypeName}> to have rendered [with all children] [with all wrappers] [with all classes] <${expectedTypeName}>`],
     function (expect, subject, renderOutput) {
       var actual = getRenderOutput(subject);
-      return expect(actual, 'to have [exactly] rendered [with all children] [with all wrappers]', renderOutput);
+      return expect(actual, 'to have [exactly] rendered [with all children] [with all wrappers] [with all classes]', renderOutput);
     });
   
   expect.addAssertion([
     `<${actualRenderOutputType}> to have [exactly] rendered <${expectedTypeName}>`,
-    `<${actualRenderOutputType}> to have rendered [with all children] [with all wrappers] <${expectedTypeName}>`
+    `<${actualRenderOutputType}> to have rendered [with all children] [with all wrappers] [with all classes] <${expectedTypeName}>`
   ], function (expect, subject, renderOutput) {
     
     const exactly = this.flags.exactly;
     const withAllChildren = this.flags['with all children'];
     const withAllWrappers = this.flags['with all wrappers'];
+    const withAllClasses = this.flags['with all classes'];
     
     const actualAdapter = new ActualAdapter();
     const expectedAdapter = new ExpectedAdapter();
@@ -92,7 +93,7 @@ AssertionGenerator.prototype._installEqualityAssertions = function (expect) {
       actualAdapter.setOptions({concatTextContent: true});
     }
     
-    const options = getDefaultOptions({exactly, withAllWrappers, withAllChildren});
+    const options = getDefaultOptions({exactly, withAllWrappers, withAllChildren, withAllClasses});
     
     const diffResult = testHtmlLike.diff(expectedAdapter, getDiffInputFromRenderOutput(subject), renderOutput, expect, options);
     
@@ -111,18 +112,19 @@ AssertionGenerator.prototype._installEqualityAssertions = function (expect) {
   });
   
   expect.addAssertion([`<${actualTypeName}> [not] to contain [exactly] <${expectedTypeName}|string>`,
-    `<${actualTypeName}> [not] to contain [with all children] [with all wrappers] <${expectedTypeName}|string>`], function (expect, subject, renderOutput) {
+    `<${actualTypeName}> [not] to contain [with all children] [with all wrappers] [with all classes] <${expectedTypeName}|string>`], function (expect, subject, renderOutput) {
     var actual = getRenderOutput(subject);
-    return expect(actual, '[not] to contain [exactly] [with all children] [with all wrappers]', renderOutput);
+    return expect(actual, '[not] to contain [exactly] [with all children] [with all wrappers] [with all classes]', renderOutput);
   });
   
   expect.addAssertion([`<${actualRenderOutputType}> [not] to contain [exactly] <${expectedTypeName}|string>`,
-    `<${actualRenderOutputType}> [not] to contain [with all children] [with all wrappers] <${expectedTypeName}|string>`], function (expect, subject, expected) {
+    `<${actualRenderOutputType}> [not] to contain [with all children] [with all wrappers] [with all classes] <${expectedTypeName}|string>`], function (expect, subject, expected) {
     
     var not = this.flags.not;
     var exactly = this.flags.exactly;
     var withAllChildren = this.flags['with all children'];
     var withAllWrappers = this.flags['with all wrappers'];
+    var withAllClasses = this.flags['with all classes'];
     
     var actualAdapter = new ActualAdapter();
     var expectedAdapter = new ExpectedAdapter();
@@ -132,7 +134,7 @@ AssertionGenerator.prototype._installEqualityAssertions = function (expect) {
       expectedAdapter.setOptions({concatTextContent: true});
     }
     
-    var options = getDefaultOptions({exactly, withAllWrappers, withAllChildren});
+    var options = getDefaultOptions({exactly, withAllWrappers, withAllChildren, withAllClasses});
     
     const containsResult = testHtmlLike.contains(expectedAdapter, getDiffInputFromRenderOutput(subject), expected, expect, options);
     
@@ -190,20 +192,21 @@ AssertionGenerator.prototype._installQueriedFor = function (expect) {
   } = this._options;
   
   expect.addAssertion([`<${actualTypeName}> queried for [exactly] <${queryTypeName}> <assertion?>`,
-    `<${actualTypeName}> queried for [with all children] [with all wrapppers] <${queryTypeName}> <assertion?>`
+    `<${actualTypeName}> queried for [with all children] [with all wrapppers] [with all classes] <${queryTypeName}> <assertion?>`
   ], function (expect, subject, query, assertion) {
       return expect.apply(expect,
         [
-          getRenderOutput(subject), 'queried for [exactly] [with all children] [with all wrappers]', query
+          getRenderOutput(subject), 'queried for [exactly] [with all children] [with all wrappers] [with all classes]', query
         ].concat(Array.prototype.slice.call(arguments, 3)));
   });
   
   expect.addAssertion([`<${actualRenderOutputType}> queried for [exactly] <${queryTypeName}> <assertion?>`,
-    `<${actualRenderOutputType}> queried for [with all children] [with all wrapppers] <${queryTypeName}> <assertion?>`], function (expect, subject, query) {
+    `<${actualRenderOutputType}> queried for [with all children] [with all wrapppers] [with all classes] <${queryTypeName}> <assertion?>`], function (expect, subject, query) {
     
     var exactly = this.flags.exactly;
     var withAllChildren = this.flags['with all children'];
     var withAllWrappers = this.flags['with all wrappers'];
+    var withAllClasses = this.flags['with all classes'];
     
     var actualAdapter = new ActualAdapter();
     var queryAdapter = new QueryAdapter();
@@ -213,7 +216,7 @@ AssertionGenerator.prototype._installQueriedFor = function (expect) {
       queryAdapter.setOptions({concatTextContent: true});
     }
     
-    const options = getDefaultOptions({exactly, withAllWrappers, withAllChildren});
+    const options = getDefaultOptions({exactly, withAllWrappers, withAllChildren, withAllClasses});
     options.findTargetAttrib = 'queryTarget';
     
     const containsResult = testHtmlLike.contains(queryAdapter, getDiffInputFromRenderOutput(subject), query, expect, options);
@@ -390,7 +393,7 @@ AssertionGenerator.prototype._installWithEventOn = function (expect) {
   
   const actualPendingEventTypeName = this._actualPendingEventTypeName;
   
-  expect.addAssertion(`<${actualPendingEventTypeName}> on [exactly] [with all children] [with all wrappers] <${queryTypeName}> <assertion?>`,
+  expect.addAssertion(`<${actualPendingEventTypeName}> on [exactly] [with all children] [with all wrappers] [with all classes] <${queryTypeName}> <assertion?>`,
     function (expect, subject, target) {
       const actualAdapter = new ActualAdapter({ convertToString: true, concatTextContent: true });
       const queryAdapter = new QueryAdapter({ convertToString: true, concatTextContent: true });
@@ -399,8 +402,9 @@ AssertionGenerator.prototype._installWithEventOn = function (expect) {
       const exactly = this.flags.exactly;
       const withAllChildren = this.flags['with all children'];
       const withAllWrappers = this.flags['with all wrappers'];
+      const withAllClasses = this.flags['with all classes'];
       
-      const options = getDefaultOptions({ exactly, withAllWrappers, withAllChildren });
+      const options = getDefaultOptions({ exactly, withAllWrappers, withAllChildren, withAllClasses });
       options.findTargetAttrib = 'eventTarget';
       
       const containsResult = testHtmlLike.contains(queryAdapter, getDiffInputFromRenderOutput(getRenderOutput(subject.renderer)), target, expect, options);
@@ -431,12 +435,12 @@ AssertionGenerator.prototype._installWithEventOn = function (expect) {
     });
   
   expect.addAssertion([`<${actualPendingEventTypeName}> queried for [exactly] <${queryTypeName}> <assertion?>`,
-      `<${actualPendingEventTypeName}> queried for [with all children] [with all wrappers] <${queryTypeName}> <assertion?>`],
+      `<${actualPendingEventTypeName}> queried for [with all children] [with all wrappers] [with all classes] <${queryTypeName}> <assertion?>`],
     function (expect, subject, expected) {
       
       triggerEvent(subject.renderer, subject.target, subject.eventName, subject.eventArgs);
       return expect.apply(expect,
-        [subject.renderer, 'queried for [exactly] [with all children] [with all wrappers]', expected]
+        [subject.renderer, 'queried for [exactly] [with all children] [with all wrappers] [with all classes]', expected]
           .concat(Array.prototype.slice.call(arguments, 3)));
     }
   );
@@ -448,16 +452,16 @@ AssertionGenerator.prototype._installEventHandlerAssertions = function (expect) 
   const actualPendingEventTypeName = this._actualPendingEventTypeName;
 
   expect.addAssertion([`<${actualPendingEventTypeName}> [not] to contain [exactly] <${expectedTypeName}>`,
-    `<${actualPendingEventTypeName}> [not] to contain [with all children] [with all wrappers] <${expectedTypeName}>`],
+    `<${actualPendingEventTypeName}> [not] to contain [with all children] [with all wrappers] [with all classes] <${expectedTypeName}>`],
     function (expect, subject, expected) {
       triggerEvent(subject.renderer, subject.target, subject.eventName, subject.eventArgs);
-      return expect(subject.renderer, '[not] to contain [exactly] [with all children] [with all wrappers]', expected);
+      return expect(subject.renderer, '[not] to contain [exactly] [with all children] [with all wrappers] [with all classes]', expected);
   });
   
-  expect.addAssertion(`<${actualPendingEventTypeName}> to have [exactly] rendered [with all children] [with all wrappers] <${expectedTypeName}>`,
+  expect.addAssertion(`<${actualPendingEventTypeName}> to have [exactly] rendered [with all children] [with all wrappers] [with all classes] <${expectedTypeName}>`,
     function (expect, subject, expected) {
       triggerEvent(subject.renderer, subject.target, subject.eventName, subject.eventArgs);
-      return expect(subject.renderer, 'to have [exactly] rendered [with all children] [with all wrappers]', expected);
+      return expect(subject.renderer, 'to have [exactly] rendered [with all children] [with all wrappers] [with all classes]', expected);
     });
 };
 

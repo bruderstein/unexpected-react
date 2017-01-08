@@ -364,6 +364,27 @@ describe('unexpected-react-shallow', () => {
 
             return expect(renderer, 'to have rendered', <div className="one two three" />);
         });
+        
+        it('matches className with an extra class on actual', () => {
+            renderer.render(<MyDiv className="two one four" />);
+            
+            return expect(renderer, 'to have rendered', <div className="one two" />);
+        });
+        
+        it('diffs className with an extra class on actual with `with all classes', () => {
+          renderer.render(<MyDiv className="two one four" />);
+      
+          expect(() => expect(renderer, 'to have rendered with all classes', <div className="one two" />),
+            'to throw',
+          [
+            'expected <div className="two one four" />',
+            'to have rendered with all classes <div className="one two" />',
+            '',
+            '<div className="two one four" // extra class \'four\'',
+            '/>'
+          ].join('\n')
+          );
+        });
 
         it('matches content rendered as a number', function () {
 
