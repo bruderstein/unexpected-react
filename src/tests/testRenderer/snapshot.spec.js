@@ -83,7 +83,8 @@ describe('snapshots', function () {
   beforeEach(function () {
     mockFs({
       [PATH_TO_TESTS + '/__snapshots__/single.spec.unexpected-snap']: fixtures.single,
-      [PATH_TO_TESTS + '/__snapshots__/multiple.spec.unexpected-snap']: fixtures.multiple
+      [PATH_TO_TESTS + '/__snapshots__/multiple.spec.unexpected-snap']: fixtures.multiple,
+      [PATH_TO_TESTS + '/__snapshots__/multipleclasses.spec.unexpected-snap']: fixtures.multipleclasses,
     });
   });
   
@@ -209,6 +210,87 @@ describe('snapshots', function () {
         '</button>'
       ].join('\n')
     );
+  });
+  
+  it('matches classes in the wrong order', function () {
+    initState({
+      testPath: 'multipleclasses.spec.js',
+      testName: 'multiple classes'
+    });
+    
+    const renderer = ReactTestRenderer.create(<ClickCounter className="three two one" />);
+    expect(renderer, 'to match snapshot');
+  });
+  
+  it('diffs missing classes', function () {
+    initState({
+      testPath: 'multipleclasses.spec.js',
+      testName: 'multiple classes'
+    });
+    
+    const renderer = ReactTestRenderer.create(<ClickCounter className="three one" />);
+    expect(() => expect(renderer, 'to match snapshot'), 'to throw',
+    [
+      'expected',
+      '<button className="three one" onClick={function bound onClick() { /* native code */ }}>',
+      '  Clicked 0 times',
+      '</button>',
+      'to match snapshot',
+      '',
+      '<button className="three one" // missing class \'two\'',
+      '   onClick={function bound onClick() { /* native code */ }}>',
+      '  Clicked 0 times',
+      '</button>'
+    ].join('\n'))
+  });
+  
+  it('diffs extra classes', function () {
+    initState({
+      testPath: 'multipleclasses.spec.js',
+      testName: 'multiple classes'
+    });
+    
+    const renderer = ReactTestRenderer.create(<ClickCounter className="three two one four" />);
+    expect(() => expect(renderer, 'to match snapshot'), 'to throw',
+      [
+        'expected',
+        '<button className="three two one four"',
+        '   onClick={function bound onClick() { /* native code */ }}>',
+        '  Clicked 0 times',
+        '</button>',
+        'to match snapshot',
+        '',
+        '<button className="three two one four" // extra class \'four\'',
+        '   onClick={function bound onClick() { /* native code */ }}>',
+        '  Clicked 0 times',
+        '</button>'
+      ].join('\n'))
+  });
+  
+  it('diffs extra attributes', function () {
+    initState({
+      testPath: 'multipleclasses.spec.js',
+      testName: 'multiple classes'
+    });
+  
+    const renderer = ReactTestRenderer.create(<ClickCounter className="three two one" ariaLabel="testextra" />);
+    expect(() => expect(renderer, 'to match snapshot'), 'to throw',
+      [
+        'expected',
+        '<button className="three two one"',
+        '   onClick={function bound onClick() { /* native code */ }}',
+        '   ariaLabel="testextra">',
+        '  Clicked 0 times',
+        '</button>',
+        'to match snapshot',
+        '',
+        '<button className="three two one"',
+        '   onClick={function bound onClick() { /* native code */ }}',
+        '   ariaLabel="testextra" // ariaLabel should be removed',
+        '>',
+        '  Clicked 0 times',
+        '</button>'
+      ].join('\n'))
   });
   
   it('increments `unmatched` when a snapshot doesn`t match', function () {

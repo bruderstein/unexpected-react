@@ -6,7 +6,7 @@ function installInto(expect) {
     name: 'jest-snapshot-function',
     base: 'object',
     identify: function (value) {
-      return typeof value === 'object' && value.$functype === FUNCTION_ID;
+      return value && typeof value === 'object' && value.$functype === FUNCTION_ID;
     },
     inspect: function (value, depth, output) {
       return output.clone().text('function ').cyan(value.name).text('(').text(value.args).text(') { /* function body */ }')

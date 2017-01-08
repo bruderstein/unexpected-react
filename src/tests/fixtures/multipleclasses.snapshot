@@ -1,0 +1,3 @@
+exports['multiple classes 1'] = {
+   type: 'button', props: { className: 'one two three', onClick: { $functype: '$FUNC$bc*(!CDKRRz195123$', name: 'bound onClick', args: '' } }, children: [ 'Clicked ', 0, ' times' ]
+}

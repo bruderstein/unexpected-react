@@ -12,28 +12,28 @@ function installInto(expect) {
   const rawAdapter = new RawAdapter({ convertToString: true, concatTextContent: true });
   const shallowAdapter = new ReactElementAdapter({ convertToString: true });
   const renderedReactAdapter = new RenderedReactElementAdapter({ convertToString: true, concatTextContent: true });
-  expect.addAssertion('<ReactShallowRenderer> to [exactly] match snapshot [with all children] [with all wrappers]',
+  expect.addAssertion('<ReactShallowRenderer> to match snapshot',
     function (expect, subject) {
       compareSnapshot(expect, this.flags, shallowAdapter, subject, subject.getRenderOutput());
     }
   );
   
-  expect.addAssertion('<ReactShallowRendererPendingEvent> to [exactly] match snapshot [with all children] [with all wrappers]',
+  expect.addAssertion('<ReactShallowRendererPendingEvent> to match snapshot',
     function (expect, subject) {
       triggerEvent(expect, subject.renderer, subject.target, subject.eventName, subject.eventArgs);
-      expect(subject.renderer, 'to [exactly] match snapshot [with all children] [with all wrappers]');
+      expect(subject.renderer, 'to match snapshot');
     }
   );
 
-  expect.addAssertion('<RenderedReactElement> to [exactly] match snapshot [with all children] [with all wrappers]',
+  expect.addAssertion('<RenderedReactElement> to match snapshot',
     function (expect, subject) {
       compareSnapshot(expect, this.flags, renderedReactAdapter, subject, ReactRenderHook.findComponent(subject));
     }
   );
-  expect.addAssertion('<RenderedReactElementPendingEvent> to [exactly] match snapshot [with all children] [with all wrappers]',
+  expect.addAssertion('<RenderedReactElementPendingEvent> to match snapshot',
     function (expect, subject) {
       triggerDeepEvent(expect, subject.renderer, subject.target, subject.eventName, subject.eventArgs);
-      expect(subject.renderer, 'to [exactly] match snapshot [with all children] [with all wrappers]');
+      expect(subject.renderer, 'to match snapshot');
     }
   );
 }

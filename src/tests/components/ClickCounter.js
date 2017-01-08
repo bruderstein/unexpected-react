@@ -15,8 +15,15 @@ export default class ClickCounter extends Component {
   }
   
   render() {
+    
+    // This is built like this so the prop is only defined if it's provided, so we don't even pass an undefined prop
+    const extraProps = {};
+    if (this.props.ariaLabel) {
+      extraProps.ariaLabel = this.props.ariaLabel;
+    }
+    
     return (
-      <button className={this.props.className} onClick={this.onClick} onMouseDown={this.props.onMouseDown}>
+      <button className={this.props.className} onClick={this.onClick} onMouseDown={this.props.onMouseDown} {...extraProps}>
         Clicked {this.state.count} times
       </button>
     );

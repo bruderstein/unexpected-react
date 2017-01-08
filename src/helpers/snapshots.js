@@ -136,7 +136,7 @@ function compareSnapshot(expect, flags, subjectAdapter, subjectRenderer, subject
     state.snapshotState.added++;
   } else {
     expect.withError(() => {
-      expect(subjectRenderer, 'to have rendered', rawAdapter.deserialize(snapshot));
+      expect(subjectRenderer, 'to have rendered with all children with all wrappers with all classes with all attributes', rawAdapter.deserialize(snapshot));
       state.snapshotState.matched = (state.snapshotState.matched || 0) + 1;
     }, function (err) {
       state.unexpectedSnapshot.markTestAsFailed(state.testPath, state.currentTestName);

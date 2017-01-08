@@ -6,17 +6,17 @@ function installInto(expect) {
   
   const reactTestAdapter = new ReactTestAdapter({ convertToString: true, concatStringContent: true });
 
-  expect.addAssertion('<ReactTestRenderer> to [exactly] match snapshot [with all children] [with all wrappers]',
+  expect.addAssertion('<ReactTestRenderer> to match snapshot',
     function (expect, subject) {
-      compareSnapshot(expect, this.flags, reactTestAdapter, subject, subject.toJSON());
+      compareSnapshot(expect, { }, reactTestAdapter, subject, subject.toJSON());
     }
   );
   
-  expect.addAssertion('<ReactTestRendererPendingEvent> to [exactly] match snapshot [with all children] [with all wrappers]',
+  expect.addAssertion('<ReactTestRendererPendingEvent> to match snapshot',
     function (expect, subject) {
       triggerEvent(expect, subject.renderer, subject.target, subject.eventName, subject.eventArgs);
       expect.errorMode = 'bubble';
-      expect(subject.renderer, 'to [exactly] match snapshot [with all children] [with all wrappers]');
+      expect(subject.renderer, 'to match snapshot');
     }
   );
 }
