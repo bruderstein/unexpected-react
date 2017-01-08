@@ -257,10 +257,10 @@ describe('snapshots', function () {
           '',
           '<button onClick={function bound onClick() { /* native code */ }}',
           '   onMouseDown={function doStuff(a, b) { return a + b; }} // expected function doStuff(a, b) { return a + b; }',
-          '                                                          // to satisfy function bound3() { /* bound - native code */ }',
+          '                                                          // to satisfy function bound bound3() { /* function body */ }',
           '                                                          //',
-          '                                                          // -function doStuff(a, b) { return a + b; }',
-          '                                                          // +function bound3() { /* bound - native code */ }',
+          '                                                          // -function doStuff(a, b) { /* function body */ }',
+          '                                                          // +function bound bound3() { /* function body */ }',
           '>',
           '  Clicked 0 times',
           '</button>'

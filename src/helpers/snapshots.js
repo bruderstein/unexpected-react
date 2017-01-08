@@ -8,6 +8,32 @@ import React from 'react';
 import RawAdapter from 'unexpected-htmllike-raw-adapter';
 import { loadSnapshot } from './snapshotLoader';
 
+
+// Serializable "unique" ID
+const FUNCTION_ID = "$FUNC$bc*(!CDKRRz195123$";
+const FUNC_ARGS_REGEX = /function [^(]*\(([^)]*)\)/;
+
+function getFunctionArgs(func) {
+  const match = FUNC_ARGS_REGEX.exec(func.toString());
+  if (match) {
+    return match[1].split(',').map(arg => arg.trim()).join(', ');
+  }
+  return '';
+}
+
+const writerOptions = {
+  handlers: {
+    'function': function (func) {
+      const functionDefinition = {
+        $functype: FUNCTION_ID,
+        name: func.name || '',
+        args: getFunctionArgs(func)
+      };
+      return JSON.stringify(functionDefinition)
+    }
+  }
+};
+
 class UnexpectedSnapshotState {
   
   constructor(snapshotState) {
@@ -74,7 +100,7 @@ class UnexpectedSnapshotState {
     }
     const fileContent = Object.keys(snapshot.allTests).map(test => {
       const display = snapshot.contentOutput[test] || '// Display unavailable (this is probably a bug in unexpected-react, please report it!)';
-      return `/////////////////// ${test} ///////////////////\n\n${display}\n\nexports[\`${test}\`] = ${jsWriter(snapshot.allTests[test])};\n// ===========================================================================\n`;
+      return `/////////////////// ${test} ///////////////////\n\n${display}\n\nexports[\`${test}\`] = ${jsWriter(snapshot.allTests[test], writerOptions)};\n// ===========================================================================\n`;
     }).join('\n\n');
     fs.writeFileSync(snapshotPath, fileContent);
   }
@@ -172,5 +198,8 @@ injectStateHooks();
 
 export {
   compareSnapshot,
-  injectStateHooks // This is exported for testing purposes, and is not normally needed
+  injectStateHooks, // This is exported for testing purposes, and is not normally needed
+  FUNCTION_ID,
+  writerOptions,
+  getFunctionArgs
 }
