@@ -2,15 +2,18 @@ exports['two counters 1'] = {
     type: 'TwoClickCounters',
     props: {},
     children: [
-        { type: 'ClickCounter', props: { className: 'one' }, children:
-          [
-            { type: 'button', props: { className: 'one' }, children: [ 'Clicked ', 0, ' times' ] }
-          ]
-        },
-        { type: 'ClickCounter', props: { className: 'two' }, children:
-          [
-            { type: 'button', props: { className: 'two' }, children: [ 'Clicked ', 0, ' times' ] }
-          ]
+        { type: 'div', props: {}, children: [
+                { type: 'ClickCounter', props: { className: 'one' }, children:
+                  [
+                    { type: 'button', props: { className: 'one', onClick: { $functype: '$FUNC$bc*(!CDKRRz195123$', name: 'bound onClick', args: '' } }, children: [ 'Clicked ', 0, ' times' ] }
+                  ]
+                },
+                { type: 'ClickCounter', props: { className: 'two' }, children:
+                  [
+                    { type: 'button', props: { className: 'two', onClick: { $functype: '$FUNC$bc*(!CDKRRz195123$', name: 'bound onClick', args: '' } }, children: [ 'Clicked ', 0, ' times' ] }
+                  ]
+                }
+            ]
         }
     ]
 }

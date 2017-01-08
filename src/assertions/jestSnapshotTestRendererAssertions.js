@@ -19,6 +19,20 @@ function installInto(expect) {
       expect(subject.renderer, 'to match snapshot');
     }
   );
+  
+  expect.addAssertion('<ReactTestRenderer> to satisfy snapshot',
+    function (expect, subject) {
+      compareSnapshot(expect, { satisfy: true }, reactTestAdapter, subject, subject.toJSON());
+    }
+  );
+  
+  expect.addAssertion('<ReactTestRendererPendingEvent> to satisfy snapshot',
+    function (expect, subject) {
+      triggerEvent(expect, subject.renderer, subject.target, subject.eventName, subject.eventArgs);
+      expect.errorMode = 'bubble';
+      expect(subject.renderer, 'to satisfy snapshot');
+    }
+  );
 }
 
 module.exports = { installInto };

@@ -85,7 +85,8 @@ describe('snapshots', function () {
   beforeEach(function () {
     mockFs({
       [PATH_TO_TESTS + '/__snapshots__/single.spec.unexpected-snap']: fixtures.single,
-      [PATH_TO_TESTS + '/__snapshots__/multiple.spec.unexpected-snap']: fixtures.multiple
+      [PATH_TO_TESTS + '/__snapshots__/multiple.spec.unexpected-snap']: fixtures.multiple,
+      [PATH_TO_TESTS + '/__snapshots__/multipleclasses.spec.unexpected-snap']: fixtures.multipleclasses
     });
   });
   
@@ -141,6 +142,88 @@ describe('snapshots', function () {
         '</button>'
       ].join('\n')
     );
+  });
+  
+  it('fails when an extra class is provided', function () {
+    
+    initState({
+      testPath: 'multipleclasses.spec.js',
+      testName: 'multiple classes'
+    });
+  
+    renderer.render(<ClickCounter className="one four three two"/>);
+  
+    expect(
+      () => expect(renderer, 'to match snapshot'),
+      'to throw',
+      [
+        'expected',
+        '<button className="one four three two"',
+        '   onClick={function bound onClick() { /* native code */ }}>',
+        '  Clicked 0 times',
+        '</button>',
+        'to match snapshot',
+        '',
+        '<button className="one four three two" // extra class \'four\'',
+        '   onClick={function bound onClick() { /* native code */ }}>',
+        '  Clicked 0 times',
+        '</button>'
+      ].join('\n')
+    );
+  });
+  
+  it('fails when an extra attribute is provided', function () {
+    
+    initState({
+      testPath: 'multipleclasses.spec.js',
+      testName: 'multiple classes'
+    });
+    
+    renderer.render(<ClickCounter className="one three two" ariaLabel="test"/>);
+    
+    expect(
+      () => expect(renderer, 'to match snapshot'),
+      'to throw',
+      [
+        'expected',
+        '<button className="one three two"',
+        '   onClick={function bound onClick() { /* native code */ }} ariaLabel="test">',
+        '  Clicked 0 times',
+        '</button>',
+        'to match snapshot',
+        '',
+        '<button className="one three two"',
+        '   onClick={function bound onClick() { /* native code */ }}',
+        '   ariaLabel="test" // ariaLabel should be removed',
+        '>',
+        '  Clicked 0 times',
+        '</button>'
+      ].join('\n')
+    );
+  });
+  
+  it('passes with `to satisfy snapshot` when an extra class is provided', function () {
+  
+    initState({
+      testPath: 'multipleclasses.spec.js',
+      testName: 'multiple classes'
+    });
+  
+    renderer.render(<ClickCounter className="one four three two"/>);
+  
+    expect(renderer, 'to satisfy snapshot');
+  });
+  
+  it('passes with `to satisfy snapshot` when an extra attribute is provided', function () {
+    
+    initState({
+      testPath: 'multipleclasses.spec.js',
+      testName: 'multiple classes'
+    });
+    
+    renderer.render(<ClickCounter className="one three two" ariaLabel="test"/>);
+    
+    expect(renderer, 'to satisfy snapshot');
   });
   
   describe('when update is true and the snapshot doesn`t match', function () {

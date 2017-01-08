@@ -293,6 +293,37 @@ describe('snapshots', function () {
       ].join('\n'))
   });
   
+  it('allows extra attributes with `to satisfy snapshot`', function () {
+    initState({
+      testPath: 'multipleclasses.spec.js',
+      testName: 'multiple classes'
+    });
+  
+    const renderer = ReactTestRenderer.create(<ClickCounter className="three two one" ariaLabel="testextra" />);
+    expect(renderer, 'to satisfy snapshot');
+    
+  });
+  
+  it('allows extra classes with `to satisfy snapshot`', function () {
+    initState({
+      testPath: 'multipleclasses.spec.js',
+      testName: 'multiple classes'
+    });
+    
+    const renderer = ReactTestRenderer.create(<ClickCounter className="three two one four" />);
+    expect(renderer, 'to satisfy snapshot');
+  });
+  
+  it('allows extra classes with `to satisfy snapshot` after event ', function () {
+    initState({
+      testPath: 'multipleclasses.spec.js',
+      testName: 'multiple classes click'
+    });
+    
+    const renderer = ReactTestRenderer.create(<ClickCounter className="three two one four" />);
+    expect(renderer, 'with event click', 'to satisfy snapshot');
+  });
+  
   it('increments `unmatched` when a snapshot doesn`t match', function () {
     initState({
       testPath: 'single.spec.js',

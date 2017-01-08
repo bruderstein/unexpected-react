@@ -30,10 +30,37 @@ function installInto(expect) {
       compareSnapshot(expect, this.flags, renderedReactAdapter, subject, ReactRenderHook.findComponent(subject));
     }
   );
+  
   expect.addAssertion('<RenderedReactElementPendingEvent> to match snapshot',
     function (expect, subject) {
       triggerDeepEvent(expect, subject.renderer, subject.target, subject.eventName, subject.eventArgs);
       expect(subject.renderer, 'to match snapshot');
+    }
+  );
+  
+  expect.addAssertion('<ReactShallowRenderer> to satisfy snapshot',
+    function (expect, subject) {
+      compareSnapshot(expect, { satisfy: true }, shallowAdapter, subject, subject.getRenderOutput());
+    }
+  );
+  
+  expect.addAssertion('<ReactShallowRendererPendingEvent> to satisfy snapshot',
+    function (expect, subject) {
+      triggerEvent(expect, subject.renderer, subject.target, subject.eventName, subject.eventArgs);
+      expect(subject.renderer, 'to satisfy snapshot');
+    }
+  );
+  
+  expect.addAssertion('<RenderedReactElement> to satisfy snapshot',
+    function (expect, subject) {
+      compareSnapshot(expect, { satisfy: true }, renderedReactAdapter, subject, ReactRenderHook.findComponent(subject));
+    }
+  );
+  
+  expect.addAssertion('<RenderedReactElementPendingEvent> to satisfy snapshot',
+    function (expect, subject) {
+      triggerDeepEvent(expect, subject.renderer, subject.target, subject.eventName, subject.eventArgs);
+      expect(subject.renderer, 'to satisfy snapshot');
     }
   );
 }
