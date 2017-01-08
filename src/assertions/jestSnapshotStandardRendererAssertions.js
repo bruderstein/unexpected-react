@@ -33,7 +33,6 @@ function installInto(expect) {
   expect.addAssertion('<RenderedReactElementPendingEvent> to [exactly] match snapshot [with all children] [with all wrappers]',
     function (expect, subject) {
       triggerDeepEvent(expect, subject.renderer, subject.target, subject.eventName, subject.eventArgs);
-      console.log(subject.renderer)
       expect(subject.renderer, 'to [exactly] match snapshot [with all children] [with all wrappers]');
     }
   );
