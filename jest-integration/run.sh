@@ -49,6 +49,12 @@ runTest() {
 	            cd build
 	            printf "Running $TESTNAME $STEP..."
 	            source ../tests/$TESTNAME/$STEP/run.sh "../tests/$TESTNAME/$STEP" > ../output/${TESTNAME}/${STEP}/stdout 2> ../output/$TESTNAME/$STEP/stderr;
+
+	            if [ -f "testRunOutput.json" ]; then
+	                mv testRunOutput.json ../output/${TESTNAME}/${STEP}/
+	                node ../normalize-jest-json.js ../output/${TESTNAME}/${STEP}/testRunOutput.json > ../output/${TESTNAME}/${STEP}/testRunOutput_clean.json
+	            fi
+
 	            popd > /dev/null
 
                 if [ -f output/$TESTNAME/$STEP/stderr ]; then
@@ -89,6 +95,19 @@ runTest() {
                         STEP_FAILED=1
                     fi
                 fi
+
+                if [ -f tests/$TESTNAME/$STEP/expectedOutput.json ]; then
+                    SOME_VALIDATION_WAS_MADE=true
+                    node compare-json.js output/$TESTNAME/$STEP/testRunOutput.json tests/$TESTNAME/$STEP/expectedOutput.json ./build > output/$TESTNAME/$STEP/json-diff-output.txt
+                    if [ $? == 1 ]; then
+	                    echo "******************************************************************" >> output/results.txt
+                        echo "x  Failed $TESTNAME $STEP - json differed" >> output/results.txt;
+                        cat output/$TESTNAME/$STEP/json-diff-output.txt >> output/results.txt
+                        echo "" >> output/results.txt;
+                        STEP_FAILED=1
+                    fi
+                fi
+
                 if [ "$SOME_VALIDATION_WAS_MADE" == "false" -a ! -f tests/$TESTNAME/$STEP/no_expectation ]; then
 	                echo "******************************************************************" >> output/results.txt
                     echo "x  Failed $TESTNAME $STEP - nothing was validated" >> output/results.txt;
