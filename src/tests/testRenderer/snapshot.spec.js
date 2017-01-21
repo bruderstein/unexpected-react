@@ -467,23 +467,28 @@ describe('snapshots', function () {
       });
       // Rerender, with a different unbound function
       renderer = ReactTestRenderer.create(<ClickCounter onMouseDown={functionFixtures.namedContentArgs()} />);
+      console.log('Function toString', functionFixtures.namedContentArgs.toString())
       expect(
         () => expect(renderer, 'to match snapshot'),
         'to throw',
         [
           'expected',
           '<button onClick={function bound onClick() { /* native code */ }}',
-          '   onMouseDown={function doStuff(a, b) { return a + b; }}>',
+          '   onMouseDown={function doStuff(a, b) { /* ... */ }}>',
           '  Clicked 0 times',
           '</button>',
           'to match snapshot',
           '',
           '<button onClick={function bound onClick() { /* native code */ }}',
-          '   onMouseDown={function doStuff(a, b) { return a + b; }} // expected function doStuff(a, b) { return a + b; }',
-          '                                                          // to satisfy function bound bound3() { /* function body */ }',
-          '                                                          //',
-          '                                                          // -function doStuff(a, b) { /* function body */ }',
-          '                                                          // +function bound bound3() { /* function body */ }',
+          '   onMouseDown={function doStuff(a, b) { /* ... */ }} // expected',
+          '                                                      // function doStuff(a, b) {',
+          '                                                      //   // comment',
+          '                                                      //   return a + b;',
+          '                                                      // }',
+          '                                                      // to satisfy function bound bound3() { /* function body */ }',
+          '                                                      //',
+          '                                                      // -function doStuff(a, b) { /* function body */ }',
+          '                                                      // +function bound bound3() { /* function body */ }',
           '>',
           '  Clicked 0 times',
           '</button>'

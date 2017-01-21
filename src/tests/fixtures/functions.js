@@ -13,7 +13,10 @@ module.exports = {
   anonymousContentArgs: () => function (a, b) { return a + b; },
   named: () => function doStuff() { /* stuff */ },
   namedContent: () => function doStuff() { return 42; },
-  namedContentArgs: () => function doStuff(a, b) { return a + b; },
+  namedContentArgs: () => function doStuff(a, b) {
+    // comment
+    return a + b;
+  },
   bound: () => bound1.bind(someObject),
   boundContent: () => bound2.bind(someObject),
   boundContentArgs: () => bound3.bind(someObject)
