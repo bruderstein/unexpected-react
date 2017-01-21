@@ -236,9 +236,37 @@ describe('MyComponent', function () {
 });
 ```
 
+## Using with Jest
+
+`unexpected-react` works just the same with [jest](https://facebook.github.io/jest/), complete with snapshot support (and you don't need your own DOM emulation, as jest has that built in).  To use jest with the shallow and full renderers and include snapshot support, simply require `unexpected-react/jest`. Snapshotting the shallow renderer and the full DOM rendering works out of the box, no need to add any extra packages.
+
+e.g.
+
+```js
+const unexpectedReact = require('unexpected-react/jest');
+
+const expect = require('unexpected')
+  .clone()
+  .use(unexpectedReact);
+```
+
+This `expect` will then be used instead of the default one provided by jest.
+
+If you want to use the test renderer (the same as jest snapshots use), require `unexpected-react/test-renderer-jest`.
+
+e.g.
+
+```js
+const unexpectedReact = require('unexpected-react/test-renderer-jest');
+
+const expect = require('unexpected')
+  .clone()
+  .use(unexpectedReact);
+```
+
 ## Emulating the DOM
 
-The `emulateDom` file depends on whether you want to use [`domino`](https://npmjs.com/package/domino), or [`jsdom`](https://npmjs.com/package/jsdom)
+The `emulateDom` file depends on whether you want to use [`domino`](https://npmjs.com/package/domino), or [`jsdom`](https://npmjs.com/package/jsdom).  If you're using Jest, jsdom is built in, so you can ignore this section.
 
 For `jsdom`:
 
