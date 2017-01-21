@@ -58,7 +58,9 @@ runTest() {
                     # to update the expected stdout
                     cat output/$TESTNAME/$STEP/stdout | grep -v 'Done in [0-9.]' | grep -v -E 'yarn (run|test) v' > output/$TESTNAME/$STEP/stdout_clean;
                 fi
+                SOME_VALIDATION_WAS_MADE=false
                 if [ -f output/${TESTNAME}/${STEP}/stdout_clean ] && [ -f tests/$TESTNAME/$STEP/expected_stdout ]; then
+                    SOME_VALIDATION_WAS_MADE=true
                     diff tests/$TESTNAME/$STEP/expected_stdout output/$TESTNAME/$STEP/stdout_clean > output/$TESTNAME/$STEP/stdout_diff
                     if [ $? == 1 ]; then
 	                    echo "******************************************************************" >> output/results.txt
@@ -77,7 +79,7 @@ runTest() {
                 fi
 
                 if [ -f output/${TESTNAME}/${STEP}/stderr_clean ] && [ -f tests/$TESTNAME/$STEP/expected_stderr ]; then
-
+                    SOME_VALIDATION_WAS_MADE=true
                     diff tests/$TESTNAME/$STEP/expected_stderr output/$TESTNAME/$STEP/stderr_clean > output/$TESTNAME/$STEP/stderr_diff
                     if [ $? == 1 ]; then
 	                    echo "******************************************************************" >> output/results.txt
@@ -86,6 +88,11 @@ runTest() {
                         echo "" >> output/results.txt;
                         STEP_FAILED=1
                     fi
+                fi
+                if [ "$SOME_VALIDATION_WAS_MADE" == "false" -a ! -f tests/$TESTNAME/$STEP/no_expectation ]; then
+	                echo "******************************************************************" >> output/results.txt
+                    echo "x  Failed $TESTNAME $STEP - nothing was validated" >> output/results.txt;
+                    STEP_FAILED=1;
                 fi
                 FAILED_STEPS=$((FAILED_STEPS+STEP_FAILED))
                 if [ $STEP_FAILED -ne 0 ]; then
