@@ -13,6 +13,7 @@
     "test-documentation-standard": "mocha --compilers js:babel-core/register,md:unexpected-markdown --require ./bootstrap-unexpected-markdown --recursive documentation/assertions/ReactElement documentation/assertions/RenderedReactElement",
     "test-documentation-testrenderer": "mocha --compilers js:babel-core/register,md:unexpected-markdown --require ./bootstrap-unexpected-markdown-test-renderer --recursive documentation/assertions/ReactTestRenderer",
     "test-jest-integration": "cd jest-integration && ./run.sh",
+    "test-release": "cd jest-integration && ./run.sh --use-released",
     "lint": "eslint src",
     "generate-site-reactelement": "generate-site --require ./bootstrap-documentation-generation.js --assertions assertions/ReactElement/*.md --output site-reactelement",
     "generate-site-renderedreactelement": "generate-site --require ./bootstrap-documentation-generation.js --assertions assertions/RenderedReactElement/*.md --output site-renderedreactelement",
@@ -77,7 +78,7 @@
     "unexpected-sinon": "^10.5.0"
   },
   "dependencies": {
-    "jest-matchers": ">=16.0.0 <18.0.0",
+    "jest-matchers": ">=16.0.0 <19.0.0",
     "js-writer": "^1.0.0",
     "magicpen-prism": "^2.2.1",
     "react-render-hook": "^0.1.3",

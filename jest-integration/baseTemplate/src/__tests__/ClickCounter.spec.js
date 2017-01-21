@@ -2,7 +2,6 @@ import React from 'react';
 import ClickCounter from '../ClickCounter';
 import TestRenderer from 'react-test-renderer';
 import Unexpected from 'unexpected';
-import jestSnapshot from 'jest-snapshot';
 
 import UnexpectedReact from '../../unexpected-react-test-renderer';
 

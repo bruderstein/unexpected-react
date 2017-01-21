@@ -1,6 +1,8 @@
 #!/bin/bash
 pushd . > /dev/null
 
+USE_RELEASED_UNEXPECTED_REACT=no
+
 cd "$(dirname "$0")"
 
 cd baseTemplate
@@ -13,6 +15,11 @@ prepareBuild() {
 	rm -rf build
 	mkdir build
 	cp -r baseTemplate/* build
+	if [ $USE_RELEASED_UNEXPECTED_REACT == "yes" ]; then
+	    cd build
+	    ../useReleasedUnexpectedReact/prepare.sh ../useReleasedUnexpectedReact
+	    cd ..;
+	fi
 }
 
 rm -rf output
@@ -92,9 +99,23 @@ runTest() {
 	fi;
 }
 
-if [ $# -eq 1 ]; then
-    runTest $1
-else
+TEST_ALL=true
+while [[ $# -ge 1 ]]; do
+key="$1"
+
+case $key in
+    --use-released)
+    USE_RELEASED_UNEXPECTED_REACT=yes
+    ;;
+    *)
+    TEST_ALL=false
+    runTest $key
+    ;;
+esac
+shift # past argument or value
+done
+
+if [ "$TEST_ALL" == "true" ]; then
     for TESTNAME in $(ls tests | sort -V); do
         runTest $TESTNAME
     done;
