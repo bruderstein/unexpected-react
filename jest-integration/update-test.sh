@@ -11,7 +11,6 @@ if [ -d $1 ]; then
   TESTNAME=$(basename $TESTDIR)
 
   cp "output/$TESTNAME/$STEPNAME/stderr_clean" "tests/$TESTNAME/$STEPNAME/expected_stderr"
-  cp "output/$TESTNAME/$STEPNAME/stdout_clean" "tests/$TESTNAME/$STEPNAME/expected_stdout"
 
   echo Updated $TESTNAME $STEPNAME;
 else
