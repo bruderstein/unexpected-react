@@ -467,7 +467,6 @@ describe('snapshots', function () {
       });
       // Rerender, with a different unbound function
       renderer = ReactTestRenderer.create(<ClickCounter onMouseDown={functionFixtures.namedContentArgs()} />);
-      console.log('Function toString', functionFixtures.namedContentArgs.toString())
       expect(
         () => expect(renderer, 'to match snapshot'),
         'to throw',
