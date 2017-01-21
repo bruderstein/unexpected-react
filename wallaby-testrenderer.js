@@ -39,10 +39,7 @@ module.exports = function (wallaby) {
         tests: ['src/tests/testRenderer/**/*.spec.js'],
         env: {
             type: 'node',
-            runner: 'node',
-            workers: {
-                recycle: false
-            }
+            runner: 'node'
         },
       debug:true,
 
