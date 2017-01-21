@@ -1,7 +1,16 @@
 node_modules/
+npm-debug.log
 lib/
 .idea/
 site-build/
 site-reactelement/
 site-renderedreactelement/
 site-testrenderer/
+
+# We don't want to commit the yarn.lock in this case.
+# We use yarn for the integration tests to make them quicker, but we actually want
+# to always update to the latest jest (version is "*" in package.json)
+jest-integration/baseTemplate/yarn.lock
+
+jest-integration/build/
+jest-integration/output/

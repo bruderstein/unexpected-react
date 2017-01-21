@@ -1,0 +1,3 @@
+exports['multi test one 1'] = { type: 'button', props: { onClick: { $functype: '$FUNC$bc*(!CDKRRz195123$', name: 'bound onClick', args: '' } }, children: [ 'Clicked ', 0, ' times' ] };
+exports['multi test two 1'] = { type: 'button', props: { onClick: { $functype: '$FUNC$bc*(!CDKRRz195123$', name: 'bound onClick', args: '' } }, children: [ 'Clicked ', 1, ' times' ] };
+exports['multi test two 2'] = { type: 'button', props: { onClick: { $functype: '$FUNC$bc*(!CDKRRz195123$', name: 'bound onClick', args: '' } }, children: [ 'Clicked ', 2, ' times' ] };

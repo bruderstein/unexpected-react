@@ -1,5 +1,5 @@
-import types from './types';
-import * as testRendererAssertions from './testRendererAssertions';
+import types from './types/types';
+import * as testRendererAssertions from './assertions/testRendererAssertions';
 
 module.exports = {
   name: 'unexpected-react-test-renderer',
@@ -10,7 +10,6 @@ module.exports = {
     
     types.installInto(expect);
     testRendererAssertions.installInto(expect);
-    
   },
   
   clearAll() {

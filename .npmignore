@@ -7,6 +7,8 @@ site-reactelement/
 site-renderedreactelement/
 site-testrenderer/
 demo/
+src/tests/
+lib/tests/
 .travis.yml
 .coveralls.yml
 .eslintrc

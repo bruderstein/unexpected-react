@@ -6,25 +6,25 @@ module.exports = function (wallaby) {
 
     return {
         files: [
+            {
+              pattern: 'src/tests/fixtures/*.js',
+              instrument: false
+            },
             'src/**/*.js',
             {
-                pattern: 'src/**/tests/*.spec.js',
+              pattern: 'src/tests/fixtures/*.snapshot',
+              instrument: false
+            },
+            {
+                pattern: 'src/tests/**/*.spec.js',
                 ignore: true
             },
             {
-                pattern: 'src/error-tests/*.spec.js',
-                ignore: true
-            },
-            {
-                pattern: 'src/testrenderer-tests/*.spec.js',
-                ignore: true
-            },
-            {
-                pattern: 'src/react-devtools/**/*.js',
+                pattern: 'src/tests/helpers/**/*.js',
                 instrument: false
             },
             {
-                pattern: 'src/testHelpers/**/*.js',
+                pattern: 'src/react-devtools/**/*.js',
                 instrument: false
             },
             {
@@ -36,7 +36,7 @@ module.exports = function (wallaby) {
                 ignore: true
             }],
 
-        tests: ['src/**/tests/*.spec.js'],
+        tests: ['src/tests/general/**/*.spec.js', 'src/tests/regressions/**/*.spec.js'],
         env: {
             type: 'node',
             runner: 'node'

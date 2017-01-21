@@ -1,0 +1,12 @@
+yarn run v0.16.1
+$ jest -u 
+
+ RUNS  ...ClickCounter.spec.js
+[K[1A[K[1A
+ RUNS  ...ClickCounter.spec.js
+[K[1A[K[1A
+ RUNS  ...ClickCounter.spec.js
+[K[1A[K[1A
+ RUNS  ...ClickCounter.spec.js
+[K[1A[K[1A
+ RUNS  ...ClickCounter.spec.js

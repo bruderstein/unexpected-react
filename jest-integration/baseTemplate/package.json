@@ -1,0 +1,16 @@
+{
+  "name": "unexpected-react-jest-integration-tests",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  },
+  "devDependencies": {
+    "jest": "*"
+  },
+  "scripts": {
+    "test": "jest",
+    "test-update": "jest -u"
+  }
+}

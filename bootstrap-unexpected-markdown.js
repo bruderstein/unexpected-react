@@ -1,6 +1,6 @@
 /*global unexpected:true, TestUtils:true, React:true, sinon:true*/
 
-require( './src/testHelpers/emulateDom');
+require( './src/tests/helpers/emulateDom');
 
 global.unexpected = require('unexpected');
 unexpected.output.preferredWidth = 80;

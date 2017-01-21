@@ -1,8 +1,8 @@
 import RenderHook from 'react-render-hook';
 
-import types from './types';
-import * as deepAssertions from './deepAssertions';
-import * as shallowAssertions from './shallowAssertions';
+import types from './types/types';
+import * as deepAssertions from './assertions/deepAssertions';
+import * as shallowAssertions from './assertions/shallowAssertions';
 
 
 module.exports = {
