@@ -56,7 +56,7 @@ runTest() {
                     # we strip these out to allow a clean test
                     # we do this whether there's expected stdout or not, so it's easy
                     # to update the expected stdout
-                    cat output/$TESTNAME/$STEP/stdout | grep -v 'Done in [0-9.]' | grep -v 'yarn test v' > output/$TESTNAME/$STEP/stdout_clean;
+                    cat output/$TESTNAME/$STEP/stdout | grep -v 'Done in [0-9.]' | grep -v -E 'yarn (run|test) v' > output/$TESTNAME/$STEP/stdout_clean;
                 fi
                 if [ -f output/${TESTNAME}/${STEP}/stdout_clean ] && [ -f tests/$TESTNAME/$STEP/expected_stdout ]; then
                     diff tests/$TESTNAME/$STEP/expected_stdout output/$TESTNAME/$STEP/stdout_clean > output/$TESTNAME/$STEP/stdout_diff
