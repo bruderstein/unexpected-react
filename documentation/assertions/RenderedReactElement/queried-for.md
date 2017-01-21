@@ -15,7 +15,7 @@ expect(
   component,
   'queried for',
   <div className="item">
-     <span className="id">3</span>
+     <span className="id">{3}</span>
   </div>,
   'to have rendered', 
   <div>
