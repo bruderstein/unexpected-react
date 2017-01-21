@@ -5473,6 +5473,12 @@ unexpected-htmllike-jsx-adapter@^1.0.1:
   dependencies:
     object-assign "^4.0.1"
 
+unexpected-htmllike-raw-adapter:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/unexpected-htmllike-raw-adapter/-/unexpected-htmllike-raw-adapter-1.0.0.tgz#7f6d182d1b6d39f67ffddbd0e69ec40b6b26ea98"
+  dependencies:
+    object-assign "^4.0.1"
+
 unexpected-htmllike-reactrendered-adapter@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/unexpected-htmllike-reactrendered-adapter/-/unexpected-htmllike-reactrendered-adapter-2.0.1.tgz#c9b3e597d9cbbdfeab171035836c6a7f2d8a48e5"
