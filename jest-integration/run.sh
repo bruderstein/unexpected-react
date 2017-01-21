@@ -131,3 +131,4 @@ fi
 
 popd > /dev/null
 
+exit $FAILED_STEPS
