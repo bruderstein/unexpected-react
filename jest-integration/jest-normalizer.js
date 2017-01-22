@@ -1,3 +1,4 @@
+var stackTraceRegex = /^\s+at [^\s]+\s\([^:]+:[0-9]+:[0-9]+\)/m;
 module.exports = function (jestJson, commonPath) {
 
     delete jestJson.startTime;
@@ -21,6 +22,12 @@ module.exports = function (jestJson, commonPath) {
         if (result.name.substr(0, commonPath.length) === commonPath) {
             result.name = result.name.substr(commonPath.length)
         }
+        // Remove the stacktrace - often includes node internals which vary per version
+        var match = stackTraceRegex.exec(result.message);
+        if (match) {
+            result.message = result.message.substr(0, match.index);
+        }
+
     });
 
     jestJson.testResults = jestJson.testResults.sort(function (a, b) {
