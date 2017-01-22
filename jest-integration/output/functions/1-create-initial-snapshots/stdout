@@ -1,0 +1,14 @@
+yarn test v0.19.1
+$ jest --json --outputFile testRunOutput.json 
+
+ RUNS  ...ClickCounter.spec.js
+[K[1A[K[1A
+ RUNS  ...ClickCounter.spec.js
+[K[1A[K[1A
+ RUNS  ...ClickCounter.spec.js
+[K[1A[K[1A
+ RUNS  ...ClickCounter.spec.js
+[K[1A[K[1A
+ RUNS  ...ClickCounter.spec.js
+[K[1A[K[1ATest results written to: testRunOutput.json
+Done in 2.43s.

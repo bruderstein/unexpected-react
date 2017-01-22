@@ -1,0 +1,64 @@
+{
+  "numFailedTestSuites": 2,
+  "numFailedTests": 2,
+  "numPassedTestSuites": 0,
+  "numPassedTests": 3,
+  "numPendingTestSuites": 0,
+  "numPendingTests": 0,
+  "numRuntimeErrorTestSuites": 0,
+  "numTotalTestSuites": 2,
+  "numTotalTests": 5,
+  "snapshot": {
+    "added": 0,
+    "failure": true,
+    "filesAdded": 0,
+    "filesRemoved": 0,
+    "filesUnmatched": 2,
+    "filesUpdated": 0,
+    "matched": 4,
+    "total": 6,
+    "unchecked": 0,
+    "unmatched": 2,
+    "updated": 0
+  },
+  "success": false,
+  "testResults": [
+    {
+      "message": "  ● ClickCounter › counts a single click\n\n    UnexpectedError: \n    expected\n    <button className=\"foo bar\" onClick={function bound onClick() { /* native code */ }}>\n      Clicked 3 times\n    </button>\n    with event 'click' with event click 'with event click', 'to match snapshot'\n    \n    <button className=\"foo bar\" onClick={function bound onClick() { /* native code */ }}>\n      Clicked 3 times // -Clicked 3 times\n                      // +Clicked 2 times\n    </button>\n",
+      "name": "/src/__tests__/ClickCounter-other.spec.js",
+      "summary": "",
+      "status": "failed",
+      "assertionResults": [
+        {
+          "status": "failed",
+          "title": "counts a single click"
+        }
+      ]
+    },
+    {
+      "message": "  ● ClickCounter › counts multiple clicks\n\n    UnexpectedError: \n    expected\n    <button className=\"foo bar\" onClick={function bound onClick() { /* native code */ }}>\n      Clicked 4 times\n    </button>\n    with event 'click' with event click 'with event click', 'with event click', 'to match snapshot'\n    \n    <button className=\"foo bar\" onClick={function bound onClick() { /* native code */ }}>\n      Clicked 4 times // -Clicked 4 times\n                      // +Clicked 3 times\n    </button>\n",
+      "name": "/src/__tests__/ClickCounter.spec.js",
+      "summary": "",
+      "status": "failed",
+      "assertionResults": [
+        {
+          "status": "passed",
+          "title": "counts a single click"
+        },
+        {
+          "status": "failed",
+          "title": "counts multiple clicks"
+        },
+        {
+          "status": "passed",
+          "title": "passes multiple snapshots in a single test"
+        },
+        {
+          "status": "passed",
+          "title": "renders with default props"
+        }
+      ]
+    }
+  ],
+  "wasInterrupted": false
+}

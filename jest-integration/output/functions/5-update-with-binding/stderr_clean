@@ -1,0 +1,11 @@
+ PASS  src/__tests__/ClickCounter.spec.js
+  ClickCounter
+    ✓ renders with default props 
+
+Snapshot Summary
+ › 1 snapshot updated in 1 test suite.
+
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   1 updated, 1 total
+Ran all test suites.
