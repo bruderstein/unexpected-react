@@ -148,3 +148,7 @@ based on the `with all children`, `with all wrappers`, and `exactly` flags
 
 * Fix issue with asserting against objects that do not have `Object` as their prototype (thanks to Martin Eigenmann @eigenmannmartin for reporting and fixing!)
 
+## v3.4.0
+
+* Jest snapshot support (`'to match snapshot'` and `'to satisfy snapshot'` assertions)
+* Major refactor so assertions for all renderers (shallow, full DOM, test and raw for snapshots) use the same code
