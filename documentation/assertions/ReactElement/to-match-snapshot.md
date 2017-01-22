@@ -1,5 +1,7 @@
 Under [jest](https://facebook.github.io/jest/), you can use snapshots. Snapshot tests save a snapshot of the component as it is currently rendered to a `.snapshot` file under a directory `__snapshots__`. Note that the snapshots for `unexpected-react` are saved to a different filename than those jest uses natively. This is because the format differs slightly.
 
+Remember that to include snapshot support for the shallow and DOM renderers, you need to require unexpected-react as `require('unexpected-react/jest')`
+
 Given the following test component:
 
 ```js
