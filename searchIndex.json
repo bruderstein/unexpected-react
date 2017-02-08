@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "label": "queried for (ReactElement)",
+    "url": "/assertions/ReactElement/queried-for/"
+  },
+  {
+    "label": "to contain (ReactElement)",
+    "url": "/assertions/ReactElement/to-contain/"
+  },
+  {
+    "label": "to have rendered (ReactElement)",
+    "url": "/assertions/ReactElement/to-have-rendered/"
+  },
+  {
+    "label": "to match snapshot (ReactElement)",
+    "url": "/assertions/ReactElement/to-match-snapshot/"
+  },
+  {
+    "label": "to satisfy snapshot (ReactElement)",
+    "url": "/assertions/ReactElement/to-satisfy-snapshot/"
+  },
+  {
+    "label": "with event (ReactElement)",
+    "url": "/assertions/ReactElement/with-event/"
+  },
+  {
+    "label": "queried for (RenderedReactElement)",
+    "url": "/assertions/RenderedReactElement/queried-for/"
+  },
+  {
+    "label": "to contain (RenderedReactElement)",
+    "url": "/assertions/RenderedReactElement/to-contain/"
+  },
+  {
+    "label": "to have rendered (RenderedReactElement)",
+    "url": "/assertions/RenderedReactElement/to-have-rendered/"
+  },
+  {
+    "label": "to match snapshot (RenderedReactElement)",
+    "url": "/assertions/RenderedReactElement/to-match-snapshot/"
+  },
+  {
+    "label": "to satisfy snapshot (RenderedReactElement)",
+    "url": "/assertions/RenderedReactElement/to-satisfy-snapshot/"
+  },
+  {
+    "label": "with event (RenderedReactElement)",
+    "url": "/assertions/RenderedReactElement/with-event/"
+  },
+  {
+    "label": "queried for (ReactTestRenderer)",
+    "url": "/assertions/ReactTestRenderer/queried-for/"
+  },
+  {
+    "label": "to contain (ReactTestRenderer)",
+    "url": "/assertions/ReactTestRenderer/to-contain/"
+  },
+  {
+    "label": "to have rendered (ReactTestRenderer)",
+    "url": "/assertions/ReactTestRenderer/to-have-rendered/"
+  },
+  {
+    "label": "to match snapshot (ReactTestRenderer)",
+    "url": "/assertions/ReactTestRenderer/to-match-snapshot/"
+  },
+  {
+    "label": "to satisfy snapshot (ReactTestRenderer)",
+    "url": "/assertions/ReactTestRenderer/to-satisfy-snapshot/"
+  },
+  {
+    "label": "with event (ReactTestRenderer)",
+    "url": "/assertions/ReactTestRenderer/with-event/"
+  }
+]

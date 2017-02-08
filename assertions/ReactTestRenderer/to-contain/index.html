@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
-    <link rel="stylesheet" href="../../../static/normalize.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="../../../static/main.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../../static/normalize.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="../../../static/main.css" type="text/css" media="screen">
     <link rel="shortcut icon" type="image/vnd.microsoft.icon" href="../../../static/bug-icon-black.ico">
     <title>ReactTestRenderer - to contain</title>
 </head>
@@ -21,7 +21,7 @@
                 <li class=""><a href="../../..">unexpected-react</a></li>
                 
                 
-                <li class="active"><a href="../../ReactElement/queried-for">Assertions</a></li>
+                <li class="active"><a href="../queried-for">Assertions</a></li>
                 
                 
                 
@@ -67,6 +67,8 @@
             
         </ul>
     
+
+    
         <h3 class=""><a href="../../RenderedReactElement">RenderedReactElement</a></h3>
         <ul>
             
@@ -96,11 +98,13 @@
             
         </ul>
     
-        <h3 class=""><a href="..">ReactTestRenderer</a></h3>
+
+    
+        <h3 class="active"><a href="">ReactTestRenderer</a></h3>
         <ul>
             
             <li class="">
-                <a href="../queried-for">queried for</a>
+                <a href="../../ReactTestRenderer/queried-for">queried for</a>
             </li>
             
             <li class="active">
@@ -108,19 +112,19 @@
             </li>
             
             <li class="">
-                <a href="../to-have-rendered">to have rendered</a>
+                <a href="../../ReactTestRenderer/to-have-rendered">to have rendered</a>
             </li>
             
             <li class="">
-                <a href="../to-match-snapshot">to match snapshot</a>
+                <a href="../../ReactTestRenderer/to-match-snapshot">to match snapshot</a>
             </li>
             
             <li class="">
-                <a href="../to-satisfy-snapshot">to satisfy snapshot</a>
+                <a href="../../ReactTestRenderer/to-satisfy-snapshot">to satisfy snapshot</a>
             </li>
             
             <li class="">
-                <a href="../with-event">with event</a>
+                <a href="../../ReactTestRenderer/with-event">with event</a>
             </li>
             
         </ul>
@@ -139,14 +143,14 @@
                 
                 </ul>
             
-            <p>It&#39;s possible to check for a part of the subtree, without
+            <p>It&apos;s possible to check for a part of the subtree, without
 testing the entire returned tree.  This allows you to test specific elements, without
 writing brittle tests that break when the structure changes.</p>
 <p>Assuming the following component output</p>
-<div class="code lang-javascript"><div>const&nbsp;MyComponent&nbsp;<span style="color: #a71d5d">=</span>&nbsp;<span style="color: #000000">()</span>&nbsp;<span style="color: #a71d5d">=&gt;</span>&nbsp;<span style="color: #000000">(</span></div><div>&nbsp;&nbsp;<span style="color: #a71d5d">&lt;</span>div<span style="color: #a71d5d">&gt;</span></div><div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #a71d5d">&lt;</span>span&nbsp;className<span style="color: #a71d5d">=</span><span style="color: #df5000">&quot;top&quot;</span><span style="color: #a71d5d">&gt;</span>one<span style="color: #a71d5d">&lt;/</span>span<span style="color: #a71d5d">&gt;</span></div><div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #a71d5d">&lt;</span>span&nbsp;className<span style="color: #a71d5d">=</span><span style="color: #df5000">&quot;middle&quot;</span><span style="color: #a71d5d">&gt;</span>two<span style="color: #a71d5d">&lt;/</span>span<span style="color: #a71d5d">&gt;</span></div><div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #a71d5d">&lt;</span>span&nbsp;className<span style="color: #a71d5d">=</span><span style="color: #df5000">&quot;bottom&quot;</span><span style="color: #a71d5d">&gt;</span>three<span style="color: #a71d5d">&lt;/</span>span<span style="color: #a71d5d">&gt;</span></div><div>&nbsp;&nbsp;<span style="color: #a71d5d">&lt;/</span>div<span style="color: #a71d5d">&gt;</span></div><div><span style="color: #000000">)</span></div><div>&nbsp;</div><div><span style="color: #a71d5d">var</span>&nbsp;renderer&nbsp;<span style="color: #a71d5d">=</span>&nbsp;TestRenderer<span style="color: #000000">.</span><span style="color: #000000">create</span><span style="color: #000000">(</span><span style="color: #a71d5d">&lt;</span>MyComponent<span style="color: #a71d5d">/&gt;</span><span style="color: #000000">);</span></div></div><div class="code lang-javascript"><div><span style="color: #969896">//&nbsp;This&nbsp;will&nbsp;pass,&nbsp;as&nbsp;`&lt;span&nbsp;className=&quot;middle&quot;&gt;two&lt;/span&gt;`&nbsp;can&nbsp;be&nbsp;found&nbsp;in&nbsp;the&nbsp;renderers&nbsp;output</span></div><div><span style="color: #000000">expect</span><span style="color: #000000">(</span>renderer<span style="color: #000000">,</span>&nbsp;<span style="color: #df5000">'to&nbsp;contain'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #a71d5d">&lt;</span>span<span style="color: #a71d5d">&gt;</span>two<span style="color: #a71d5d">&lt;/</span>span<span style="color: #a71d5d">&gt;</span><span style="color: #000000">);</span></div></div><p>Notice that the extra <code>className=&quot;middle&quot;</code> in the <code>&lt;span className=&quot;middle&quot;&gt;two&lt;/span&gt;</code> is ignored,
+<div class="code lang-javascript"><div>const&#xA0;MyComponent&#xA0;<span style="color: #a71d5d">=</span>&#xA0;<span style="color: #000000">()</span>&#xA0;<span style="color: #a71d5d">=&gt;</span>&#xA0;<span style="color: #000000">(</span></div><div>&#xA0;&#xA0;<span style="color: #a71d5d">&lt;</span>div<span style="color: #a71d5d">&gt;</span></div><div>&#xA0;&#xA0;&#xA0;&#xA0;<span style="color: #a71d5d">&lt;</span>span&#xA0;className<span style="color: #a71d5d">=</span><span style="color: #df5000">&quot;top&quot;</span><span style="color: #a71d5d">&gt;</span>one<span style="color: #a71d5d">&lt;/</span>span<span style="color: #a71d5d">&gt;</span></div><div>&#xA0;&#xA0;&#xA0;&#xA0;<span style="color: #a71d5d">&lt;</span>span&#xA0;className<span style="color: #a71d5d">=</span><span style="color: #df5000">&quot;middle&quot;</span><span style="color: #a71d5d">&gt;</span>two<span style="color: #a71d5d">&lt;/</span>span<span style="color: #a71d5d">&gt;</span></div><div>&#xA0;&#xA0;&#xA0;&#xA0;<span style="color: #a71d5d">&lt;</span>span&#xA0;className<span style="color: #a71d5d">=</span><span style="color: #df5000">&quot;bottom&quot;</span><span style="color: #a71d5d">&gt;</span>three<span style="color: #a71d5d">&lt;/</span>span<span style="color: #a71d5d">&gt;</span></div><div>&#xA0;&#xA0;<span style="color: #a71d5d">&lt;/</span>div<span style="color: #a71d5d">&gt;</span></div><div><span style="color: #000000">)</span></div><div>&#xA0;</div><div><span style="color: #a71d5d">var</span>&#xA0;renderer&#xA0;<span style="color: #a71d5d">=</span>&#xA0;TestRenderer<span style="color: #000000">.</span><span style="color: #000000">create</span><span style="color: #000000">(</span><span style="color: #a71d5d">&lt;</span>MyComponent<span style="color: #a71d5d">/&gt;</span><span style="color: #000000">);</span></div></div><div class="code lang-javascript"><div><span style="color: #969896">//&#xA0;This&#xA0;will&#xA0;pass,&#xA0;as&#xA0;`&lt;span&#xA0;className=&quot;middle&quot;&gt;two&lt;/span&gt;`&#xA0;can&#xA0;be&#xA0;found&#xA0;in&#xA0;the&#xA0;renderers&#xA0;output</span></div><div><span style="color: #000000">expect</span><span style="color: #000000">(</span>renderer<span style="color: #000000">,</span>&#xA0;<span style="color: #df5000">&apos;to&#xA0;contain&apos;</span><span style="color: #000000">,</span>&#xA0;<span style="color: #a71d5d">&lt;</span>span<span style="color: #a71d5d">&gt;</span>two<span style="color: #a71d5d">&lt;/</span>span<span style="color: #a71d5d">&gt;</span><span style="color: #000000">);</span></div></div><p>Notice that the extra <code>className=&quot;middle&quot;</code> in the <code>&lt;span className=&quot;middle&quot;&gt;two&lt;/span&gt;</code> is ignored,
 in a similar way to the <code>to have rendered</code> assertion.</p>
-<p>You can override this behaviour by using <code>&#39;to contain exactly&#39;</code>, and <code>&#39;to contain with all children&#39;</code></p>
-<div class="code lang-javascript"><div><span style="color: #969896">//&nbsp;This&nbsp;will&nbsp;fail,&nbsp;as&nbsp;`&lt;span&gt;two&lt;/span&gt;`&nbsp;cannot&nbsp;be&nbsp;found&nbsp;in&nbsp;the&nbsp;renderers&nbsp;output,&nbsp;due&nbsp;to</span></div><div><span style="color: #969896">//&nbsp;the&nbsp;missing&nbsp;`className=&quot;middle&quot;`&nbsp;prop</span></div><div><span style="color: #000000">expect</span><span style="color: #000000">(</span>renderer<span style="color: #000000">,</span>&nbsp;<span style="color: #df5000">'to&nbsp;contain&nbsp;exactly'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #a71d5d">&lt;</span>span<span style="color: #a71d5d">&gt;</span>two<span style="color: #a71d5d">&lt;/</span>span<span style="color: #a71d5d">&gt;</span><span style="color: #000000">);</span></div></div><div class="output"><div><span style="color: red; font-weight: bold">expected</span></div><div><span style="color: #000000">&lt;</span><span style="color: #63a35c">div</span><span style="color: #000000">&gt;</span></div><div>&nbsp;&nbsp;<div style="display: inline-block; vertical-align: top"><div><span style="color: #000000">&lt;</span><span style="color: #63a35c">span</span>&nbsp;<span style="color: #df5000">className</span><span style="color: #000000">=&quot;</span><span style="color: #df5000">top</span><span style="color: #000000">&quot;&gt;</span><div style="display: inline-block; vertical-align: top"><div>one</div></div><span style="color: #000000">&lt;/</span><span style="color: #63a35c">span</span><span style="color: #000000">&gt;</span></div><div><span style="color: #000000">&lt;</span><span style="color: #63a35c">span</span>&nbsp;<span style="color: #df5000">className</span><span style="color: #000000">=&quot;</span><span style="color: #df5000">middle</span><span style="color: #000000">&quot;&gt;</span><div style="display: inline-block; vertical-align: top"><div>two</div></div><span style="color: #000000">&lt;/</span><span style="color: #63a35c">span</span><span style="color: #000000">&gt;</span></div><div><span style="color: #000000">&lt;</span><span style="color: #63a35c">span</span>&nbsp;<span style="color: #df5000">className</span><span style="color: #000000">=&quot;</span><span style="color: #df5000">bottom</span><span style="color: #000000">&quot;&gt;</span><div style="display: inline-block; vertical-align: top"><div>three</div></div><span style="color: #000000">&lt;/</span><span style="color: #63a35c">span</span><span style="color: #000000">&gt;</span></div></div></div><div><span style="color: #000000">&lt;/</span><span style="color: #63a35c">div</span><span style="color: #000000">&gt;</span></div><div><span style="color: red; font-weight: bold">to&nbsp;contain&nbsp;exactly</span>&nbsp;<span style="color: #000000">&lt;</span><span style="color: #63a35c">span</span><span style="color: #000000">&gt;</span><div style="display: inline-block; vertical-align: top"><div>two</div></div><span style="color: #000000">&lt;/</span><span style="color: #63a35c">span</span><span style="color: #000000">&gt;</span></div><div>&nbsp;</div><div><span style="color: red; font-weight: bold">the&nbsp;best&nbsp;match&nbsp;was</span></div><div><span style="color: #000000">&lt;</span><span style="color: #63a35c">span</span>&nbsp;<span style="color: #df5000">className</span><span style="color: #000000">=&quot;</span><span style="color: #df5000">middle</span><span style="color: #000000">&quot;</span>&nbsp;<div style="display: inline-block; vertical-align: top"><div><span style="color: red; font-weight: bold">//</span></div></div>&nbsp;<div style="display: inline-block; vertical-align: top"><div><span style="color: #df5000">className</span>&nbsp;<span style="color: red; font-weight: bold">should&nbsp;be&nbsp;removed</span></div></div></div><div><span style="color: #000000">&gt;</span></div><div>&nbsp;&nbsp;<div style="display: inline-block; vertical-align: top"><div>two</div></div></div><div><span style="color: #000000">&lt;/</span><span style="color: #63a35c">span</span><span style="color: #000000">&gt;</span></div></div><p>The same thing applies to children for <code>&#39;to contain&#39;</code> as for <code>&#39;to have rendered&#39;</code>.</p>
+<p>You can override this behaviour by using <code>&apos;to contain exactly&apos;</code>, and <code>&apos;to contain with all children&apos;</code></p>
+<div class="code lang-javascript"><div><span style="color: #969896">//&#xA0;This&#xA0;will&#xA0;fail,&#xA0;as&#xA0;`&lt;span&gt;two&lt;/span&gt;`&#xA0;cannot&#xA0;be&#xA0;found&#xA0;in&#xA0;the&#xA0;renderers&#xA0;output,&#xA0;due&#xA0;to</span></div><div><span style="color: #969896">//&#xA0;the&#xA0;missing&#xA0;`className=&quot;middle&quot;`&#xA0;prop</span></div><div><span style="color: #000000">expect</span><span style="color: #000000">(</span>renderer<span style="color: #000000">,</span>&#xA0;<span style="color: #df5000">&apos;to&#xA0;contain&#xA0;exactly&apos;</span><span style="color: #000000">,</span>&#xA0;<span style="color: #a71d5d">&lt;</span>span<span style="color: #a71d5d">&gt;</span>two<span style="color: #a71d5d">&lt;/</span>span<span style="color: #a71d5d">&gt;</span><span style="color: #000000">);</span></div></div><div class="output"><div><span style="color: red; font-weight: bold">expected</span></div><div><span style="color: #000000">&lt;</span><span style="color: #63a35c">div</span><span style="color: #000000">&gt;</span></div><div>&#xA0;&#xA0;<div style="display: inline-block; vertical-align: top"><div><span style="color: #000000">&lt;</span><span style="color: #63a35c">span</span>&#xA0;<span style="color: #df5000">className</span><span style="color: #000000">=&quot;</span><span style="color: #df5000">top</span><span style="color: #000000">&quot;&gt;</span><div style="display: inline-block; vertical-align: top"><div>one</div></div><span style="color: #000000">&lt;/</span><span style="color: #63a35c">span</span><span style="color: #000000">&gt;</span></div><div><span style="color: #000000">&lt;</span><span style="color: #63a35c">span</span>&#xA0;<span style="color: #df5000">className</span><span style="color: #000000">=&quot;</span><span style="color: #df5000">middle</span><span style="color: #000000">&quot;&gt;</span><div style="display: inline-block; vertical-align: top"><div>two</div></div><span style="color: #000000">&lt;/</span><span style="color: #63a35c">span</span><span style="color: #000000">&gt;</span></div><div><span style="color: #000000">&lt;</span><span style="color: #63a35c">span</span>&#xA0;<span style="color: #df5000">className</span><span style="color: #000000">=&quot;</span><span style="color: #df5000">bottom</span><span style="color: #000000">&quot;&gt;</span><div style="display: inline-block; vertical-align: top"><div>three</div></div><span style="color: #000000">&lt;/</span><span style="color: #63a35c">span</span><span style="color: #000000">&gt;</span></div></div></div><div><span style="color: #000000">&lt;/</span><span style="color: #63a35c">div</span><span style="color: #000000">&gt;</span></div><div><span style="color: red; font-weight: bold">to&#xA0;contain&#xA0;exactly</span>&#xA0;<span style="color: #000000">&lt;</span><span style="color: #63a35c">span</span><span style="color: #000000">&gt;</span><div style="display: inline-block; vertical-align: top"><div>two</div></div><span style="color: #000000">&lt;/</span><span style="color: #63a35c">span</span><span style="color: #000000">&gt;</span></div><div>&#xA0;</div><div><span style="color: red; font-weight: bold">the&#xA0;best&#xA0;match&#xA0;was</span></div><div><span style="color: #000000">&lt;</span><span style="color: #63a35c">span</span>&#xA0;<span style="color: #df5000">className</span><span style="color: #000000">=&quot;</span><span style="color: #df5000">middle</span><span style="color: #000000">&quot;</span>&#xA0;<div style="display: inline-block; vertical-align: top"><div><span style="color: red; font-weight: bold">//</span></div></div>&#xA0;<div style="display: inline-block; vertical-align: top"><div><span style="color: #df5000">className</span>&#xA0;<span style="color: red; font-weight: bold">should&#xA0;be&#xA0;removed</span></div></div></div><div><span style="color: #000000">&gt;</span></div><div>&#xA0;&#xA0;<div style="display: inline-block; vertical-align: top"><div>two</div></div></div><div><span style="color: #000000">&lt;/</span><span style="color: #63a35c">span</span><span style="color: #000000">&gt;</span></div></div><p>The same thing applies to children for <code>&apos;to contain&apos;</code> as for <code>&apos;to have rendered&apos;</code>.</p>
 
         </div>
     </div>
