@@ -75,6 +75,34 @@ function installInto(expect) {
   expect.addAssertion('<ReactModule> to have been injected', function (expect) {
     checkAttached(expect);
   });
+
+  class StatelessWrapper extends React.Component {
+      render() {
+          return this.props.children;
+      }
+  }
+
+  expect.addAssertion('<ReactElement> when deeply rendered <assertion?>', function (expect, subject) {
+      let component;
+      if (subject.prototype && typeof subject.prototype.render === 'function') {
+          component = TestUtils.renderIntoDocument(subject);
+      } else {
+          // Stateless component
+          component = TestUtils.renderIntoDocument(<StatelessWrapper>{subject}</StatelessWrapper>);
+          component = RenderHook.findComponent(component);
+          if (component) {
+              component = component && component.data.children[0] && component.data.children[0]._instance;
+          } else {
+              expect.errorMode = 'nested';
+              expect.fail({
+                  message(output) {
+                      return output.error('Cannot find rendered stateless component. Are you sure you passed a real component to `when deeply rendered`');
+                  }
+              });
+          }
+      }
+      return expect.shift(component);
+  });
 }
 
 export { installInto, triggerEvent };

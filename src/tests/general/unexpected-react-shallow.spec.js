@@ -2336,8 +2336,45 @@ describe('unexpected-react-shallow', () => {
                         </div>);
                 });
         });
-        
 
+
+
+    });
+
+    describe('when rendered', function () {
+
+        it('renders a class component with the shallow renderer', function () {
+            expect(<ClassComponent />,
+                'when rendered',
+                'to have rendered', <div className="class-component"></div>
+            );
+        });
+
+        it('passes the renderer on as the fulfillment of the promise', function () {
+            return expect(<ClassComponent />, 'when rendered')
+                .then(renderer => {
+                    expect(renderer, 'to be a', 'ReactShallowRenderer');
+                    // Just an extra check, just in case the thing only looks like a renderer :)
+                    expect(renderer.getRenderOutput(), 'to equal', <div className="class-component"></div>);
+                });
+        });
+
+        it('renders a stateless component', function () {
+            expect(<FunctionComp className="test"/>, 'when rendered', 'to have rendered', <div className="test" />) ;
+        });
+
+        it('passed the error on when the following assertion fails', function () {
+            expect(() => expect(<FunctionComp className="test"/>,
+                'when rendered',
+                'to have rendered', <div className="testx" />
+            ), 'to throw', [
+                'expected <FunctionComp className="test" />',
+                'when rendered to have rendered <div className="testx" />',
+	            '',
+	            '<div className="test" // missing class \'testx\'',
+                '/>'
+            ].join('\n'));
+        });
     });
 
 });

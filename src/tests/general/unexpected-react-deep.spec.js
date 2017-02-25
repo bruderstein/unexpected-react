@@ -932,4 +932,47 @@ describe('unexpected-react (deep rendering)', () => {
             });
         });
     });
+
+    describe('when deeply rendered', function () {
+
+        const Stateless = function (props) {
+            return <div className="stateless-ftw">Yay</div>;
+        };
+
+        it('renders a class component', function () {
+
+            expect(<CustomComp className="foo"/>,
+                'when deeply rendered',
+                'to have rendered', <div className="foo"></div>
+            );
+        });
+
+        it('renders a stateless component', function () {
+
+            expect(<Stateless />, 'when deeply rendered', 'to have exactly rendered', <Stateless><div className="stateless-ftw">Yay</div></Stateless>);
+        });
+
+        it('errors when a stateless component render does not match', function () {
+
+            expect(() => expect(<Stateless />, 'when deeply rendered', 'to have exactly rendered',
+                <Stateless>
+                    <div className="stateless-broken">Yay</div>
+                </Stateless>), 'to throw',
+            [
+                'expected <Stateless />',
+                'when deeply rendered to have exactly rendered <Stateless><div className="stateless-broken">Yay</div></Stateless>',
+                '',
+                '<Stateless>',
+                '  <div',
+                '     className="stateless-ftw" // expected \'stateless-ftw\' to equal \'stateless-broken\'',
+                '                               //',
+                '                               // -stateless-ftw',
+                '                               // +stateless-broken',
+                '  >',
+                '    Yay',
+                '  </div>',
+                '</Stateless>'
+            ].join('\n'));
+        });
+    });
 });

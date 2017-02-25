@@ -53,6 +53,14 @@ function installInto(expect) {
         renderer.render(subject);
         return expect.apply(expect, [ renderer, 'with event' ].concat(Array.prototype.slice.call(arguments, 2)));
     });
+
+
+    // Add 'when rendered' to render with the shallow renderer
+    expect.addAssertion('<ReactElement> when rendered <assertion?>', function (expect, subject) {
+       const renderer = TestUtils.createRenderer();
+       renderer.render(subject);
+       return expect.shift(renderer);
+    });
     
     return assertionGenerator;
 } 
