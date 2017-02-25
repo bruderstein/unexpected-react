@@ -30,31 +30,39 @@ The full documentation with all the assertions: http://bruderstein.github.io/une
 
 ```js
 var todoList = TestUtils.renderIntoDocument(
-  <TodoList>
-    <TodoItem id={1} label="Buy flowers for the wife"/>
-    <TodoItem id={2} label="Mow the lawn"/>
-    <TodoItem id={3} label="Buy groceries"/>
-  </TodoList>
 );
 
 expect(
   todoList,
   'to have rendered', 
-  <TodoList>
-    <div className='items'>
-      <TodoItem id={1}>
-        <span className="label">Buy flowers for the wife</span>
-      </TodoItem>
-      <TodoItem id={2}>
-        <span className="label">Mow the lawn</span>
-      </TodoItem>
-      <TodoItem id={3}>
-        <span className="label">Buy groceries</span>
-      </TodoItem>
-    </div>
-  </TodoList>
+  <div className='items'>
+    <TodoItem id={1}>
+      <span className="label">Buy flowers</span>
+    </TodoItem>
+    <TodoItem id={2}>
+      <span className="label">Mow the lawn</span>
+    </TodoItem>
+    <TodoItem id={3}>
+      <span className="label">Buy groceries</span>
+    </TodoItem>
+  </div>
 );
 ```
+
+* Direct rendering for shallow and deep rendering:
+```js
+expect(
+  <TodoList items={todoItems} />,
+  'when rendered',
+  'to have rendered', 
+  <div className='items'>
+    <TodoItem id={1} label="Buy flowers" />
+    <TodoItem id={2} label="Mow the lawn" />
+    <TodoItem id={3} label="Buy groceries" />
+  </div>
+);
+```
+
 
 * Triggering an event on a button inside a subcomponent (using the `eventTarget` prop to identify where the event should be triggered)
 
@@ -266,6 +274,8 @@ const expect = require('unexpected')
 
 ## Emulating the DOM
 
+If you're using [Jest](https://facebook.github.io/jest/), you can skip this part, as it comes with built in jsdom support.
+
 The `emulateDom` file depends on whether you want to use [`domino`](https://npmjs.com/package/domino), or [`jsdom`](https://npmjs.com/package/jsdom).  If you're using Jest, jsdom is built in, so you can ignore this section.
 
 For `jsdom`:
@@ -344,6 +354,19 @@ to have rendered <button>Button was clicked 1 times</button>
   Button was clicked 0 times // -Button was clicked 0 times
                              // +Button was clicked 1 times
 </button>
+```
+
+You can also use `when rendered` to directly render a component to a shallow renderer:
+
+```js
+
+expect(<MyButton />, 
+  'when rendered',
+  'to have rendered',
+  <button>
+      Button was clicked 1 times
+  </button>
+);
 ```
 
 If you've emulated the DOM, you can write a similar test, but using `ReactDOM.render()` (or `TestUtils.renderIntoDocument()`)
@@ -456,22 +479,13 @@ the `<App>` wrapper component, and the `<Text>` wrapper component.
 
 Because [stateless components](https://facebook.github.io/react/docs/reusable-components.html#stateless-functions) can't be instantiated, `renderIntoDocument` won't return an instance back. 
 Using the shallow renderer works as shown in the first example. 
-For full rendering, they can be tested with a wrapper component as such:
+For full rendering, use the `when deeply rendered` to render the component
 
 ```js
-class StatelessWrapper extends React.Component {
-  render() {
-    return (this.props.children);
-  }
-}
-
-var StatelessComponent = function (props) {
-  return (
-    <div>{ props.name }</div>
-  )
-}
-
-var component = TestUtils.renderIntoDocument(<StatelessWrapper><StatelessComponent name="Daniel" /></StatelessWrapper>);
+expect(<StatelessComponent name="Daniel" />, 
+  'when deeply rendered', 
+  'to have rendered',
+  <div>Hello, Daniel!</div>);
 ```
 
 ## Cleaning up
@@ -487,7 +501,7 @@ if you use a test runner that keeps the process alive (such as [wallaby.js](http
 * [DONE] ~~There are some performance optimisations to do. The performance suffers a bit due to the possible asynchronous nature of the inline assertions. Most of the time these will be synchronous, and hence we don't need to pay the price.~~
 * [DONE] ~~`queried for` implementation~~
 * [DONE] ~~Directly calling events on both the shallow renderer, and the full virtual DOM renderer~~
-* Support Snapshot testing in Jest
+* [DONE] ~~Support Snapshot testing in Jest~~
 * Cleanup output - where there are no differences to highlight, we could skip the branch
 
 # Contributing
