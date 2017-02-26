@@ -975,4 +975,89 @@ describe('unexpected-react (deep rendering)', () => {
             ].join('\n'));
         });
     });
+
+    describe('to deeply render as', function () {
+
+        const Stateless = function (props) {
+            return <div className="stateless-ftw">Yay</div>;
+        };
+
+        it('renders a class component', function () {
+
+            expect(<CustomComp className="foo"/>,
+                'to deeply render as', <div className="foo"></div>
+            );
+        });
+
+        it('renders a stateless component', function () {
+
+            expect(<Stateless />, 'to deeply render as', <Stateless><div className="stateless-ftw">Yay</div></Stateless>);
+        });
+
+        it('errors when a stateless component render does not match', function () {
+            expect(() => expect(<Stateless />, 'to deeply render as',
+                <Stateless>
+                    <div className="stateless-broken">Yay</div>
+                </Stateless>), 'to throw',
+                [
+                    'expected <Stateless />',
+                    'to deeply render as <Stateless><div className="stateless-broken">Yay</div></Stateless>',
+                    '',
+                    '<Stateless>',
+                    '  <div className="stateless-ftw" // missing class \'stateless-broken\'',
+                    '  >',
+                    '    Yay',
+                    '  </div>',
+                    '</Stateless>'
+                ].join('\n'));
+        });
+
+        it('renders using the exactly flag', function () {
+            expect(<CustomComp className="foo"/>,
+                'to exactly deeply render as',
+                <CustomComp className="foo">
+                    <div className="foo" />
+                </CustomComp>
+            );
+        });
+
+        it('outputs the error when using the exactly flag', function () {
+            expect(() => expect(<CustomComp className="foo"/>,
+                'to exactly deeply render as',
+                <CustomComp className="foo">
+                    <div className="foo bar"/>
+                </CustomComp>
+            ), 'to throw',
+            [
+                'expected <CustomComp className="foo" />',
+                'to exactly deeply render as <CustomComp className="foo"><div className="foo bar" /></CustomComp>',
+                '',
+                '<CustomComp className="foo">',
+                '  <div className="foo" // expected \'foo\' to equal \'foo bar\'',
+                '                       //',
+                '                       // -foo',
+                '                       // +foo bar',
+                '  />',
+                '</CustomComp>'
+            ].join('\n'));
+        });
+
+        it('outputs the error when using the with all classes flag', function () {
+            expect(() => expect(<CustomComp className="foo"/>,
+                'to deeply render with all classes as',
+                <CustomComp className="foo">
+                    <div className="foo bar"/>
+                </CustomComp>
+                ), 'to throw',
+                [
+                    'expected <CustomComp className="foo" />',
+                    'to deeply render with all classes as <CustomComp className="foo"><div className="foo bar" /></CustomComp>',
+                    '',
+                    '<CustomComp className="foo">',
+                    '  <div className="foo" // missing class \'bar\'',
+                    '  />',
+                    '</CustomComp>'
+                ].join('\n'));
+        });
+    });
 });

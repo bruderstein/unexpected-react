@@ -103,6 +103,14 @@ function installInto(expect) {
       }
       return expect.shift(component);
   });
+
+  expect.addAssertion('<ReactElement> to [exactly] deeply render [with all children] [with all wrappers] [with all classes] [with all attributes] as <ReactElement>', function (expect, subject, expected) {
+
+      if (this.flags.exactly) {
+          return expect(subject, 'when deeply rendered', 'to have exactly rendered', expected);
+      }
+      return expect(subject, 'when deeply rendered to have rendered [with all children] [with all wrappers] [with all classes] [with all attributes]', expected);
+  });
 }
 
 export { installInto, triggerEvent };
