@@ -593,6 +593,18 @@ describe('snapshots', function () {
       fs.unlinkSync.restore();
     }
   });
+
+  it('shows an error message if the JSON is asserted on directly', function () {
+
+      const renderer = ReactTestRenderer.create(<ClickCounter />);
+      expect(() => expect(renderer.toJSON(), 'to match snapshot'), 'to throw',
+          [
+              'To assert snapshots, use the testRenderer directly, not the result of `.toJSON()`',
+              'e.g.',
+              '  const testRenderer = ReactTestRenderer.create(<MyComponent />);',
+              '  expect(testRenderer, \'to match snapshot\');'
+          ].join('\n'));
+  });
 });
 
 

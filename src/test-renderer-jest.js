@@ -33,7 +33,27 @@ module.exports = {
     jestSnapshotAssertions.installInto(expect);
     snapshotFunctionType.installInto(expect);
     snapshotFunctionAssertions.installInto(expect);
-    
+    expect.addType({
+          name: 'RawReactTestRendererJson',
+          base: 'object',
+          identify: function (value) {
+              return value && typeof value === 'object' && value.props && value.children && value.type;
+          }
+      });
+
+      expect.addAssertion('<RawReactTestRendererJson> to match snapshot', function (expect, subject) {
+          expect.errorMode = 'bubble';
+          expect.fail({
+              message: function (output) {
+                  return output.text('To assert snapshots, use the testRenderer directly, not the result of `.toJSON()`')
+                      .nl().i()
+                      .text('e.g.')
+                      .nl().i()
+                      .text('  const testRenderer = ReactTestRenderer.create(<MyComponent />);').nl().i()
+                      .text('  expect(testRenderer, \'to match snapshot\');');
+              }
+          });
+      });
   },
   
   clearAll() {
