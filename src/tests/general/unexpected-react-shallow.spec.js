@@ -2377,4 +2377,48 @@ describe('unexpected-react-shallow', () => {
         });
     });
 
+    describe('to render as', function () {
+        it('validates a render', function () {
+            expect(<FunctionComp className="test" />, 'to render as', <div className="test" />)
+        });
+
+        it('outputs an error when it fails', function () {
+            expect(
+                () => expect(<FunctionComp className="foo" />, 'to render as', <div className="bar" />),
+                'to throw',
+                [
+                    'expected <FunctionComp className="foo" /> to render as <div className="bar" />',
+                    '',
+                    '<div className="foo" // missing class \'bar\'',
+                    '/>'
+                ].join('\n'));
+        });
+
+        it('uses the exactly flag', function () {
+            expect(
+                () => expect(<FunctionComp className="foo" />, 'to exactly render as', <div />),
+                'to throw',
+                [
+                    'expected <FunctionComp className="foo" /> to exactly render as <div />',
+                    '',
+                    '<div className="foo" // className should be removed',
+                    '/>'
+                ].join('\n'));
+        });
+
+        it('uses the `with all classes` flag', function () {
+
+            expect(
+                () => expect(<FunctionComp className="foo bar" />, 'to render with all classes as', <div className="foo" />),
+                'to throw',
+                [
+                    'expected <FunctionComp className="foo bar" />',
+                    'to render with all classes as <div className="foo" />',
+                    '',
+                    '<div className="foo bar" // extra class \'bar\'',
+                    '/>'
+                ].join('\n'));
+        });
+    });
+
 });

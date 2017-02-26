@@ -87,6 +87,14 @@ function installInto(expect) {
             });
         });
     });
+
+    expect.addAssertion('<ReactElement> to [exactly] render [with all children] [with all wrappers] [with all classes] [with all attributes] as <ReactElement>', function (expect, subject, expected) {
+
+        if (this.flags.exactly) {
+            return expect(subject, 'when rendered', 'to have exactly rendered', expected);
+        }
+        return expect(subject, 'when rendered to have rendered [with all children] [with all wrappers] [with all classes] [with all attributes]', expected);
+    });
     
     return assertionGenerator;
 } 
