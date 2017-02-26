@@ -2368,8 +2368,8 @@ describe('unexpected-react-shallow', () => {
                 'when rendered',
                 'to have rendered', <div className="testx" />
             ), 'to throw', [
-                'expected <FunctionComp className="test" />',
-                'when rendered to have rendered <div className="testx" />',
+                'expected <FunctionComp className="test" /> when rendered',
+                'expected <div className="test" /> to have rendered <div className="testx" />',
 	            '',
 	            '<div className="test" // missing class \'testx\'',
                 '/>'

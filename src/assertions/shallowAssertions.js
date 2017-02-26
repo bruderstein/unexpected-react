@@ -23,6 +23,18 @@ function triggerEvent(expect, renderer, target, eventName, eventArgs) {
   return renderer;
 }
 
+function getMessageOnly(options) {
+    if (this.getErrorMode() === 'bubble' && this.parent) {
+        return getMessageOnly.call(this.parent, options);
+    }
+    var output = this.outputFromOptions(options);
+    if (this.expect.testDescription) {
+        output.append(this.expect.standardErrorMessage(output.clone(), options));
+    } else if (typeof this.output === 'function') {
+        this.output.call(output, output);
+    }
+    return output;
+}
 
 function installInto(expect) {
     
@@ -59,7 +71,21 @@ function installInto(expect) {
     expect.addAssertion('<ReactElement> when rendered <assertion?>', function (expect, subject) {
        const renderer = TestUtils.createRenderer();
        renderer.render(subject);
-       return expect.shift(renderer);
+        return expect.withError(function () {
+            expect.errorMode = 'bubble';
+            return expect.shift(renderer);
+        }, function (e) {
+            expect.fail({
+                message(output) {
+                    return output.error('expected ').appendInspected(subject).error(' when rendered')
+                        .nl().i()
+                        .append(getMessageOnly.call(e, output));
+                },
+                diff(output) {
+                    return e.getDiffMessage(output);
+                }
+            });
+        });
     });
     
     return assertionGenerator;
