@@ -24,40 +24,49 @@
   "success": false,
   "testResults": [
     {
-      "message": "  ● ClickCounter › counts a single click\n\n    UnexpectedError: \n    expected\n    <button className=\"foo bar\" onClick={function bound onClick() { /* native code */ }}>\n      Clicked 3 times\n    </button>\n    with event 'click' with event click 'with event click', 'to match snapshot'\n    \n    <button className=\"foo bar\" onClick={function bound onClick() { /* native code */ }}>\n      Clicked 3 times // -Clicked 3 times\n                      // +Clicked 2 times\n    </button>\n",
-      "name": "/src/__tests__/ClickCounter-other.spec.js",
-      "summary": "",
-      "status": "failed",
       "assertionResults": [
         {
+          "failureMessages": [
+            "UnexpectedError: \nexpected\n<button className=\"foo bar\" onClick={function bound onClick() { /* native code */ }}>\n  Clicked 3 times\n</button>\nwith event 'click' with event click 'with event click', 'to match snapshot'\n\n<button className=\"foo bar\" onClick={function bound onClick() { /* native code */ }}>\n  Clicked 3 times // -Clicked 3 times\n                  // +Clicked 2 times\n</button>\n"
+          ],
           "status": "failed",
           "title": "counts a single click"
         }
-      ]
+      ],
+      "message": "  ● ClickCounter › counts a single click\n\n    UnexpectedError: \n    expected\n    <button className=\"foo bar\" onClick={function bound onClick() { /* native code */ }}>\n      Clicked 3 times\n    </button>\n    with event 'click' with event click 'with event click', 'to match snapshot'\n    \n    <button className=\"foo bar\" onClick={function bound onClick() { /* native code */ }}>\n      Clicked 3 times // -Clicked 3 times\n                      // +Clicked 2 times\n    </button>\n",
+      "name": "/src/__tests__/ClickCounter-other.spec.js",
+      "status": "failed",
+      "summary": ""
     },
     {
-      "message": "  ● ClickCounter › counts multiple clicks\n\n    UnexpectedError: \n    expected\n    <button className=\"foo bar\" onClick={function bound onClick() { /* native code */ }}>\n      Clicked 4 times\n    </button>\n    with event 'click' with event click 'with event click', 'with event click', 'to match snapshot'\n    \n    <button className=\"foo bar\" onClick={function bound onClick() { /* native code */ }}>\n      Clicked 4 times // -Clicked 4 times\n                      // +Clicked 3 times\n    </button>\n",
-      "name": "/src/__tests__/ClickCounter.spec.js",
-      "summary": "",
-      "status": "failed",
       "assertionResults": [
         {
+          "failureMessages": [],
           "status": "passed",
           "title": "counts a single click"
         },
         {
+          "failureMessages": [
+            "UnexpectedError: \nexpected\n<button className=\"foo bar\" onClick={function bound onClick() { /* native code */ }}>\n  Clicked 4 times\n</button>\nwith event 'click' with event click 'with event click', 'with event click', 'to match snapshot'\n\n<button className=\"foo bar\" onClick={function bound onClick() { /* native code */ }}>\n  Clicked 4 times // -Clicked 4 times\n                  // +Clicked 3 times\n</button>\n"
+          ],
           "status": "failed",
           "title": "counts multiple clicks"
         },
         {
+          "failureMessages": [],
           "status": "passed",
           "title": "passes multiple snapshots in a single test"
         },
         {
+          "failureMessages": [],
           "status": "passed",
           "title": "renders with default props"
         }
-      ]
+      ],
+      "message": "  ● ClickCounter › counts multiple clicks\n\n    UnexpectedError: \n    expected\n    <button className=\"foo bar\" onClick={function bound onClick() { /* native code */ }}>\n      Clicked 4 times\n    </button>\n    with event 'click' with event click 'with event click', 'with event click', 'to match snapshot'\n    \n    <button className=\"foo bar\" onClick={function bound onClick() { /* native code */ }}>\n      Clicked 4 times // -Clicked 4 times\n                      // +Clicked 3 times\n    </button>\n",
+      "name": "/src/__tests__/ClickCounter.spec.js",
+      "status": "failed",
+      "summary": ""
     }
   ],
   "wasInterrupted": false

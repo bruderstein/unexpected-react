@@ -7,7 +7,16 @@ module.exports = function (jestJson, commonPath) {
         delete result.startTime;
         delete result.endTime;
         result.assertionResults.forEach(function (test) {
-            delete test.failureMessages;
+            if (test.failureMessages) {
+              test.failureMessages = test.failureMessages.map(function (msg) {
+                var match = stackTraceRegex.exec(msg);
+                if (match) {
+                  msg = msg.substr(0, match.index);
+                }
+
+                return msg;
+              });
+            }
         });
 
         result.assertionResults = result.assertionResults.sort(function (a, b) {
