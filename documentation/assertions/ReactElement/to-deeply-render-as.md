@@ -81,13 +81,15 @@ expect(<MyComponent />, 'to deeply render with all children as',
 
 ```output
 expected <MyComponent />
-to render with all children as <div id="main"><span>one</span><span>three</span></div>
+to deeply render with all children as <div id="main"><span>one</span><span>three</span></div>
 
-<div className="parent" id="main">
-  <span>one</span>
-  <span>two</span> // should be removed
-  <span>three</span>
-</div>
+<MyComponent>
+  <div className="parent" id="main">
+    <span>one</span>
+    <span>two</span> // should be removed
+    <span>three</span>
+  </div>
+</MyComponent>
 ```
 
 ```js
@@ -96,23 +98,27 @@ to render with all children as <div id="main"><span>one</span><span>three</span>
 // due to `to have exactly rendered` being used
 
 expect(<MyComponent />, 'to exactly deeply render as',
-  <div id="main">
-    <span>one</span>
-    <span>three</span>
-  </div>
+  <MyComponent>
+    <div id="main">
+      <span>one</span>
+      <span>three</span>
+    </div>
+  </MyComponent>
 );
 ```
 
 ```output
 expected <MyComponent />
-to exactly render as <div id="main"><span>one</span><span>three</span></div>
+to exactly deeply render as <MyComponent><div id="main"><span>one</span><span>three</span></div></MyComponent>
 
-<div className="parent" // className should be removed
-   id="main">
-  <span>one</span>
-  <span>two</span> // should be removed
-  <span>three</span>
-</div>
+<MyComponent>
+  <div className="parent" // className should be removed
+     id="main">
+    <span>one</span>
+    <span>two</span> // should be removed
+    <span>three</span>
+  </div>
+</MyComponent>
 ```
 
 If you want to trigger events, use the `when deeply rendered` assertion to render
