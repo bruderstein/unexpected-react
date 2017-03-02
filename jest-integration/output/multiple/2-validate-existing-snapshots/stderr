@@ -1,8 +1,0 @@
- PASS  src/__tests__/ClickCounter-other.spec.js
- PASS  src/__tests__/ClickCounter.spec.js
-
-Test Suites: 2 passed, 2 total
-Tests:       5 passed, 5 total
-Snapshots:   6 passed, 6 total
-Time:        1.779s
-Ran all test suites.

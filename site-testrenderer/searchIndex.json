@@ -1,0 +1,26 @@
+[
+  {
+    "label": "queried for (ReactTestRenderer)",
+    "url": "/assertions/ReactTestRenderer/queried-for/"
+  },
+  {
+    "label": "to contain (ReactTestRenderer)",
+    "url": "/assertions/ReactTestRenderer/to-contain/"
+  },
+  {
+    "label": "to have rendered (ReactTestRenderer)",
+    "url": "/assertions/ReactTestRenderer/to-have-rendered/"
+  },
+  {
+    "label": "to match snapshot (ReactTestRenderer)",
+    "url": "/assertions/ReactTestRenderer/to-match-snapshot/"
+  },
+  {
+    "label": "to satisfy snapshot (ReactTestRenderer)",
+    "url": "/assertions/ReactTestRenderer/to-satisfy-snapshot/"
+  },
+  {
+    "label": "with event (ReactTestRenderer)",
+    "url": "/assertions/ReactTestRenderer/with-event/"
+  }
+]

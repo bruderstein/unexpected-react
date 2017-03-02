@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+    <link rel="stylesheet" href="../../../static/normalize.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../../static/main.css" type="text/css" media="screen" />
+    <link rel="shortcut icon" type="image/vnd.microsoft.icon" href="../../../static/bug-icon-black.ico">
+    <title>ReactElement - with event</title>
+</head>
+<body class="sidebar-hidden has-sidebar"> 
+    <header>
+        <div class="logo-icon"></div>
+        <nav>
+            <ul>
+                <li class="menu-toggle-item">
+                    <button class="menu-toggle" onclick="toggleSidebar()"></button>
+                </li>
+                
+                <li class=""><a href="../../..">unexpected-react</a></li>
+                
+                
+                <li class="active"><a href="../queried-for">Assertions</a></li>
+                
+                
+                
+            </ul>
+        </nav>
+        <div class="search" style="visibility: hidden">
+            <input id="search" placeholder="Search..." value="">
+            <div id="searchDropDown" class="dropDown">
+                <ul id="searchResults"></ul>
+            </div>
+        </div>
+    </header>
+
+<section id="assertions">
+    <nav id="assertion-menu" class="sidebar js-remember-scroll-position">
+    
+        <h3 class=""><a href="..">ReactElement</a></h3>
+        <ul>
+            
+            <li class="">
+                <a href="../queried-for">queried for</a>
+            </li>
+            
+            <li class="">
+                <a href="../to-contain">to contain</a>
+            </li>
+            
+            <li class="">
+                <a href="../to-deeply-render-as">to deeply render as</a>
+            </li>
+            
+            <li class="">
+                <a href="../to-have-rendered">to have rendered</a>
+            </li>
+            
+            <li class="">
+                <a href="../to-match-snapshot">to match snapshot</a>
+            </li>
+            
+            <li class="">
+                <a href="../to-render-as">to render as</a>
+            </li>
+            
+            <li class="">
+                <a href="../to-satisfy-snapshot">to satisfy snapshot</a>
+            </li>
+            
+            <li class="">
+                <a href="../when-deeply-rendered">when deeply rendered</a>
+            </li>
+            
+            <li class="">
+                <a href="../when-rendered">when rendered</a>
+            </li>
+            
+            <li class="active">
+                <a href="">with event</a>
+            </li>
+            
+        </ul>
+    
+</nav>
+
+    <div class="main" tabindex="-1">
+        <div class="content">
+            <h1>with event</h1>
+            
+                <ul class="declarations">
+                
+                    <li>&lt;ReactElement&gt; with event &lt;string&gt; &lt;assertion?&gt;</li>
+                
+                    <li>&lt;ReactElement&gt; with event &lt;string&gt; &lt;object&gt; &lt;assertion?&gt;</li>
+                
+                </ul>
+            
+            <h2 id="-with-event-on-"><code>with event</code> .... [<code>on</code>]</h2>
+<p><code>with event</code> can trigger events in both the shallow and full renderer.  For the normal full renderer,
+<code>TestUtils.Simulate</code> is used to simulate the event. For the shallow renderer, it is expected that 
+there is a prop with the name <code>on[EventName]</code>, where the first letter of the event is capitalised.</p>
+<p>e.g. with a button that counts it&#39;s own clicks</p>
+<div class="code lang-javascript"><div><span style="color: #a71d5d">var</span>&nbsp;renderer&nbsp;<span style="color: #a71d5d">=</span>&nbsp;TestUtils<span style="color: #000000">.</span><span style="color: #000000">createRenderer</span><span style="color: #000000">()</span></div><div>renderer<span style="color: #000000">.</span><span style="color: #000000">render</span><span style="color: #000000">(</span><span style="color: #a71d5d">&lt;</span>MyButton&nbsp;<span style="color: #a71d5d">/&gt;</span><span style="color: #000000">);</span></div><div>&nbsp;</div><div><span style="color: #000000">expect</span><span style="color: #000000">(</span>renderer<span style="color: #000000">,</span>&nbsp;<span style="color: #df5000">'with&nbsp;event'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #df5000">'click'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #df5000">'to&nbsp;have&nbsp;rendered'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #a71d5d">&lt;</span>button<span style="color: #a71d5d">&gt;</span>Button&nbsp;was&nbsp;clicked&nbsp;<span style="color: #0086b3">1</span>&nbsp;times<span style="color: #a71d5d">&lt;/</span>button<span style="color: #a71d5d">&gt;</span><span style="color: #000000">);</span></div></div><p>This works with the component directly, as a shallow renderer is automatically created.
+Also note that due to unexpected&#39;s clever string handling, you can concatenated the <code>with event</code> and the 
+event name.</p>
+<div class="code lang-javascript"><div><span style="color: #000000">expect</span><span style="color: #000000">(</span><span style="color: #a71d5d">&lt;</span>MyButton&nbsp;<span style="color: #a71d5d">/&gt;</span><span style="color: #000000">,</span>&nbsp;<span style="color: #df5000">'with&nbsp;event&nbsp;click'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #df5000">'to&nbsp;have&nbsp;rendered'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #a71d5d">&lt;</span>button<span style="color: #a71d5d">&gt;</span>Button&nbsp;was&nbsp;clicked&nbsp;<span style="color: #0086b3">1</span>&nbsp;times<span style="color: #a71d5d">&lt;/</span>button<span style="color: #a71d5d">&gt;</span><span style="color: #000000">);</span></div></div><p>Given the following todo list:</p>
+<div class="code lang-javascript"><div><span style="color: #a71d5d">var</span>&nbsp;renderer&nbsp;<span style="color: #a71d5d">=</span>&nbsp;TestUtils<span style="color: #000000">.</span><span style="color: #000000">createRenderer</span><span style="color: #000000">()</span></div><div>renderer<span style="color: #000000">.</span><span style="color: #000000">render</span><span style="color: #000000">(</span></div><div>&nbsp;&nbsp;<span style="color: #a71d5d">&lt;</span>TodoList<span style="color: #a71d5d">&gt;</span></div><div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #a71d5d">&lt;</span>TodoItem&nbsp;id<span style="color: #a71d5d">=</span><span style="color: #000000">{</span><span style="color: #0086b3">1</span><span style="color: #000000">}</span>&nbsp;label<span style="color: #a71d5d">=</span><span style="color: #df5000">&quot;Buy&nbsp;flowers&nbsp;for&nbsp;the&nbsp;wife&quot;</span><span style="color: #a71d5d">/&gt;</span></div><div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #a71d5d">&lt;</span>TodoItem&nbsp;id<span style="color: #a71d5d">=</span><span style="color: #000000">{</span><span style="color: #0086b3">2</span><span style="color: #000000">}</span>&nbsp;label<span style="color: #a71d5d">=</span><span style="color: #df5000">&quot;Mow&nbsp;the&nbsp;lawn&quot;</span><span style="color: #a71d5d">/&gt;</span></div><div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #a71d5d">&lt;</span>TodoItem&nbsp;id<span style="color: #a71d5d">=</span><span style="color: #000000">{</span><span style="color: #0086b3">3</span><span style="color: #000000">}</span>&nbsp;label<span style="color: #a71d5d">=</span><span style="color: #df5000">&quot;Buy&nbsp;groceries&quot;</span><span style="color: #a71d5d">/&gt;</span></div><div>&nbsp;&nbsp;<span style="color: #a71d5d">&lt;/</span>TodoList<span style="color: #a71d5d">&gt;</span></div><div><span style="color: #000000">);</span></div></div><p>If you want to trigger an event on a specific component, (i.e. not the top level component), use <code>on</code> 
+after the event.</p>
+<div class="code lang-javascript"><div><span style="color: #000000">expect</span><span style="color: #000000">(</span></div><div>&nbsp;&nbsp;renderer<span style="color: #000000">,</span></div><div>&nbsp;&nbsp;<span style="color: #df5000">'with&nbsp;event&nbsp;click'</span><span style="color: #000000">,</span></div><div>&nbsp;&nbsp;<span style="color: #df5000">'on'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #a71d5d">&lt;</span>TodoItem&nbsp;id<span style="color: #a71d5d">=</span><span style="color: #000000">{</span><span style="color: #0086b3">3</span><span style="color: #000000">}</span>&nbsp;<span style="color: #a71d5d">/&gt;</span><span style="color: #000000">,</span></div><div>&nbsp;&nbsp;<span style="color: #df5000">'to&nbsp;contain'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #a71d5d">&lt;</span>TodoItem&nbsp;id<span style="color: #a71d5d">=</span><span style="color: #000000">{</span><span style="color: #0086b3">3</span><span style="color: #000000">}</span>&nbsp;clicked<span style="color: #a71d5d">=</span><span style="color: #000000">{</span><span style="color: #0086b3">true</span><span style="color: #000000">}</span>&nbsp;<span style="color: #a71d5d">/&gt;</span></div><div><span style="color: #000000">);</span></div></div><p>To pass arguments to the event, simply include the event object after the event name</p>
+<div class="code lang-javascript"><div><span style="color: #000000">expect</span><span style="color: #000000">(</span></div><div>&nbsp;&nbsp;renderer<span style="color: #000000">,</span></div><div>&nbsp;&nbsp;<span style="color: #df5000">'with&nbsp;event&nbsp;mouseDown'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #000000">{</span>&nbsp;mouseX<span style="color: #000000">:</span>&nbsp;<span style="color: #0086b3">150</span><span style="color: #000000">,</span>&nbsp;mouseY<span style="color: #000000">:</span>&nbsp;<span style="color: #0086b3">50</span>&nbsp;<span style="color: #000000">},</span></div><div>&nbsp;&nbsp;<span style="color: #df5000">'on'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #a71d5d">&lt;</span>TodoItem&nbsp;id<span style="color: #a71d5d">=</span><span style="color: #000000">{</span><span style="color: #0086b3">2</span><span style="color: #000000">}</span>&nbsp;<span style="color: #a71d5d">/&gt;</span><span style="color: #000000">,</span></div><div>&nbsp;&nbsp;<span style="color: #df5000">'to&nbsp;contain'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #a71d5d">&lt;</span>TodoItem&nbsp;id<span style="color: #a71d5d">=</span><span style="color: #000000">{</span><span style="color: #0086b3">2</span><span style="color: #000000">}</span>&nbsp;clicked<span style="color: #a71d5d">=</span><span style="color: #000000">{</span><span style="color: #0086b3">false</span><span style="color: #000000">}</span>&nbsp;<span style="color: #a71d5d">/&gt;</span></div><div><span style="color: #000000">);</span></div></div><p>This will call the function passed in the <code>onMouseDown</code> prop of the <code>&lt;TodoItem&gt;</code>.</p>
+<p>You can take the renderer after the event has been triggered by using the promise returned
+from <code>expect</code>.  This is often used to test that spy or mock callbacks have been called (using for instance <a href="http://sinonjs.org">sinon.js</a>).</p>
+<div class="code lang-javascript"><div><span style="color: #a71d5d">return</span>&nbsp;<span style="color: #000000">expect</span><span style="color: #000000">(</span></div><div>&nbsp;&nbsp;renderer<span style="color: #000000">,</span></div><div>&nbsp;&nbsp;<span style="color: #df5000">'with&nbsp;event&nbsp;click'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #df5000">'on'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #a71d5d">&lt;</span>TodoItem&nbsp;id<span style="color: #a71d5d">=</span><span style="color: #000000">{</span><span style="color: #0086b3">2</span><span style="color: #000000">}</span>&nbsp;<span style="color: #a71d5d">/&gt;</span></div><div><span style="color: #000000">).</span><span style="color: #000000">then</span><span style="color: #000000">(</span>renderer&nbsp;<span style="color: #a71d5d">=&gt;</span>&nbsp;<span style="color: #000000">{</span></div><div>&nbsp;&nbsp;const&nbsp;todoListInstance&nbsp;<span style="color: #a71d5d">=</span>&nbsp;renderer<span style="color: #000000">.</span><span style="color: #000000">getMountedInstance</span><span style="color: #000000">();</span></div><div>&nbsp;&nbsp;<span style="color: #000000">expect</span><span style="color: #000000">(</span>todoListInstance<span style="color: #000000">.</span>state<span style="color: #000000">,</span>&nbsp;<span style="color: #df5000">'to&nbsp;satisfy'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #000000">{</span>&nbsp;clicked<span style="color: #000000">:</span>&nbsp;<span style="color: #000000">{</span>&nbsp;<span style="color: #0086b3">2</span><span style="color: #000000">:</span>&nbsp;<span style="color: #0086b3">true</span>&nbsp;<span style="color: #000000">}</span>&nbsp;<span style="color: #000000">});</span></div><div><span style="color: #000000">});</span></div><div>&nbsp;</div></div><h2 id="eventtarget">eventTarget</h2>
+<p>You can add an <code>eventTarget</code> prop to the expected to trigger the event on a child component.
+e.g.</p>
+<div class="code lang-javascript"><div><span style="color: #a71d5d">var</span>&nbsp;renderer&nbsp;<span style="color: #a71d5d">=</span>&nbsp;TestUtils<span style="color: #000000">.</span><span style="color: #000000">createRenderer</span><span style="color: #000000">()</span></div><div>renderer<span style="color: #000000">.</span><span style="color: #000000">render</span><span style="color: #000000">(</span><span style="color: #a71d5d">&lt;</span>App&nbsp;<span style="color: #a71d5d">/&gt;</span><span style="color: #000000">);</span></div><div>&nbsp;</div><div><span style="color: #000000">expect</span><span style="color: #000000">(</span>renderer<span style="color: #000000">,</span>&nbsp;</div><div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #df5000">'with&nbsp;event'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #df5000">'click'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #df5000">'on'</span><span style="color: #000000">,</span>&nbsp;<span style="color: #a71d5d">&lt;</span>div&nbsp;className<span style="color: #a71d5d">=</span><span style="color: #df5000">&quot;click-test&quot;</span><span style="color: #a71d5d">&gt;&lt;</span>button&nbsp;eventTarget&nbsp;<span style="color: #a71d5d">/&gt;&lt;/</span>div<span style="color: #a71d5d">&gt;</span><span style="color: #000000">,</span>&nbsp;</div><div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #df5000">'to&nbsp;have&nbsp;rendered'</span><span style="color: #000000">,</span>&nbsp;</div><div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #a71d5d">&lt;</span>div<span style="color: #a71d5d">&gt;</span></div><div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #a71d5d">&lt;</span>div&nbsp;className<span style="color: #a71d5d">=</span><span style="color: #df5000">&quot;other-button&quot;</span><span style="color: #a71d5d">&gt;&lt;</span>button<span style="color: #a71d5d">&gt;</span>Not&nbsp;clicked<span style="color: #a71d5d">&lt;/</span>button<span style="color: #a71d5d">&gt;&lt;/</span>div<span style="color: #a71d5d">&gt;</span></div><div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #a71d5d">&lt;</span>div&nbsp;className<span style="color: #a71d5d">=</span><span style="color: #df5000">&quot;click-test&quot;</span><span style="color: #a71d5d">&gt;&lt;</span>button<span style="color: #a71d5d">&gt;</span>Button&nbsp;was&nbsp;clicked<span style="color: #a71d5d">&lt;/</span>button<span style="color: #a71d5d">&gt;&lt;/</span>div<span style="color: #a71d5d">&gt;</span></div><div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #a71d5d">&lt;/</span>div<span style="color: #a71d5d">&gt;</span><span style="color: #000000">);</span></div></div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    baseUrl = '../../..';
+</script>
+<script type="text/javascript" src="../../../static/toggleSidebar.js"></script>
+<script type="text/javascript" src="../../../static/rememberScrollPosition.js"></script>
+<script type="text/javascript" src="../../../static/focusMain.js"></script>
+<script type="text/javascript" src="../../../static/search.js"></script>
+</body>
+</html>
+

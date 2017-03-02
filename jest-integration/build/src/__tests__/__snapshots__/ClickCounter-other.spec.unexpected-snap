@@ -1,8 +1,0 @@
-/////////////////// ClickCounter counts a single click 1 ///////////////////
-
-// <button className="foo bar" onClick={function bound onClick() { /* native code */ }}>
-//   Clicked 3 times
-// </button>
-
-exports[`ClickCounter counts a single click 1`] = {children:["Clicked ","3"," times"],props:{className:"foo bar",onClick:{"$functype":"$FUNC$bc*(!CDKRRz195123$","name":"bound onClick","args":""}},type:"button"};
-// ===========================================================================
