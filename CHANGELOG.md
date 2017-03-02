@@ -152,3 +152,10 @@ based on the `with all children`, `with all wrappers`, and `exactly` flags
 
 * Jest snapshot support (`'to match snapshot'` and `'to satisfy snapshot'` assertions)
 * Major refactor so assertions for all renderers (shallow, full DOM, test and raw for snapshots) use the same code
+
+## v3.5.0
+
+* Add `when rendered`, `when deeply rendered` and `to render as` assertions to enable direct rendering within the assertion
+* Add helpful error messages when using assertions that require a different `require` to be used (e.g. using jest snapshot assertions
+  without requiring `unexpected-react/jest`
+* Add helpful error message when validating against the test renderer `.toJSON()` method output - should be called with the renderer directly
