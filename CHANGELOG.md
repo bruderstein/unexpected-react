@@ -159,3 +159,7 @@ based on the `with all children`, `with all wrappers`, and `exactly` flags
 * Add helpful error messages when using assertions that require a different `require` to be used (e.g. using jest snapshot assertions
   without requiring `unexpected-react/jest`
 * Add helpful error message when validating against the test renderer `.toJSON()` method output - should be called with the renderer directly
+
+## v3.5.1
+
+* Bump version of js-writer to fix bug with snapshots with booleans
