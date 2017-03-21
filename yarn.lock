@@ -3044,9 +3044,9 @@ js-tokens@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-2.0.0.tgz#79903f5563ee778cc1162e6dcf1a0027c97f9cb5"
 
-js-writer:
-  version "1.1.0"
-  resolved "https://registry.npmjs.org/js-writer/-/js-writer-1.1.0.tgz#7db97924bbacfc311d176b2401f2940a4006efc9"
+js-writer@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/js-writer/-/js-writer-1.2.0.tgz#9e19689728d80884d06ffb3d0f0e1a20846ad2cc"
 
 js-yaml@3.6.1, js-yaml@3.x, js-yaml@^3.5.1:
   version "3.6.1"
