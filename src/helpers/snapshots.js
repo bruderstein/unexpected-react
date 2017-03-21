@@ -51,7 +51,7 @@ class UnexpectedSnapshotState {
       if (content) {
         Object.keys(content).reduce((agg, testKey) => {
           agg[testKey] = expect.output.clone().annotationBlock(function () {
-            this.append(expect.inspect(content[testKey]));
+            this.append(expect.inspect(rawAdapter.deserialize(content[testKey])));
           }).toString();
           return agg;
         }, contentOutput)
