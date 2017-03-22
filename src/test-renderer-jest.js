@@ -33,13 +33,6 @@ module.exports = {
     jestSnapshotAssertions.installInto(expect);
     snapshotFunctionType.installInto(expect);
     snapshotFunctionAssertions.installInto(expect);
-    expect.addType({
-          name: 'RawReactTestRendererJson',
-          base: 'object',
-          identify: function (value) {
-              return value && typeof value === 'object' && value.props && value.children && value.type;
-          }
-      });
 
       expect.addAssertion('<RawReactTestRendererJson> to match snapshot', function (expect, subject) {
           expect.errorMode = 'bubble';

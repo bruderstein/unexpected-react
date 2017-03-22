@@ -10,13 +10,7 @@ module.exports = {
 
       types.installInto(expect);
       testRendererAssertions.installInto(expect);
-      expect.addType({
-          name: 'RawReactTestRendererJson',
-          base: 'object',
-          identify: function (value) {
-              return value && typeof value === 'object' && value.props && value.children && value.type;
-          }
-      });
+
       expect.addAssertion([
           '<ReactTestRenderer|ReactTestRendererOutput> to match snapshot',
           '<ReactTestRenderer|ReactTestRendererOutput> to satisfy snapshot',
