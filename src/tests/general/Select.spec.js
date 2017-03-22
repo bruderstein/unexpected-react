@@ -81,7 +81,7 @@ describe('Select', () => {
 
         // Sometimes this test runs very slowly, I don't know why.
         // Increasing the mocha timeout here to make sure we don't get wobbly results from Travis
-        //this.timeout(5000); 
+        this.timeout(5000);
         TestUtils.Simulate.click(findDOMNode(component));
 
         return expect(component, 'to contain',
