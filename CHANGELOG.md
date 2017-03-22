@@ -163,3 +163,8 @@ based on the `with all children`, `with all wrappers`, and `exactly` flags
 ## v3.5.1
 
 * Bump version of js-writer to fix bug with snapshots with booleans
+
+## v3.5.2
+
+* Fix issue with snapshot comments (JSX representation) not always saving correctly (thanks @sunesimonsen for reporting, help tracking it down and the fix!)
+
