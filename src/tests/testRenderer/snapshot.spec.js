@@ -168,7 +168,17 @@ describe('snapshots', function () {
           .and('to match', /exports\[`single test name 1`]/)
       ]);
     });
-    
+
+    it('writes a new snapshot comment', function () {
+
+      // Confirm we wrote the file with the old and new entries
+      expect(fs.writeFileSync, 'to have a call satisfying', [
+        snapshotPath,
+        expect.it('to match', /\/\/ <button onClick={/)
+          .and('to match', /\/\/ <\/button>/)
+      ]);
+    });
+
     it('creates the correct snapshot', function () {
       // Confirm it is parseable and contains the right thing
       const newSnapshot = loadSnapshotMock(snapshotPath);
@@ -177,7 +187,7 @@ describe('snapshots', function () {
         children: ['Clicked ', '0', ' times']
       });
     });
-    
+
     it('increments the added count in the state', function () {
       expect(state, 'to satisfy', {
         snapshotState: {
@@ -398,7 +408,17 @@ describe('snapshots', function () {
         ]
       ]);
     });
-    
+
+    it('writes the new snapshot comment', function () {
+      expect(fs.writeFileSync, 'to have calls satisfying', [
+        [
+          snapshotPath,
+          expect.it('to match', /\/\/ <button onClick={/)
+              .and('to match', /\/\/ <\/button>/)
+        ]
+      ]);
+    });
+
     it('writes the correct snapshot', function () {
       const snapshot = loadSnapshotMock(snapshotPath);
       expect(snapshot, 'to satisfy', {

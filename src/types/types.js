@@ -143,10 +143,18 @@ function installInto(expect) {
             return htmlLikeTestRenderer.inspect(TestRendererTypeWrapper.getRendererOutputJson(value), depth, output, inspect);
         }
     });
-    
+
+    expect.addType({
+        name: 'RawReactTestRendererJson',
+        base: 'object',
+        identify: function (value) {
+            return value && typeof value === 'object' && value.props && value.children && value.type;
+        }
+    });
+
     expect.addType({
         name: 'ReactRawObjectElement',
-        base: 'object',
+        base: 'RawReactTestRendererJson',
         identify: function (value) {
             return rawAdapter.isRawElement(value);
         },
@@ -155,6 +163,7 @@ function installInto(expect) {
             return htmlLikeRaw.inspect(value, depth, output, inspect);
         }
     });
+
 }
 
 export default { installInto };
