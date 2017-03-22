@@ -175,7 +175,8 @@ describe('snapshots', function () {
       expect(fs.writeFileSync, 'to have a call satisfying', [
         snapshotPath,
         expect.it('to match', /\/\/ <button onClick={/)
-          .and('to match', /\/\/ <\/button>/)
+            .and('to match', /\/\/ <\/button>/)
+            .and('not to match', /\/\/\s*children:/)
       ]);
     });
 
@@ -415,6 +416,7 @@ describe('snapshots', function () {
           snapshotPath,
           expect.it('to match', /\/\/ <button onClick={/)
               .and('to match', /\/\/ <\/button>/)
+              .and('not to match', /\/\/\s*children:/)
         ]
       ]);
     });
