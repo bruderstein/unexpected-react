@@ -528,7 +528,7 @@ describe('unexpected-react (deep rendering)', () => {
             const component = TestUtils.renderIntoDocument(<CustomComp className="bar" childCount={3} />);
             return expect(component, 'queried for', <span className="2" />)
                 .then(span => {
-                    expect(span, 'to be a', HTMLElement);
+                    expect(span, 'to be a', window.HTMLElement);
                     expect(span, 'to satisfy', { className: '2' });
                 });
         });
@@ -538,7 +538,7 @@ describe('unexpected-react (deep rendering)', () => {
             const component = TestUtils.renderIntoDocument(<CustomComp className="bar" childCount={3} />);
             return expect(component, 'queried for', <span className={ expect.it('to eventually have value', '2')} />)
                 .then(span => {
-                    expect(span, 'to be a', HTMLElement);
+                    expect(span, 'to be a', window.HTMLElement);
                     expect(span, 'to satisfy', { className: '2' });
                 });
         });
@@ -548,7 +548,7 @@ describe('unexpected-react (deep rendering)', () => {
             const component = TestUtils.renderIntoDocument(<CustomComp className="bar" childCount={3} />);
             return expect(component, 'queried for', <div><span queryTarget className={ expect.it('to eventually have value', '2')} /></div>)
                 .then(span => {
-                    expect(span, 'to be a', HTMLElement);
+                    expect(span, 'to be a', window.HTMLElement);
                     expect(span, 'to satisfy', { className: '2' });
                 });
         });
@@ -926,7 +926,7 @@ describe('unexpected-react (deep rendering)', () => {
                     'with event', 'click', {},
                     'queried for', <TodoItem id={2}><div queryTarget /></TodoItem>)
                     .then(div => {
-                        expect(div, 'to be a', HTMLElement);
+                        expect(div, 'to be a', window.HTMLElement);
                         expect(div, 'to satisfy', { tagName: 'DIV' });
                     });
             });
