@@ -24,16 +24,19 @@
   "success": false,
   "testResults": [
     {
-      "message": "  ● ClickCounter › renders with default props\n\n    UnexpectedError: \n    expected\n    <button className=\"foo bar\" onClick={function bound onClick() { /* native code */ }}>\n      Clicked 0 times\n    </button>\n    to match snapshot\n    \n    <button className=\"foo bar\"\n       onClick={function bound onClick() { /* native code */ }} // expected function bound onClick() { /* native code */ }\n                                                                // to satisfy function onClick() { /* function body */ }\n                                                                //\n                                                                // -function bound onClick() { /* function body */ }\n                                                                // +function onClick() { /* function body */ }\n    >\n      Clicked 0 times\n    </button>\n",
-      "name": "/src/__tests__/ClickCounter.spec.js",
-      "summary": "",
-      "status": "failed",
       "assertionResults": [
         {
+          "failureMessages": [
+            "UnexpectedError: \nexpected <button .../> to match snapshot\n\n<button className=\"foo bar\"\n   onClick={function bound onClick() { /* native code */ }} // expected function bound onClick() { /* native code */ }\n                                                            // to satisfy function onClick() { /* function body */ }\n                                                            //\n                                                            // -function bound onClick() { /* function body */ }\n                                                            // +function onClick() { /* function body */ }\n>\n  Clicked 0 times\n</button>\n"
+          ],
           "status": "failed",
           "title": "renders with default props"
         }
-      ]
+      ],
+      "message": "  ● ClickCounter › renders with default props\n\n    UnexpectedError: \n    expected <button .../> to match snapshot\n    \n    <button className=\"foo bar\"\n       onClick={function bound onClick() { /* native code */ }} // expected function bound onClick() { /* native code */ }\n                                                                // to satisfy function onClick() { /* function body */ }\n                                                                //\n                                                                // -function bound onClick() { /* function body */ }\n                                                                // +function onClick() { /* function body */ }\n    >\n      Clicked 0 times\n    </button>\n",
+      "name": "/src/__tests__/ClickCounter.spec.js",
+      "status": "failed",
+      "summary": ""
     }
   ],
   "wasInterrupted": false

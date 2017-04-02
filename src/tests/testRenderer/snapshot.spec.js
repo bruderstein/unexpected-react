@@ -242,11 +242,7 @@ describe('snapshots', function () {
     const renderer = ReactTestRenderer.create(<ClickCounter className="three one" />);
     expect(() => expect(renderer, 'to match snapshot'), 'to throw',
     [
-      'expected',
-      '<button className="three one" onClick={function bound onClick() { /* native code */ }}>',
-      '  Clicked 0 times',
-      '</button>',
-      'to match snapshot',
+      'expected <button .../> to match snapshot',
       '',
       '<button className="three one" // missing class \'two\'',
       '   onClick={function bound onClick() { /* native code */ }}>',
@@ -264,12 +260,7 @@ describe('snapshots', function () {
     const renderer = ReactTestRenderer.create(<ClickCounter className="three two one four" />);
     expect(() => expect(renderer, 'to match snapshot'), 'to throw',
       [
-        'expected',
-        '<button className="three two one four"',
-        '   onClick={function bound onClick() { /* native code */ }}>',
-        '  Clicked 0 times',
-        '</button>',
-        'to match snapshot',
+        'expected <button .../> to match snapshot',
         '',
         '<button className="three two one four" // extra class \'four\'',
         '   onClick={function bound onClick() { /* native code */ }}>',
@@ -287,13 +278,7 @@ describe('snapshots', function () {
     const renderer = ReactTestRenderer.create(<ClickCounter className="three two one" ariaLabel="testextra" />);
     expect(() => expect(renderer, 'to match snapshot'), 'to throw',
       [
-        'expected',
-        '<button className="three two one"',
-        '   onClick={function bound onClick() { /* native code */ }}',
-        '   ariaLabel="testextra">',
-        '  Clicked 0 times',
-        '</button>',
-        'to match snapshot',
+        'expected <button .../> to match snapshot',
         '',
         '<button className="three two one"',
         '   onClick={function bound onClick() { /* native code */ }}',
@@ -493,12 +478,7 @@ describe('snapshots', function () {
         () => expect(renderer, 'to match snapshot'),
         'to throw',
         [
-          'expected',
-          '<button onClick={function bound onClick() { /* native code */ }}',
-          '   onMouseDown={function doStuff(a, b) { /* ... */ }}>',
-          '  Clicked 0 times',
-          '</button>',
-          'to match snapshot',
+          'expected <button .../> to match snapshot',
           '',
           '<button onClick={function bound onClick() { /* native code */ }}',
           '   onMouseDown={function doStuff(a, b) { /* ... */ }} // expected',

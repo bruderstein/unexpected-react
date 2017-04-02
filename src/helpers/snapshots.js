@@ -149,7 +149,21 @@ function compareSnapshot(expect, flags, subjectAdapter, subjectRenderer, subject
         state.unexpectedSnapshot.saveSnapshot(state.testPath, state.currentTestName, rawAdapter.serialize(subjectAdapter, subjectOutput), expect);
       } else {
         state.snapshotState.unmatched++;
-        expect.fail(err);
+        const createDiff = err.getDiffMethod();
+        expect.errorMode = 'bubble';
+        expect.fail({
+            message: function (output) {
+                return output
+                    .error('expected ')
+                    .prismSymbol('<')
+                    .prismTag(subjectAdapter.getName(subjectOutput))
+                    .prismSymbol(' .../> ')
+                    .error('to match snapshot');
+            },
+            diff: function (output, diff, inspect, equal) {
+                return createDiff(output, diff, inspect, equal);
+            }
+        });
       }
     });
   }
