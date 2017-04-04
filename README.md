@@ -4,6 +4,8 @@
 
 # unexpected-react
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/bruderstein/unexpected-react.svg)](https://greenkeeper.io/)
+
 Plugin for [unexpected](https://unexpected.js.org) to allow for testing the full virtual DOM, and 
 against the shallow renderer (replaces [unexpected-react-shallow](https://github.com/bruderstein/unexpected-react-shallow))
 
