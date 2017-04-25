@@ -4,7 +4,7 @@ const Unexpected = require('unexpected');
 const UnexpectedReact = require('../../unexpected-react');
 
 const React = require('react');
-const TestUtils = require('react-dom/test-utils');
+const { createRenderer } = require('react-test-renderer/shallow');
 const Immutable = require('immutable');
 
 const expect = Unexpected
@@ -26,7 +26,7 @@ describe('issue 28 - immutable components in shallow renderer', function () {
 
   it('renders the immutable mapped components', function () {
 
-    const renderer = TestUtils.createRenderer();
+    const renderer = createRenderer();
     const immutableList = Immutable.fromJS(['test1', 'test2']);
     renderer.render(<List list={immutableList} />);
 

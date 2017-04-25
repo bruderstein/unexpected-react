@@ -3,7 +3,7 @@ var UnexpectedReact = require('../../unexpected-react');
 
 var React = require('react');
 var PropTypes = require('prop-types');
-var TestUtils = require('react-dom/test-utils');
+var createRenderer = require('react-test-renderer/shallow').createRenderer;
 var Immutable = require('immutable');
 
 var expect = Unexpected.clone()
@@ -89,8 +89,8 @@ describe('unexpected-react-shallow', () => {
     var renderer, renderer2;
 
     beforeEach(function () {
-        renderer = TestUtils.createRenderer();
-        renderer2 = TestUtils.createRenderer();
+        renderer = createRenderer();
+        renderer2 = createRenderer();
 
     });
 
