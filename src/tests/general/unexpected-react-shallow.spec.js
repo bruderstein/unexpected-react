@@ -2,10 +2,9 @@ var Unexpected = require('unexpected');
 var UnexpectedReact = require('../../unexpected-react');
 
 var React = require('react');
+var PropTypes = require('prop-types');
 var TestUtils = require('react-addons-test-utils');
 var Immutable = require('immutable');
-
-var PropTypes = React.PropTypes;
 
 var expect = Unexpected.clone()
     .installPlugin(UnexpectedReact);

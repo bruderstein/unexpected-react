@@ -14,13 +14,12 @@ const Unexpected = require('unexpected');
 const UnexpectedReact = require('../../unexpected-react');
 
 const React = require('react');
+const PropTypes = require('prop-types');
 const TestUtils = require('react-addons-test-utils');
 const { findDOMNode } = require('react-dom');
 
 const expect = Unexpected.clone()
     .use(UnexpectedReact);
-
-const PropTypes = React.PropTypes;
 
 expect.output.preferredWidth = 80;
 
@@ -815,7 +814,7 @@ describe('unexpected-react (deep rendering)', () => {
 
             const TodoItem = React.createClass({
                 propTypes: {
-                    label: React.PropTypes.string
+                    label: PropTypes.string
                 },
                 
                 getInitialState() {

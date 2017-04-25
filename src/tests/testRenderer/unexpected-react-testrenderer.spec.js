@@ -1,10 +1,9 @@
 var Unexpected = require('unexpected');
 
 var React = require('react');
+var PropTypes = require('prop-types');
 var ReactTestRenderer = require('react-test-renderer');
 var UnexpectedReactTest = require('../../test-renderer');
-
-var PropTypes = React.PropTypes;
 
 var expect = Unexpected.clone()
   .installPlugin(UnexpectedReactTest);
