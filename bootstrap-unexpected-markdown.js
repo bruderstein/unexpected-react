@@ -6,7 +6,7 @@ global.unexpected = require('unexpected');
 unexpected.output.preferredWidth = 80;
 unexpected.use(require('./src/unexpected-react'));
 
-global.TestUtils = require('react-addons-test-utils');
+global.TestUtils = require('react-dom/test-utils');
 global.React = require('react');
 global.PropTypes = require('prop-types');
 

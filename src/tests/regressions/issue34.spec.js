@@ -1,6 +1,6 @@
 import unexpectedReact from '../../unexpected-react';
 import React, { Component } from 'react';
-import { createRenderer } from 'react-addons-test-utils';
+import { createRenderer } from 'react-dom/test-utils';
 import unexpected from 'unexpected';
 
 class Foo extends Component {

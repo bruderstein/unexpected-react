@@ -3,7 +3,7 @@ var UnexpectedReact = require('../../unexpected-react');
 
 var React = require('react');
 var PropTypes = require('prop-types');
-var TestUtils = require('react-addons-test-utils');
+var TestUtils = require('react-dom/test-utils');
 var Immutable = require('immutable');
 
 var expect = Unexpected.clone()

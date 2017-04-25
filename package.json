@@ -39,7 +39,6 @@
   ],
   "peerDependencies": {
     "react": "^0.14.0 || ^15.0.0",
-    "react-addons-test-utils": "^0.14.0 || ^15.0.0",
     "react-dom": "^0.14.0 || ^15.0.0"
   },
   "devDependencies": {
@@ -69,7 +68,6 @@
     "object-assign": "^4.0.1",
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
-    "react-addons-test-utils": "^15.4.2",
     "react-dom": "^15.5.4",
     "react-test-renderer": "^15.4.2",
     "sinon": "^1.17.6",

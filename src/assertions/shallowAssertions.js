@@ -1,7 +1,7 @@
 import RenderHook from 'react-render-hook';
 import ReactElementAdapter from 'unexpected-htmllike-jsx-adapter';
 import React from 'react';
-import TestUtils from 'react-addons-test-utils';
+import TestUtils from 'react-dom/test-utils';
 import AssertionGenerator from './AssertionGenerator';
 
 function triggerEvent(expect, renderer, target, eventName, eventArgs) {
