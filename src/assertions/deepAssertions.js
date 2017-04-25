@@ -3,7 +3,7 @@ import UnexpectedHtmlLike from 'unexpected-htmllike';
 import RenderedReactElementAdapter from 'unexpected-htmllike-reactrendered-adapter';
 import ReactElementAdapter from 'unexpected-htmllike-jsx-adapter';
 import React from 'react';
-import TestUtils from 'react-addons-test-utils';
+import TestUtils from 'react-dom/test-utils';
 import { findDOMNode } from 'react-dom';
 import AssertionGenerator from './AssertionGenerator';
 

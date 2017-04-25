@@ -15,7 +15,7 @@ const UnexpectedReact = require('../../unexpected-react');
 
 const React = require('react');
 const PropTypes = require('prop-types');
-const TestUtils = require('react-addons-test-utils');
+const TestUtils = require('react-dom/test-utils');
 const { findDOMNode } = require('react-dom');
 
 const expect = Unexpected.clone()

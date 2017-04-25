@@ -2,7 +2,7 @@ import React from 'react';
 import ClickCounter from '../ClickCounter';
 import Unexpected from 'unexpected';
 import jestSnapshot from 'jest-snapshot';
-import TestUtils from 'react-addons-test-utils';
+import TestUtils from 'react-dom/test-utils';
 
 import UnexpectedReact from '../../unexpected-react-non-jest';
 
