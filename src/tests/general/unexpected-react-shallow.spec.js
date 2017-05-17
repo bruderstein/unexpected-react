@@ -2418,6 +2418,11 @@ describe('unexpected-react-shallow', () => {
                     '/>'
                 ].join('\n'));
         });
+
+        it('provides the rendered component as the fulfillment value', function () {
+            return expect(<FunctionComp />, 'to render as', <div />)
+                .then(functionComp => expect(functionComp, 'to be a', 'ReactShallowRenderer'));
+        });
     });
 
 });

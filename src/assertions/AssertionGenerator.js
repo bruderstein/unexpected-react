@@ -72,7 +72,8 @@ AssertionGenerator.prototype._installEqualityAssertions = function (expect) {
       `<${actualTypeName}> to have rendered [with all children] [with all wrappers] [with all classes] [with all attributes] <${expectedTypeName}>`],
     function (expect, subject, renderOutput) {
       var actual = getRenderOutput(subject);
-      return expect(actual, 'to have [exactly] rendered [with all children] [with all wrappers] [with all classes] [with all attributes]', renderOutput);
+      return expect(actual, 'to have [exactly] rendered [with all children] [with all wrappers] [with all classes] [with all attributes]', renderOutput)
+        .then(() => subject);
     });
   
   expect.addAssertion([
@@ -109,6 +110,7 @@ AssertionGenerator.prototype._installEqualityAssertions = function (expect) {
           }
         });
       }
+      return result;
     });
   });
   
