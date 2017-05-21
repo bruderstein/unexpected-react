@@ -1,6 +1,7 @@
 import Unexpected from 'unexpected';
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import ReactTestRenderer from 'react-test-renderer';
 import UnexpectedReactTest from '../../../test-renderer';
 

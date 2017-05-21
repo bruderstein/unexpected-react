@@ -1,1 +1,1 @@
-module.exports = require('../../src/test-renderer-jest');
+module.exports = require('unexpected-react/test-renderer-jest');

@@ -4,7 +4,8 @@ const Unexpected = require('unexpected');
 const UnexpectedReact = require('../../unexpected-react');
 
 const React = require('react');
-const TestUtils = require('react-addons-test-utils');
+const PropTypes = require('prop-types');
+const TestUtils = require('react-dom/test-utils');
 
 const expect = Unexpected
     .clone()
@@ -24,7 +25,7 @@ class LiElement extends React.Component {
 }
 
 LiElement.propTypes = {
-    name: React.PropTypes.string
+    name: PropTypes.string
 };
 
 class UlElement extends React.Component {
@@ -38,7 +39,7 @@ class UlElement extends React.Component {
 }
 
 UlElement.propTypes = {
-    items: React.PropTypes.array
+    items: PropTypes.array
 };
 
 

@@ -146,7 +146,7 @@ var unexpected = require('unexpected');
 var unexpectedReact = require('unexpected-react');
 
 var React = require('react');
-var ReactTestUtils = require('react-addons-test-utils');
+var ReactTestUtils = require('react-dom/test-utils');
 
 // Require the component we want to test
 var MyComponent = require('../MyComponent');
@@ -221,7 +221,7 @@ var unexpectedReact = require('unexpected-react');
 var React = require('react');
 
 // ...and optionally the addons
-var TestUtils = require('react-addons-test-utils');
+var TestUtils = require('react-dom/test-utils');
 
 // then our component(s)
 var MyComponent = require('../MyComponent);

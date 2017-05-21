@@ -1,7 +1,7 @@
 import RenderHook from 'react-render-hook';
 import ReactElementAdapter from 'unexpected-htmllike-jsx-adapter';
 import React from 'react';
-import TestUtils from 'react-addons-test-utils';
+import { createRenderer } from 'react-test-renderer/shallow';
 import AssertionGenerator from './AssertionGenerator';
 
 function triggerEvent(expect, renderer, target, eventName, eventArgs) {
@@ -55,13 +55,13 @@ function installInto(expect) {
     
     // We can convert ReactElements to a renderer by rendering them - but we only do it for `with event`
     expect.addAssertion('<ReactElement> with event <string> <assertion?>', function (expect, subject, eventName) {
-        const renderer = TestUtils.createRenderer();
+        const renderer = createRenderer();
         renderer.render(subject);
         return expect.apply(expect, [renderer, 'with event' ].concat(Array.prototype.slice.call(arguments, 2)));
     });
     
     expect.addAssertion('<ReactElement> with event <string> <object> <assertion?>', function (expect, subject, eventName, eventArgs) {
-        const renderer = TestUtils.createRenderer();
+        const renderer = createRenderer();
         renderer.render(subject);
         return expect.apply(expect, [ renderer, 'with event' ].concat(Array.prototype.slice.call(arguments, 2)));
     });
@@ -69,7 +69,7 @@ function installInto(expect) {
 
     // Add 'when rendered' to render with the shallow renderer
     expect.addAssertion('<ReactElement> when rendered <assertion?>', function (expect, subject) {
-       const renderer = TestUtils.createRenderer();
+       const renderer = createRenderer();
        renderer.render(subject);
         return expect.withError(function () {
             expect.errorMode = 'bubble';

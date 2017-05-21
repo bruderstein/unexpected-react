@@ -5,13 +5,14 @@ unexpected.output.preferredWidth = 80;
 unexpected.use(require('./src/test-renderer'));
 
 global.React = require('react');
+global.PropTypes = require('prop-types');
 global.TestRenderer = require('react-test-renderer');
 
 
 const TodoItem = React.createClass({
     propTypes: {
-        id: React.PropTypes.number,
-        label: React.PropTypes.string
+        id: PropTypes.number,
+        label: PropTypes.string
     },
 
     getInitialState() {
@@ -47,7 +48,7 @@ const TodoItem = React.createClass({
 
 const TodoList = React.createClass({
     propTypes: {
-        children: React.PropTypes.node
+        children: PropTypes.node
     },
     
     getInitialState() {

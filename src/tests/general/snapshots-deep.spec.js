@@ -17,8 +17,9 @@ import Module from 'module';
 import path from 'path';
 import Promise from 'bluebird';
 
-import React, { PropTypes } from 'react';
-import TestUtils from 'react-addons-test-utils';
+import React from 'react';
+import PropTypes from 'prop-types';
+import TestUtils from 'react-dom/test-utils';
 import Sinon from 'sinon';
 import { injectLoader } from '../../helpers/snapshotLoader';
 import functionFixtures from '../fixtures/functions';

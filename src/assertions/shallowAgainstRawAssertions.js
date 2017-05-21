@@ -2,7 +2,7 @@ import RenderHook from 'react-render-hook';
 import ReactElementAdapter from 'unexpected-htmllike-jsx-adapter';
 import RawAdapter from 'unexpected-htmllike-raw-adapter';
 import React from 'react';
-import TestUtils from 'react-addons-test-utils';
+import TestUtils from 'react-dom/test-utils';
 import AssertionGenerator from './AssertionGenerator';
 import { triggerEvent } from './shallowAssertions';
 

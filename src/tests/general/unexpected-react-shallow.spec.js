@@ -2,10 +2,9 @@ var Unexpected = require('unexpected');
 var UnexpectedReact = require('../../unexpected-react');
 
 var React = require('react');
-var TestUtils = require('react-addons-test-utils');
+var PropTypes = require('prop-types');
+var createRenderer = require('react-test-renderer/shallow').createRenderer;
 var Immutable = require('immutable');
-
-var PropTypes = React.PropTypes;
 
 var expect = Unexpected.clone()
     .installPlugin(UnexpectedReact);
@@ -90,8 +89,8 @@ describe('unexpected-react-shallow', () => {
     var renderer, renderer2;
 
     beforeEach(function () {
-        renderer = TestUtils.createRenderer();
-        renderer2 = TestUtils.createRenderer();
+        renderer = createRenderer();
+        renderer2 = createRenderer();
 
     });
 

@@ -17,11 +17,18 @@ rm -rf node_modules
 yarn install
 yarn upgrade react@$1
 yarn upgrade react-dom@$1
+if [ $1 != "0.14.x" ]; then
+  yarn remove react-test-renderer
+else
+  yarn upgrade react-test-renderer@$1
+fi
+
 if [ $1 = "15.5.x" ]; then
-  yarn uninstall react-addons-test-utils
+  yarn remove react-addons-test-utils
 else
   yarn upgrade react-addons-test-utils@$1
 fi
+npm install ../../
 shift
 cd ..
 

@@ -1,1 +1,1 @@
-module.exports = require('../../src/unexpected-react');
+module.exports = require('unexpected-react');
