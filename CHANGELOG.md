@@ -168,3 +168,6 @@ based on the `with all children`, `with all wrappers`, and `exactly` flags
 
 * Fix issue with snapshot comments (JSX representation) not always saving correctly (thanks @sunesimonsen for reporting, help tracking it down and the fix!)
 
+## v4.0.0
+
+* (breaking) Drop support for React 0.14 and <= 15.4. React 15.5 without any warnings

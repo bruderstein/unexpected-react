@@ -318,8 +318,8 @@ if (typeof document === 'undefined') {
 ```
 
 # React Compatibility
-
-v3.x.x is compatible with React v0.14.x and v15.
+v4.x.x is compatible with React v15.5 and up
+v3.x.x is compatible with React v0.14.x and v15. Warning with v15.5, but supported
 v2.x.x is compatible with React v0.13.x and v0.14.x
 
 It is not planned to make further releases of the v2 branch, but if you still need 0.13 support,
