@@ -1,0 +1,12 @@
+ PASS  src/__tests__/ClickCounter.spec.js
+  ClickCounter
+    ✓ renders with default props (34ms)
+    ✓ counts a single click (7ms)
+    ✓ counts multiple clicks (4ms)
+    ✓ passes multiple snapshots in a single test (2ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       4 passed, 4 total
+Snapshots:   5 passed, 5 total
+Time:        1.279s
+Ran all test suites.

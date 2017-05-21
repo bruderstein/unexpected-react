@@ -58,7 +58,7 @@ header {
   padding: 0;
   bottom: auto;
   color: white;
-  background-color: #162b34;
+  background-color: #162B34;
   z-index: 1;
 }
 header nav {
@@ -185,9 +185,26 @@ code {
 }
 .code {
   background-color: #f7f7f7;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 .output {
-  background-color: #f3f3f3;
+  background-color: #fff0f0;
+  position: relative;
+  border-radius: 4px;
+}
+.output::after {
+  display: block;
+  content: "Output";
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 4px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: rgba(0, 0, 0, 0.07);
+  z-index: 10000;
 }
 .theme-dark .code,
 .theme-dark .output {
@@ -198,8 +215,8 @@ code {
   border-top: thin solid #333;
 }
 .code + .output {
-  border-top: thin solid #ddd;
-  margin-top: -0.5em;
+  border: thin solid #b8ccdc;
+  margin-top: 0.5em;
 }
 .logo-icon {
   width: 40px;

@@ -12,12 +12,12 @@
     "url": "/assertions/ReactElement/to-deeply-render-as/"
   },
   {
-    "label": "to have rendered (ReactElement)",
-    "url": "/assertions/ReactElement/to-have-rendered/"
-  },
-  {
     "label": "to match snapshot (ReactElement)",
     "url": "/assertions/ReactElement/to-match-snapshot/"
+  },
+  {
+    "label": "to have rendered (ReactElement)",
+    "url": "/assertions/ReactElement/to-have-rendered/"
   },
   {
     "label": "to render as (ReactElement)",
@@ -64,12 +64,12 @@
     "url": "/assertions/RenderedReactElement/with-event/"
   },
   {
-    "label": "queried for (ReactTestRenderer)",
-    "url": "/assertions/ReactTestRenderer/queried-for/"
-  },
-  {
     "label": "to contain (ReactTestRenderer)",
     "url": "/assertions/ReactTestRenderer/to-contain/"
+  },
+  {
+    "label": "queried for (ReactTestRenderer)",
+    "url": "/assertions/ReactTestRenderer/queried-for/"
   },
   {
     "label": "to have rendered (ReactTestRenderer)",

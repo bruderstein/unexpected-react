@@ -1,0 +1,70 @@
+{
+  "numFailedTestSuites": 0,
+  "numFailedTests": 0,
+  "numPassedTestSuites": 2,
+  "numPassedTests": 5,
+  "numPendingTestSuites": 0,
+  "numPendingTests": 0,
+  "numRuntimeErrorTestSuites": 0,
+  "numTotalTestSuites": 2,
+  "numTotalTests": 5,
+  "snapshot": {
+    "added": 0,
+    "didUpdate": true,
+    "failure": false,
+    "filesAdded": 0,
+    "filesRemoved": 0,
+    "filesUnmatched": 0,
+    "filesUpdated": 2,
+    "matched": 4,
+    "total": 6,
+    "unchecked": 0,
+    "unmatched": 0,
+    "updated": 2
+  },
+  "success": true,
+  "testResults": [
+    {
+      "assertionResults": [
+        {
+          "failureMessages": [],
+          "status": "passed",
+          "title": "counts a single click"
+        }
+      ],
+      "message": "",
+      "name": "/src/__tests__/ClickCounter-other.spec.js",
+      "status": "passed",
+      "summary": ""
+    },
+    {
+      "assertionResults": [
+        {
+          "failureMessages": [],
+          "status": "passed",
+          "title": "counts a single click"
+        },
+        {
+          "failureMessages": [],
+          "status": "passed",
+          "title": "counts multiple clicks"
+        },
+        {
+          "failureMessages": [],
+          "status": "passed",
+          "title": "passes multiple snapshots in a single test"
+        },
+        {
+          "failureMessages": [],
+          "status": "passed",
+          "title": "renders with default props"
+        }
+      ],
+      "message": "",
+      "name": "/src/__tests__/ClickCounter.spec.js",
+      "status": "passed",
+      "summary": ""
+    }
+  ],
+  "wasInterrupted": false
+}
