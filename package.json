@@ -4,7 +4,8 @@
   "description": "Plugin for unexpected, to allow for assertions on the React.js virtual DOM, and the shallow and test renderers",
   "scripts": {
     "build": "babel src -d lib",
-    "prepublish": "npm run build && npm test",
+    "prepublish": "npm run build",
+    "preparepublish": "npm run build && npm test",
     "test-main": "mocha --compilers js:babel-core/register src/tests/general/*.spec.js src/tests/regressions/*.spec.js",
     "test-error": "mocha --compilers js:babel-core/register src/tests/errors/*.spec.js",
     "test-testrenderer": "mocha --compilers js:babel-core/register src/tests/testRenderer/*.spec.js",
