@@ -2,7 +2,7 @@ This enables finding a particular component or element, to then perform further 
 
 e.g.
 ```js
-var renderer = TestUtils.createRenderer()
+var renderer = createRenderer()
 renderer.render(
   <TodoList>
     <TodoItem id={1} label="Buy flowers for the wife"/>

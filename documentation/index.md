@@ -147,7 +147,7 @@ var expect = unexpected.clone()
     
 describe('MyComponent', function () {
     it('renders a button', function () {
-        var renderer = ReactTestUtils.createRenderer();
+        var renderer = createRenderer();
         renderer.render(<MyComponent />);
         expect(renderer, 'to have rendered', <button>Click me</button>);
     });
@@ -212,6 +212,7 @@ var React = require('react');
 
 // ...and optionally the addons
 var TestUtils = require('react-dom/test-utils');
+var createRenderer = require('react-test-renderer/shallow');
 
 // then our component(s)
 var MyComponent = require('../MyComponent);
@@ -290,7 +291,7 @@ and are missing things from v3, please raise an issue.
 For the shallow renderer, you can assert on the renderer itself (you can also write the same assertion for the result of `getRenderOutput()`)
 
 ```js
-var renderer = TestUtils.createRenderer();
+var renderer = createRenderer();
 
 renderer.render(<MyButton />);
 

@@ -13,7 +13,7 @@ const MyComponent = () => (
 Let's render the output with the shallow renderer:
 
 ```js
-const renderer = TestUtils.createRenderer();
+const renderer = createRenderer();
 renderer.render(<MyComponent />);
 ```
 

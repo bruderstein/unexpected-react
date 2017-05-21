@@ -9,6 +9,7 @@ unexpected.use(require('./src/unexpected-react'));
 global.TestUtils = require('react-dom/test-utils');
 global.React = require('react');
 global.PropTypes = require('prop-types');
+global.createRenderer = require('react-test-renderer/shallow').createRenderer;
 
 
 const TodoItem = React.createClass({

@@ -17,7 +17,7 @@ const MyComponent = () => (
 Let's render the output with the shallow renderer:
 
 ```js
-var renderer = TestUtils.createRenderer();
+var renderer = createRenderer();
 renderer.render(<MyComponent />);
 ```
 
@@ -37,7 +37,7 @@ Triggered events still works, and can be combined with matching snaphots.
 e.g.
 
 ```js#evaluate:false
-var renderer = TestUtils.createRenderer();
+var renderer = createRenderer();
 renderer.render(<MyButton />);
 
 expect(renderer, 

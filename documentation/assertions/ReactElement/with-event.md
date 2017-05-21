@@ -7,7 +7,7 @@ there is a prop with the name `on[EventName]`, where the first letter of the eve
 e.g. with a button that counts it's own clicks
 
 ```js
-var renderer = TestUtils.createRenderer()
+var renderer = createRenderer()
 renderer.render(<MyButton />);
 
 expect(renderer, 'with event', 'click', 'to have rendered', <button>Button was clicked 1 times</button>);
@@ -25,7 +25,7 @@ expect(<MyButton />, 'with event click', 'to have rendered', <button>Button was 
 Given the following todo list:
 
 ```js
-var renderer = TestUtils.createRenderer()
+var renderer = createRenderer()
 renderer.render(
   <TodoList>
     <TodoItem id={1} label="Buy flowers for the wife"/>
@@ -81,7 +81,7 @@ return expect(
 You can add an `eventTarget` prop to the expected to trigger the event on a child component.
 e.g.
 ```js
-var renderer = TestUtils.createRenderer()
+var renderer = createRenderer()
 renderer.render(<App />);
 
 expect(renderer, 

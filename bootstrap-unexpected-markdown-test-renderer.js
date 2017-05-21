@@ -7,6 +7,7 @@ unexpected.use(require('./src/test-renderer'));
 global.React = require('react');
 global.PropTypes = require('prop-types');
 global.TestRenderer = require('react-test-renderer');
+global.createRenderer = require('react-test-renderer/shallow').createRenderer;
 
 
 const TodoItem = React.createClass({

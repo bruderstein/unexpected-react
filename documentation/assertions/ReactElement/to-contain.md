@@ -12,7 +12,7 @@ const MyComponent = () => (
   </div>
 )
 
-var renderer = TestUtils.createRenderer()
+var renderer = createRenderer()
 renderer.render(<MyComponent/>)
 ```
 
