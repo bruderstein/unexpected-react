@@ -1,1 +1,1 @@
-module.exports = require('../../src/jest');
+module.exports = require('unexpected-react/jest');
