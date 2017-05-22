@@ -171,3 +171,8 @@ based on the `with all children`, `with all wrappers`, and `exactly` flags
 ## v4.0.0
 
 * (breaking) Drop support for React 0.14 and <= 15.4. React 15.5 without any warnings
+
+## v4.0.1
+
+* Fix peerDependency versions for react (thanks @gustavnikolaj)
+
