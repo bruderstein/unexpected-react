@@ -103,6 +103,9 @@ describe('snapshots', function () {
     if (options.update) {
       state.snapshotState.update = options.update;
     }
+    if (options.updatev20) {
+        state.snapshotState._updateSnapshot = options.updatev20;
+    }
     JestMatchers.setState(state);
   }
   
@@ -262,6 +265,168 @@ describe('snapshots', function () {
     });
   });
   
+
+  describe('when update for jest v20 is `all` and the snapshot doesn`t match', function () {
+      let snapshotPath;
+      beforeEach(function () {
+          initState({
+              testPath: 'single.spec.js',
+              testName: 'single test name',
+              updatev20: 'all'
+          });
+          renderer.render(<ClickCounter />);
+          snapshotPath = path.join(PATH_TO_TESTS, '__snapshots__/single.spec.unexpected-snap');
+          expect(renderer, 'with event click', 'to match snapshot');
+      });
+
+      it('increments `updated`', function () {
+
+          expect(state, 'to satisfy', {
+              snapshotState: {
+                  updated: 1,
+                  added: 0,
+                  _updateSnapshot: 'all'
+              }
+          });
+      });
+
+      it('writes the new snapshot', function () {
+          expect(fs.writeFileSync, 'to have calls satisfying', [
+              [
+                  snapshotPath,
+                  expect.it('to match', /exports\[`single test name 1`]/)
+              ]
+          ]);
+      });
+
+      it('writes the correct snapshot', function () {
+          const snapshot = loadSnapshotMock(snapshotPath);
+          expect(snapshot, 'to satisfy', {
+              'single test name 1': {
+                  type: 'button',
+                  children: [ 'Clicked ', '1', ' times' ]
+              }
+          });
+      });
+  });
+
+    describe('when update for jest v20 is `new` and the snapshot doesn`t match', function () {
+        let snapshotPath;
+        beforeEach(function () {
+            initState({
+                testPath: 'single.spec.js',
+                testName: 'single test name',
+                updatev20: 'new'
+            });
+            renderer.render(<ClickCounter />);
+            snapshotPath = path.join(PATH_TO_TESTS, '__snapshots__/single.spec.unexpected-snap');
+            expect(() => expect(renderer, 'with event click', 'to match snapshot'), 'to throw');
+        });
+
+        it('does not increment `updated`', function () {
+
+            expect(state, 'to satisfy', {
+                snapshotState: {
+                    updated: 0,
+                    added: 0,
+                    unmatched: 1,
+                    _updateSnapshot: 'new'
+                }
+            });
+        });
+
+        it('does not write a new snapshot', function () {
+            expect(fs.writeFileSync, 'to have calls satisfying', []);
+        });
+
+    });
+
+    describe('when update for jest v20 is `new` and the snapshot is for a new test', function () {
+        let snapshotPath;
+        beforeEach(function () {
+            initState({
+                testPath: 'single.spec.js',
+                testName: 'new test name',
+                updatev20: 'new'
+            });
+            renderer.render(<ClickCounter />);
+            snapshotPath = path.join(PATH_TO_TESTS, '__snapshots__/single.spec.unexpected-snap');
+            expect(renderer, 'with event click', 'to match snapshot');
+        });
+
+        it('increments `updated`', function () {
+
+            expect(state, 'to satisfy', {
+                snapshotState: {
+                    updated: 0,
+                    added: 1,
+                    unmatched: 0,
+                    _updateSnapshot: 'new'
+                }
+            });
+        });
+
+        it('writes the new snapshot', function () {
+            expect(fs.writeFileSync, 'to have calls satisfying', [
+                [
+                    snapshotPath,
+                    expect.it('to match', /exports\[`new test name 1`]/)
+                ]
+            ]);
+        });
+
+        it('writes the correct snapshot', function () {
+            const snapshot = loadSnapshotMock(snapshotPath);
+            expect(snapshot, 'to satisfy', {
+                'new test name 1': {
+                    type: 'button',
+                    children: [ 'Clicked ', '1', ' times' ]
+                }
+            });
+        });
+
+    });
+
+    describe('when update for jest v20 is `none` and the snapshot is for a new test', function () {
+        let snapshotPath;
+        beforeEach(function () {
+            initState({
+                testPath: 'single.spec.js',
+                testName: 'new test name',
+                updatev20: 'none'
+            });
+            renderer.render(<ClickCounter />);
+            snapshotPath = path.join(PATH_TO_TESTS, '__snapshots__/single.spec.unexpected-snap');
+            expect(() => expect(renderer, 'with event click', 'to match snapshot'), 'to throw',
+                [
+                    'expected',
+                    '<button onClick={function bound onClick() { /* native code */ }}>',
+                    '  Clicked 1 times',
+                    '</button>',
+                    'with event \'click\' to match snapshot',
+                    '',
+                    'No snapshot available, but running with `--ci`'
+                ].join('\n'));
+        });
+
+        it('increments `updated`', function () {
+
+            expect(state, 'to satisfy', {
+                snapshotState: {
+                    updated: 0,
+                    added: 0,
+                    unmatched: 1,
+                    _updateSnapshot: 'none'
+                }
+            });
+        });
+
+        it('does not write the new snapshot', function () {
+            expect(fs.writeFileSync, 'to have calls satisfying', []);
+        });
+
+    });
+
   describe('with functions', function () {
     it('compares with a snapshot with a normal function', function () {
       

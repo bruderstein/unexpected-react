@@ -122,18 +122,33 @@ function getSnapshotPath(testPath) {
 const rawAdapter = new RawAdapter({ convertToString: true, concatTextContent: true });
 
 function compareSnapshot(expect, flags, subjectAdapter, subjectRenderer, subjectOutput) {
-  
-  const state = matchers.getState();
-  
-  if (!state.unexpectedSnapshot) {
-    state.unexpectedSnapshot = new UnexpectedSnapshotState(state.snapshotState);
-  }
 
-  const snapshot = state.unexpectedSnapshot.getSnapshot(state.testPath, state.currentTestName, expect);
-  if (snapshot === null) {
-    // Write and save
-    state.unexpectedSnapshot.saveSnapshot(state.testPath, state.currentTestName, rawAdapter.serialize(subjectAdapter, subjectOutput), expect);
-    state.snapshotState.added++;
+    const state = matchers.getState();
+
+    if (!state.unexpectedSnapshot) {
+        state.unexpectedSnapshot = new UnexpectedSnapshotState(state.snapshotState);
+    }
+
+    const snapshot = state.unexpectedSnapshot.getSnapshot(state.testPath, state.currentTestName, expect);
+    // For jest <= 19, snapshotState.update is true when updating
+    // for >= 20, snapshotState._updateSnapshot is 'all' when `-u` is specified
+    //                                             'new' when nothing is specified,
+    //                                             'none' when `--ci` is specified
+    // Jest <= 19 always updated new snapshots, so if _updateSnapshot is undefined, we're assuming an older version,
+    // and hence can always update the new snapshot
+    const updateSnapshot = state.snapshotState._updateSnapshot;
+    if (snapshot === null) {
+        if (updateSnapshot === 'new' || updateSnapshot === 'all' || updateSnapshot === undefined) {
+            state.unexpectedSnapshot.saveSnapshot(state.testPath, state.currentTestName, rawAdapter.serialize(subjectAdapter, subjectOutput), expect);
+            state.snapshotState.added++;
+        } else if (updateSnapshot === 'none') {
+            state.snapshotState.unmatched++;
+            expect.fail({
+                diff: function (output) {
+                    return output.error('No snapshot available, but running with `--ci`');
+                }
+            })
+        }
   } else {
     expect.withError(() => {
       if (flags.satisfy) {
@@ -144,7 +159,7 @@ function compareSnapshot(expect, flags, subjectAdapter, subjectRenderer, subject
       state.snapshotState.matched = (state.snapshotState.matched || 0) + 1;
     }, function (err) {
       state.unexpectedSnapshot.markTestAsFailed(state.testPath, state.currentTestName);
-      if (state.snapshotState.update === true) {
+      if (state.snapshotState.update === true || state.snapshotState._updateSnapshot === 'all') {
         state.snapshotState.updated++;
         state.unexpectedSnapshot.saveSnapshot(state.testPath, state.currentTestName, rawAdapter.serialize(subjectAdapter, subjectOutput), expect);
       } else {
