@@ -39,10 +39,9 @@ class UnexpectedSnapshotState {
   constructor(snapshotState) {
     const files = {};
     this._files = files;
-    
   }
   
-  getSnapshot(testPath, testName, expect) {
+  getSnapshot(testPath, testName, expect, snapshotState) {
     let snapshot = this._files[testPath];
     if (!snapshot) {
       const snapshotPath = getSnapshotPath(testPath);
@@ -63,7 +62,7 @@ class UnexpectedSnapshotState {
         allTests: content || {},
         contentOutput: contentOutput,
         failedTests: new Set()
-      }
+      };
     }
     const count = (snapshot.testCounter[testName] || 0) + 1;
     snapshot.testCounter[testName] = count;
@@ -129,15 +128,15 @@ function compareSnapshot(expect, flags, subjectAdapter, subjectRenderer, subject
         state.unexpectedSnapshot = new UnexpectedSnapshotState(state.snapshotState);
     }
 
-    const snapshot = state.unexpectedSnapshot.getSnapshot(state.testPath, state.currentTestName, expect);
+    const snapshot = state.unexpectedSnapshot.getSnapshot(state.testPath, state.currentTestName, expect, state.snapshotState);
     // For jest <= 19, snapshotState.update is true when updating
     // for >= 20, snapshotState._updateSnapshot is 'all' when `-u` is specified
     //                                             'new' when nothing is specified,
     //                                             'none' when `--ci` is specified
     // Jest <= 19 always updated new snapshots, so if _updateSnapshot is undefined, we're assuming an older version,
     // and hence can always update the new snapshot
-    const updateSnapshot = state.snapshotState._updateSnapshot;
     if (snapshot === null) {
+        const updateSnapshot = state.snapshotState._updateSnapshot;
         if (updateSnapshot === 'new' || updateSnapshot === 'all' || updateSnapshot === undefined) {
             state.unexpectedSnapshot.saveSnapshot(state.testPath, state.currentTestName, rawAdapter.serialize(subjectAdapter, subjectOutput), expect);
             state.snapshotState.added++;
@@ -188,6 +187,15 @@ function injectStateHooks() {
   const state = matchers.getState();
   const snapshotState = state && state.snapshotState;
   if (snapshotState) {
+    const originalGetUncheckedCount = state.getUncheckedCount || (() => 0);
+    snapshotState.getUncheckedCount = function () {
+        const unexpectedState = state.unexpectedSnapshot;
+        if (unexpectedState && unexpectedState._files && unexpectedState._files[state.testPath]) {
+            return  unexpectedState._files[state.testPath].uncheckedKeys.size +
+                originalGetUncheckedCount.call(snapshotState);
+        }
+        return originalGetUncheckedCount.call(snapshotState);
+    };
     const originalRemoveUncheckedKeys = snapshotState.removeUncheckedKeys;
     
     snapshotState.removeUncheckedKeys = function () {

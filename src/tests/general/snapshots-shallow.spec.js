@@ -354,7 +354,7 @@ describe('snapshots', function () {
             expect(renderer, 'with event click', 'to match snapshot');
         });
 
-        it('increments `updated`', function () {
+        it('increments `added`', function () {
 
             expect(state, 'to satisfy', {
                 snapshotState: {
@@ -409,7 +409,7 @@ describe('snapshots', function () {
                 ].join('\n'));
         });
 
-        it('increments `updated`', function () {
+        it('increments `unmatched`', function () {
 
             expect(state, 'to satisfy', {
                 snapshotState: {
@@ -424,7 +424,46 @@ describe('snapshots', function () {
         it('does not write the new snapshot', function () {
             expect(fs.writeFileSync, 'to have calls satisfying', []);
         });
+    });
 
+    describe('when update for jest v20 is `new` and the snapshot is for a existing test', function () {
+        let snapshotPath;
+        beforeEach(function () {
+            initState({
+                testPath: 'single.spec.js',
+                testName: 'single test name',
+                updatev20: 'new'
+            });
+            renderer.render(<ClickCounter />);
+            snapshotPath = path.join(PATH_TO_TESTS, '__snapshots__/single.spec.unexpected-snap');
+            expect(state.snapshotState.getUncheckedCount(), 'to equal', 0);
+            expect(renderer, 'to match snapshot');
+        });
+
+        it('increments `matched`', function () {
+
+            expect(state, 'to satisfy', {
+                snapshotState: {
+                    updated: 0,
+                    added: 0,
+                    matched: 1,
+                    _updateSnapshot: 'new'
+                }
+            });
+        });
+
+        it('does not write the new snapshot', function () {
+            expect(fs.writeFileSync, 'to have calls satisfying', []);
+        });
+
+        it('leaves unchecked as 1', function () {
+           expect(state.snapshotState.getUncheckedCount(), 'to equal', 1);
+        });
+
+        it('reduces unchecked to 0 after checking the second snapshot', function () {
+            expect(renderer, 'with event', 'click', 'to match snapshot');
+            expect(state.snapshotState.getUncheckedCount(), 'to equal', 0);
+        });
     });
 
   describe('with functions', function () {
