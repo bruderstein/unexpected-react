@@ -3,15 +3,15 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "react": "15.5.x",
+    "react-dom": "15.5.x"
   },
   "devDependencies": {
     "jest": "*",
     "unexpected": "^10.22.2"
   },
   "scripts": {
-    "test": "jest --json --outputFile testRunOutput.json",
-    "test-update": "jest --json --outputFile testRunOutput.json -u"
+    "test": "jest --ci=false --json --outputFile testRunOutput.json",
+    "test-update": "jest --ci=false --json --outputFile testRunOutput.json -u"
   }
 }
