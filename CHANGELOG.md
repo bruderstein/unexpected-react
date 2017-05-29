@@ -176,3 +176,6 @@ based on the `with all children`, `with all wrappers`, and `exactly` flags
 
 * Fix peerDependency versions for react (thanks @gustavnikolaj)
 
+## v4.0.2
+
+* Fix snapshot support for Jest 20
