@@ -370,6 +370,13 @@ describe('unexpected-react (deep rendering)', () => {
 
         });
 
+        it('provides the rendered component as the fulfillment value', () => {
+            const component = TestUtils.renderIntoDocument(<CustomComp />);
+
+            return expect(component, 'to have rendered', <div />)
+                .then(rendered => expect(rendered, 'to be', component));
+        });
+
     });
 
     describe('contains', () => {
@@ -1057,6 +1064,11 @@ describe('unexpected-react (deep rendering)', () => {
                     '  />',
                     '</CustomComp>'
                 ].join('\n'));
+        });
+
+        it('provides the rendered component as the fulfillment value', function () {
+            return expect(<CustomComp />, 'to deeply render as', <CustomComp />)
+                .then(customComp => expect(customComp, 'to be a', 'RenderedReactElement'));
         });
     });
 });
