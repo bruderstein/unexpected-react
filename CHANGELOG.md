@@ -179,3 +179,8 @@ based on the `with all children`, `with all wrappers`, and `exactly` flags
 ## v4.0.2
 
 * Fix snapshot support for Jest 20
+
+## v4.1.0
+
+* Return the renderer output as the fulfillment value of the promise for `to render as` and `to have rendered`, allowing further assertions on the output after the main assertion (thanks @papandreou!)
+

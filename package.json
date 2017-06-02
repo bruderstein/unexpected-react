@@ -1,6 +1,6 @@
 {
   "name": "unexpected-react",
-  "version": "4.0.2",
+  "version": "4.1.0",
   "description": "Plugin for unexpected, to allow for assertions on the React.js virtual DOM, and the shallow and test renderers",
   "scripts": {
     "build": "babel src -d lib",
