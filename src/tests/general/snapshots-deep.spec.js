@@ -141,7 +141,7 @@ describe('snapshots', function () {
         '    </ClickCounter>',
         '  </div>',
         '</TwoClickCounters>',
-        'with event \'click\' on <ClickCounter className="one" /> to match snapshot',
+        'with event click on <ClickCounter className="one" /> to match snapshot',
         '',
         '<TwoClickCounters>',
         '  <div>',

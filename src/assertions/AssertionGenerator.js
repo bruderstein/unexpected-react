@@ -1,6 +1,8 @@
 import UnexpectedHtmlLike from 'unexpected-htmllike';
 import React from 'react';
+import { eventTypes } from 'react-dom/lib/SimpleEventPlugin';
 
+const REACT_EVENT_NAMES = Object.keys(eventTypes);
 const PENDING_TEST_EVENT_TYPE = { dummy: 'Dummy object to identify a pending event on the test renderer' };
 
 function getDefaultOptions(flags) {
@@ -303,20 +305,27 @@ AssertionGenerator.prototype._installWithEvent = function (expect) {
       return expect.shift(wrapResultForReturn(subject));
     }
   });
+
+  expect.addAssertion(`<${actualTypeName}> with event (${REACT_EVENT_NAMES.join('|')}) <assertion?>`, function (expect, subject, ...assertion) {
+    return expect(subject, 'with event', expect.alternations[0], ...assertion);
+  });
   
-  
-  expect.addAssertion(`<${actualTypeName}> with event <string> <object> <assertion?>`, function (expect, subject, eventName, args) {
+  expect.addAssertion(`<${actualTypeName}> with event <string> <object> <assertion?>`, function (expect, subject, eventName, eventArgs) {
     if (arguments.length > 4) {
       return expect.shift({
         $$typeof: PENDING_EVENT_IDENTIFIER,
         renderer: subject,
         eventName: eventName,
-        eventArgs: args
+        eventArgs: eventArgs
       });
     } else {
-      triggerEvent(subject, null, eventName, args);
+      triggerEvent(subject, null, eventName, eventArgs);
       return expect.shift(subject);
     }
+  });
+
+  expect.addAssertion(`<${actualTypeName}> with event (${REACT_EVENT_NAMES.join('|')}) <object> <assertion?>`, function (expect, subject, eventArgs, ...assertion) {
+    return expect(subject, 'with event', expect.alternations[0], eventArgs, ...assertion);
   });
   
   if (canTriggerEventsOnOutputType) {
@@ -334,6 +343,10 @@ AssertionGenerator.prototype._installWithEvent = function (expect) {
         return expect.shift(wrapResultForReturn(subject));
       }
     });
+
+    expect.addAssertion(`<${actualRenderOutputType}> with event (${REACT_EVENT_NAMES.join('|')}) <assertion?>`, function (expect, subject, ...assertion) {
+      return expect(subject, 'with event', expect.alternations[0], ...assertion);
+    });
     
     expect.addAssertion(`<${actualRenderOutputType}> with event <string> <object> <assertion?>`, function (expect, subject, eventName, args) {
       if (arguments.length > 4) {
@@ -349,7 +362,10 @@ AssertionGenerator.prototype._installWithEvent = function (expect) {
         return expect.shift(subject);
       }
     });
-    
+
+    expect.addAssertion(`<${actualRenderOutputType}> with event (${REACT_EVENT_NAMES.join('|')}) <object> <assertion?>`, function (expect, subject, eventArgs, ...assertion) {
+      return expect(subject, 'with event', expect.alternations[0], eventArgs, ...assertion);
+    });
   }
   
   expect.addAssertion(`<${actualPendingEventTypeName}> [and] with event <string> <assertion?>`,
@@ -367,6 +383,10 @@ AssertionGenerator.prototype._installWithEvent = function (expect) {
         return expect.shift(subject.renderer);
       }
     });
+
+  expect.addAssertion(`<${actualPendingEventTypeName}> [and] with event (${REACT_EVENT_NAMES.join('|')}) <assertion?>`, function (expect, subject, ...assertion) {
+    return expect(subject, 'with event', expect.alternations[0], ...assertion);
+  });
   
   expect.addAssertion(`<${actualPendingEventTypeName}> [and] with event <string> <object> <assertion?>`,
     function (expect, subject, eventName, eventArgs) {
@@ -384,7 +404,10 @@ AssertionGenerator.prototype._installWithEvent = function (expect) {
         return expect.shift(subject.renderer);
       }
     });
-  
+
+  expect.addAssertion(`<${actualPendingEventTypeName}> [and] with event (${REACT_EVENT_NAMES.join('|')}) <object> <assertion?>`, function (expect, subject, eventArgs, ...assertion) {
+    return expect(subject, 'with event', expect.alternations[0], eventArgs, ...assertion);
+  });
 };
 
 AssertionGenerator.prototype._installWithEventOn = function (expect) {
