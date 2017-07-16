@@ -1,8 +1,7 @@
 import UnexpectedHtmlLike from 'unexpected-htmllike';
 import React from 'react';
-import { eventTypes } from 'react-dom/lib/SimpleEventPlugin';
+import REACT_EVENT_NAMES from '../reactEventNames';
 
-const REACT_EVENT_NAMES = Object.keys(eventTypes);
 const PENDING_TEST_EVENT_TYPE = { dummy: 'Dummy object to identify a pending event on the test renderer' };
 
 function getDefaultOptions(flags) {

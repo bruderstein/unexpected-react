@@ -3,9 +3,7 @@ import ReactElementAdapter from 'unexpected-htmllike-jsx-adapter';
 import React from 'react';
 import { createRenderer } from 'react-test-renderer/shallow';
 import AssertionGenerator from './AssertionGenerator';
-import { eventTypes } from 'react-dom/lib/SimpleEventPlugin';
-
-const REACT_EVENT_NAMES = Object.keys(eventTypes);
+import REACT_EVENT_NAMES from '../reactEventNames';
 
 function triggerEvent(expect, renderer, target, eventName, eventArgs) {
   
