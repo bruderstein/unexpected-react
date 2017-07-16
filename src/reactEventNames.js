@@ -1,3 +1,5 @@
+// Extracted from react-dom 3.9.3:
+// Object.keys(require('react-dom/lib/SimpleEventPlugin').eventTypes)
 export default [
     'abort',
     'animationEnd',
