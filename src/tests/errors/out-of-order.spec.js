@@ -14,11 +14,11 @@ const UnexpectedReact = require('../../unexpected-react');
 const expect = Unexpected.clone()
     .use(UnexpectedReact);
 
-const TestComp = React.createClass({
+class TestComp extends React.Component {
     render() {
         return <div>dummy</div>;
     }
-});
+};
 
 const EXPECTED_ERROR_MESSAGE = `The global rendering hook is not attached
 This probably means React was required before unexpected-react. Check that unexpected-react is required first`;

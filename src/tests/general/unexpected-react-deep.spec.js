@@ -346,11 +346,11 @@ describe('unexpected-react (deep rendering)', () => {
 
         it('matches a component that renders multiple numbers', () => {
 
-            const NumberComponent = React.createClass({
+            const NumberComponent = class NumberComponent extends React.Component {
                 render() {
                     return <div>{3}{6}</div>;
                 }
-            });
+            };
 
             const component = TestUtils.renderIntoDocument(<NumberComponent />);
             expect(component, 'to have rendered', <div>{3}{6}</div>);
@@ -359,14 +359,14 @@ describe('unexpected-react (deep rendering)', () => {
         
         it('matches a component that renders single numbers', () => {
 
-            const NumberComponent = React.createClass({
+            const NumberComponent = class NumberComponent extends React.Component {
                 render() {
                     return <div>{3}</div>;
                 }
-            });
+            };
 
             const component = TestUtils.renderIntoDocument(<NumberComponent />);
-            expect(component, 'to have rendered', <div>{3}</div>);
+            expect(component, 'to have rendered', <div>3</div>);
 
         });
 
@@ -563,56 +563,56 @@ describe('unexpected-react (deep rendering)', () => {
 
     describe('with events', () => {
 
-        let ClickableComponent;
+        class ClickableComponent extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    clickCount: 1,
+                    itemClickCount: 1
+                };
+                this.handleMainClick = this.handleMainClick.bind(this);
+                this.handleMouseDown = this.handleMouseDown.bind(this);
+                this.handleItemClick = this.handleItemClick.bind(this);
+                this.handleItemMouseDown = this.handleItemMouseDown.bind(this);
+            }
 
-        beforeEach(() => {
-            ClickableComponent = React.createClass({
+            handleMainClick() {
+                this.setState({
+                    clickCount: this.state.clickCount + 1
+                });
+            }
 
-                getInitialState() {
-                    return {
-                        clickCount: 1,
-                        itemClickCount: 1
-                    };
-                },
+            handleMouseDown(e) {
+                this.setState({
+                    clickCount: this.state.clickCount + ((e && e.mouseX) || 1)
+                });
+            }
 
-                handleMainClick() {
-                    this.setState({
-                        clickCount: this.state.clickCount + 1
-                    });
-                },
+            handleItemClick() {
+                this.setState({
+                    itemClickCount: this.state.itemClickCount + 1
+                });
+            }
 
-                handleMouseDown(e) {
-                    this.setState({
-                        clickCount: this.state.clickCount + ((e && e.mouseX) || 1)
-                    });
-                },
+            handleItemMouseDown(e) {
+                this.setState({
+                    itemClickCount: this.state.itemClickCount + ((e && e.mouseX) || 1)
+                });
+            }
 
-                handleItemClick() {
-                    this.setState({
-                        itemClickCount: this.state.itemClickCount + 1
-                    });
-                },
-                
-                handleItemMouseDown(e) {
-                    this.setState({
-                        itemClickCount: this.state.itemClickCount + ((e && e.mouseX) || 1)
-                    });
-                },
+            render() {
+                return (
+                    <div onClick={this.handleMainClick} onMouseDown={this.handleMouseDown}>
+                        <span className="main-click">Main clicked {this.state.clickCount}</span>
+                        <span className="item-click testfoo testbar"
+                              onClick={this.handleItemClick}
+                              onMouseDown={this.handleItemMouseDown}>Item clicked {this.state.itemClickCount || 0}</span>
+                    </div>
+                );
+            }
 
-                render() {
-                    return (
-                        <div onClick={this.handleMainClick} onMouseDown={this.handleMouseDown}>
-                            <span className="main-click">Main clicked {this.state.clickCount}</span>
-                            <span className="item-click testfoo testbar"
-                                  onClick={this.handleItemClick}
-                                  onMouseDown={this.handleItemMouseDown}>Item clicked {this.state.itemClickCount || 0}</span>
-                        </div>
-                    );
-                }
+        }
 
-            });
-        });
-        
         it('renders a zero initially', () => {
 
             // This test is (was) failing, when the initial click count is 0. Seems to be a bug in the devtools.
@@ -819,22 +819,21 @@ describe('unexpected-react (deep rendering)', () => {
 
         describe('combined with queried for', () => {
 
-            const TodoItem = React.createClass({
-                propTypes: {
-                    label: PropTypes.string
-                },
-                
-                getInitialState() {
-                    return {
+            class TodoItem extends React.Component {
+
+                constructor() {
+                    super();
+                    this.state = {
                         isCompleted: 'false'
                     };
-                },
+                    this.onClick = this.onClick.bind(this);
+                }
 
                 onClick() {
                     this.setState({
                         isCompleted: 'true'
                     });
-                },
+                }
 
                 render() {
                     return (<div>
@@ -843,18 +842,20 @@ describe('unexpected-react (deep rendering)', () => {
                         <button onClick={this.onClick}>Click me</button>
                     </div>);
                 }
-            });
+            }
 
-            const TodoList = React.createClass({
-
+            // This is a class so we can use renderIntoDocument (and don't need to rely on `when rendered`)
+            class TodoList extends React.Component {
                 render() {
-                    return (<div>
-                        <TodoItem id={1} label="one"/>
-                        <TodoItem id={2} label="two"/>
-                        <TodoItem id={3} label="three"/>
-                    </div>);
+                    return (
+                        <div>
+                            <TodoItem id={1} label="one"/>
+                            <TodoItem id={2} label="two"/>
+                            <TodoItem id={3} label="three"/>
+                        </div>
+                    );
                 }
-            });
+            }
             
             it('combines with queried for', () => {
 

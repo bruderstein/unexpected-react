@@ -5,18 +5,19 @@ var React = require('react');
 var PropTypes = require('prop-types');
 var createRenderer = require('react-test-renderer/shallow').createRenderer;
 var Immutable = require('immutable');
+var createClass = require('create-react-class');
 
 var expect = Unexpected.clone()
     .installPlugin(UnexpectedReact);
 
-var ES5Component = React.createClass({
+var ES5Component = createClass({
     displayName: 'ES5Component',
     render() { return null;}
 });
 
 
 function createNoNameComponent() {
-    return React.createClass({
+    return createClass({
         displayName: '',
         render() { return null;}
     });
@@ -1245,7 +1246,7 @@ describe('unexpected-react-shallow', () => {
 
         it('ignores components that render null in an array when using `with all children`', function () {
 
-            const RenderNull = React.createClass({
+            const RenderNull = createClass({
 
                render: function () {
 
@@ -1268,7 +1269,7 @@ describe('unexpected-react-shallow', () => {
 
         it('ignores null children when using `with all children`', function () {
 
-            const RenderNull = React.createClass({
+            const RenderNull = createClass({
 
                 render: function () {
 
@@ -1286,7 +1287,7 @@ describe('unexpected-react-shallow', () => {
 
         it("highlights when an element renders children when it shouldn't when using `with all children`", function () {
 
-            const RenderNull = React.createClass({
+            const RenderNull = createClass({
 
                 render: function () {
 
@@ -2068,7 +2069,7 @@ describe('unexpected-react-shallow', () => {
         let ClickableComponent;
 
         beforeEach(() => {
-            ClickableComponent = React.createClass({
+            ClickableComponent = createClass({
 
                 getInitialState() {
                     return {

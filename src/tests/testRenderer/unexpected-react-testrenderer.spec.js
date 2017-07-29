@@ -241,7 +241,7 @@ describe('unexpected-react (test renderer)', function () {
       expect(comp,
         'with event click',
         'to have rendered',
-        <button>{1}</button>
+        <button>1</button>
       );
     });
     
@@ -251,7 +251,7 @@ describe('unexpected-react (test renderer)', function () {
         'with event click',
         'with event click',
         'to have rendered',
-        <button>{2}</button>
+        <button>2</button>
       );
     });
     
@@ -260,7 +260,7 @@ describe('unexpected-react (test renderer)', function () {
       expect(comp,
         'with event click',
         'to contain',
-        <button>{1}</button>
+        <button>1</button>
       );
     });
   
@@ -269,7 +269,7 @@ describe('unexpected-react (test renderer)', function () {
       expect(comp,
         'with event mouseOver', { mouseX: 100 },
         'to have rendered',
-        <button>{100}</button>
+        <button>100</button>
       );
     });
     
@@ -282,8 +282,8 @@ describe('unexpected-react (test renderer)', function () {
         'with event click', 'on', <button className="two" />,
         'to have rendered',
         <div>
-          <button className="one">{0}</button>
-          <button className="two">{1}</button>
+          <button className="one">0</button>
+          <button className="two">1</button>
         </div>
       );
     });
@@ -297,8 +297,8 @@ describe('unexpected-react (test renderer)', function () {
         'with event click', 'on', <div><button /><button eventTarget /></div>,
         'to have rendered',
         <div>
-          <button className="one">{0}</button>
-          <button className="two">{1}</button>
+          <button className="one">0</button>
+          <button className="two">1</button>
         </div>
       );
     });
@@ -313,8 +313,8 @@ describe('unexpected-react (test renderer)', function () {
           'with event click', 'on', <div><button /><button className="notavailabe" eventTarget /></div>,
           'to have rendered',
           <div>
-            <button className="one">{0}</button>
-            <button className="two">{1}</button>
+            <button className="one">0</button>
+            <button className="two">1</button>
           </div>
         ),
         'to throw',
@@ -354,7 +354,7 @@ describe('unexpected-react (test renderer)', function () {
       return expect(comp, 'with event', 'click')
         .then(renderer => {
           expect(renderer, 'to be a', 'ReactTestRenderer');
-          expect(renderer, 'to have rendered', <button>{1}</button>);
+          expect(renderer, 'to have rendered', <button>1</button>);
         });
     });
     
@@ -364,7 +364,7 @@ describe('unexpected-react (test renderer)', function () {
       return expect(comp, 'with event click', 'on', <button />)
         .then(renderer => {
           expect(renderer, 'to be a', 'ReactTestRenderer');
-          expect(renderer, 'to have rendered', <button>{1}</button>);
+          expect(renderer, 'to have rendered', <button>1</button>);
         });
     });
   
@@ -374,7 +374,7 @@ describe('unexpected-react (test renderer)', function () {
       return expect(comp, 'with event', 'mouseOver', { mouseX: 100 } )
         .then(renderer => {
           expect(renderer, 'to be a', 'ReactTestRenderer');
-          expect(renderer, 'to have rendered', <button>{100}</button>);
+          expect(renderer, 'to have rendered', <button>100</button>);
         });
     });
     
@@ -384,7 +384,7 @@ describe('unexpected-react (test renderer)', function () {
       return expect(comp, 'with event click', 'on', <button />, 'with event', 'click')
         .then(renderer => {
           expect(renderer, 'to be a', 'ReactTestRenderer');
-          expect(renderer, 'to have rendered', <button>{2}</button>);
+          expect(renderer, 'to have rendered', <button>2</button>);
         });
     });
   
@@ -396,7 +396,7 @@ describe('unexpected-react (test renderer)', function () {
       expect(comp, 
         'with event', 'click', 'on', <button className="two" />, 
         'queried for', <button className="two" />, 
-        'to have rendered', <button>{1}</button>);
+        'to have rendered', <button>1</button>);
     });
   
     it('finds an element with `to contain` after an event', function () {
@@ -405,7 +405,7 @@ describe('unexpected-react (test renderer)', function () {
     
       expect(comp,
         'with event', 'click',
-        'to contain', <button>{1}</button>);
+        'to contain', <button>1</button>);
     });
     
     it('finds an element with `to contain` after an event with `on`', function () {
@@ -415,7 +415,7 @@ describe('unexpected-react (test renderer)', function () {
   
       expect(comp,
         'with event', 'click', 'on', <button className="two" />,
-        'to contain', <button className="two">{1}</button>);
+        'to contain', <button className="two">1</button>);
     });
     
     it('passes when no element can be found using `not to contain` after an event', function () {
@@ -425,7 +425,7 @@ describe('unexpected-react (test renderer)', function () {
     
       expect(comp,
         'with event', 'click', 'on', <button className="two" />,
-        'not to contain', <button className="not-exists">{1}</button>);
+        'not to contain', <button className="not-exists">1</button>);
     });
     
     it('shows the best match when no element can be found using `to contain` after an event', function () {
@@ -437,7 +437,7 @@ describe('unexpected-react (test renderer)', function () {
         () =>
           expect(comp,
             'with event', 'click', 'on', <button className="two"/>,
-            'to contain', <button className="not-exists">{1}</button>),
+            'to contain', <button className="not-exists">1</button>),
         'to throw',
         [
           'expected',

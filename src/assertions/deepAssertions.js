@@ -19,7 +19,7 @@ function checkAttached(expect) {
 
 function triggerEvent(expect, component, target, eventName, eventArgs) {
   let componentData;
-  if (component && component.element &&
+  if (component &&
     component.data &&
     component.data.type &&
     component.data.nodeType) {
@@ -27,9 +27,9 @@ function triggerEvent(expect, component, target, eventName, eventArgs) {
   } else {
     componentData = RenderHook.findComponent(component);
   }
-  let targetDOM = findDOMNode(componentData.element.getPublicInstance());
+  let targetDOM = findDOMNode(componentData.internalInstance.stateNode);
   if (target) {
-    targetDOM = findDOMNode(target.element.getPublicInstance());
+    targetDOM = findDOMNode(target.internalInstance.stateNode);
   }
   if (typeof TestUtils.Simulate[eventName] !== 'function') {
     
@@ -52,7 +52,7 @@ function installInto(expect) {
     queryTypeName: 'ReactElement',
     expectedTypeName: 'ReactElement',
     getRenderOutput: component => {
-      if (component && component.element &&
+      if (component &&
         component.data &&
         component.data.type &&
         component.data.nodeType) {
@@ -66,7 +66,7 @@ function installInto(expect) {
     actualRenderOutputType: 'RenderedReactElementData',
     getDiffInputFromRenderOutput: renderOutput => renderOutput,
     rewrapResult: (renderer, target) => target,
-    wrapResultForReturn: (component, target) => ((target && target.element.getPublicInstance()) || component),
+    wrapResultForReturn: (component, target) => ((target && target.internalInstance.stateNode) || component),
     triggerEvent: triggerEvent.bind(null, expect),
     canTriggerEventsOnOutputType: true
   });
@@ -84,14 +84,14 @@ function installInto(expect) {
 
   expect.addAssertion('<ReactElement> when deeply rendered <assertion?>', function (expect, subject) {
       let component;
-      if (subject.prototype && typeof subject.prototype.render === 'function') {
+      if (subject.type && subject.type.prototype && typeof subject.type.prototype.render === 'function') {
           component = TestUtils.renderIntoDocument(subject);
       } else {
           // Stateless component
           component = TestUtils.renderIntoDocument(<StatelessWrapper>{subject}</StatelessWrapper>);
           component = RenderHook.findComponent(component);
           if (component) {
-              component = component && component.data.children[0] && component.data.children[0]._instance;
+              component = component && component.data.children[0] && RenderHook.findInternalComponent(component.data.children[0]);
           } else {
               expect.errorMode = 'nested';
               expect.fail({
@@ -105,7 +105,6 @@ function installInto(expect) {
   });
 
   expect.addAssertion('<ReactElement> to [exactly] deeply render [with all children] [with all wrappers] [with all classes] [with all attributes] as <ReactElement>', function (expect, subject, expected) {
-
       if (this.flags.exactly) {
           return expect(subject, 'when deeply rendered', 'to have exactly rendered', expected);
       }

@@ -10,9 +10,10 @@ global.TestUtils = require('react-dom/test-utils');
 global.React = require('react');
 global.PropTypes = require('prop-types');
 global.createRenderer = require('react-test-renderer/shallow').createRenderer;
+global.createClass = require('create-react-class');
 
 
-const TodoItem = React.createClass({
+const TodoItem = createClass({
     propTypes: {
         id: PropTypes.number,
         label: PropTypes.string
@@ -45,7 +46,7 @@ const TodoItem = React.createClass({
     }
 });
 
-const TodoList = React.createClass({
+const TodoList = createClass({
     propTypes: {
         children: PropTypes.node
     },
@@ -88,7 +89,7 @@ const TodoList = React.createClass({
     }
 });
 
-const App = React.createClass({
+const App = createClass({
 
     getInitialState() {
         return { clickTestClicked: false };
@@ -116,7 +117,7 @@ global.TodoItem = TodoItem;
 global.TodoList = TodoList;
 global.App = App;
 
-const MyButton = React.createClass({
+const MyButton = createClass({
     getInitialState () {
         return {
             count: 0

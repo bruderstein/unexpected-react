@@ -42,7 +42,7 @@ function installInto(expect) {
 
             return (typeof value === 'object' &&
                 value !== null &&
-                value.element &&
+                value.internalInstance &&
                 value.data &&
                 value.data.type &&
                 value.data.nodeType);
@@ -83,12 +83,10 @@ function installInto(expect) {
             return (typeof value === 'object' &&
                 value !== null &&
                 typeof value.hasOwnProperty === 'function' &&
-                value.hasOwnProperty('createClass') &&
                 value.hasOwnProperty('createElement') &&
                 value.hasOwnProperty('cloneElement') &&
                 value.hasOwnProperty('createFactory') &&
-                value.hasOwnProperty('isValidElement') &&
-                value.hasOwnProperty('PropTypes'));
+                value.hasOwnProperty('isValidElement'));
         },
 
         inspect(value, depth, output) {
@@ -120,7 +118,6 @@ function installInto(expect) {
        identify: function (value) {
            return value && typeof value === 'object' &&
                typeof value.hasOwnProperty === 'function' &&
-               value.hasOwnProperty('_component') &&
                typeof value.toJSON === 'function' &&
                typeof value.unmount === 'function' &&
                typeof value.update === 'function' &&
