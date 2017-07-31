@@ -28,34 +28,34 @@
       "assertionResults": [
         {
           "failureMessages": [
-            "\nexpected <ClickCounter /> when rendered\nTo use the `to satisfy snapshot` assertion with the shallow and full DOM renderers, require unexpected-react as `require('unexpected-react/jest');`\n"
+            "UnexpectedError: \nexpected <ClickCounter /> when rendered\nTo use the `to satisfy snapshot` assertion with the shallow and full DOM renderers, require unexpected-react as `require('unexpected-react/jest');`\n"
           ],
           "status": "failed",
           "title": "renders with `when rendered to satisfy`"
         },
         {
           "failureMessages": [
-            "\nexpected <ClickCounter /> when rendered\nTo use the `to match snapshot` assertion with the shallow and full DOM renderers, require unexpected-react as `require('unexpected-react/jest');`\n"
+            "UnexpectedError: \nexpected <ClickCounter /> when rendered\nTo use the `to match snapshot` assertion with the shallow and full DOM renderers, require unexpected-react as `require('unexpected-react/jest');`\n"
           ],
           "status": "failed",
           "title": "renders with `when rendered`"
         },
         {
           "failureMessages": [
-            "\nTo use the `to match snapshot` assertion with the shallow and full DOM renderers, require unexpected-react as `require('unexpected-react/jest');`\n"
+            "UnexpectedError: \nTo use the `to match snapshot` assertion with the shallow and full DOM renderers, require unexpected-react as `require('unexpected-react/jest');`\n"
           ],
           "status": "failed",
           "title": "renders with default props"
         },
         {
           "failureMessages": [
-            "\nTo use the `to satisfy snapshot` assertion with the shallow and full DOM renderers, require unexpected-react as `require('unexpected-react/jest');`\n"
+            "UnexpectedError: \nTo use the `to satisfy snapshot` assertion with the shallow and full DOM renderers, require unexpected-react as `require('unexpected-react/jest');`\n"
           ],
           "status": "failed",
           "title": "renders with default props with to satisfy"
         }
       ],
-      "message": "  ● ClickCounter › renders with default props\n\n    \n    To use the `to match snapshot` assertion with the shallow and full DOM renderers, require unexpected-react as `require('unexpected-react/jest');`\n",
+      "message": "  ● ClickCounter › renders with default props\n\n    UnexpectedError: \n    To use the `to match snapshot` assertion with the shallow and full DOM renderers, require unexpected-react as `require('unexpected-react/jest');`\n",
       "name": "/src/__tests__/ClickCounter.spec.js",
       "status": "failed",
       "summary": ""
