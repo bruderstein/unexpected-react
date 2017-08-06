@@ -12,6 +12,7 @@ global.createClass = require('create-react-class');
 
 
 const TodoItem = createClass({
+    displayName: 'TodoItem',
     propTypes: {
         id: PropTypes.number,
         label: PropTypes.string
@@ -49,6 +50,7 @@ const TodoItem = createClass({
 });
 
 const TodoList = createClass({
+    displayName: 'TodoList',
     propTypes: {
         children: PropTypes.node
     },
@@ -92,7 +94,7 @@ const TodoList = createClass({
 });
 
 const App = createClass({
-
+    displayName: 'App',
     getInitialState() {
         return { clickTestClicked: false };
     },
@@ -120,6 +122,7 @@ global.TodoList = TodoList;
 global.App = App;
 
 const MyButton = createClass({
+    displayName: 'MyButton',
     getInitialState () {
         return {
             count: 0

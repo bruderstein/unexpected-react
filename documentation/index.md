@@ -350,22 +350,22 @@ rendered.  That is easier to see with these example components:
 
 ```js
 
-var Text = React.createClass({
-   render() {
-       return <span>{this.props.content}</span>;
-   }
-});
+class Text extends React.Component {
+	render() {
+    return <span>{this.props.content}</span>;
+  }
+}
 
-var App = React.createClass({
-   render() {
+class App extends React.Component {
+    render() {
         return (
             <div className="testing-is-fun">
               <Text content="hello" />
               <Text content="world" />
             </div>
         );
-   }
-});
+    }
+}
 
 ```
 
