@@ -10,6 +10,7 @@
   "numTotalTests": 1,
   "snapshot": {
     "added": 0,
+    "didUpdate": false,
     "failure": true,
     "filesAdded": 0,
     "filesRemoved": 0,

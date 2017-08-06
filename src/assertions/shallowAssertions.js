@@ -3,6 +3,7 @@ import ReactElementAdapter from 'unexpected-htmllike-jsx-adapter';
 import React from 'react';
 import { createRenderer } from 'react-test-renderer/shallow';
 import AssertionGenerator from './AssertionGenerator';
+import REACT_EVENT_NAMES from '../reactEventNames';
 
 function triggerEvent(expect, renderer, target, eventName, eventArgs) {
   
@@ -54,18 +55,25 @@ function installInto(expect) {
     assertionGenerator.installInto(expect);
     
     // We can convert ReactElements to a renderer by rendering them - but we only do it for `with event`
-    expect.addAssertion('<ReactElement> with event <string> <assertion?>', function (expect, subject, eventName) {
+    expect.addAssertion('<ReactElement> with event <string> <assertion?>', function (expect, subject, eventName, ...assertion) {
         const renderer = createRenderer();
         renderer.render(subject);
-        return expect.apply(expect, [renderer, 'with event' ].concat(Array.prototype.slice.call(arguments, 2)));
-    });
-    
-    expect.addAssertion('<ReactElement> with event <string> <object> <assertion?>', function (expect, subject, eventName, eventArgs) {
-        const renderer = createRenderer();
-        renderer.render(subject);
-        return expect.apply(expect, [ renderer, 'with event' ].concat(Array.prototype.slice.call(arguments, 2)));
+        return expect(renderer, 'with event', eventName, ...assertion);
     });
 
+    expect.addAssertion(`<ReactElement> with event (${REACT_EVENT_NAMES.join('|')}) <assertion?>`, function (expect, subject, ...assertion) {
+        return expect(subject, 'with event', expect.alternations[0], ...assertion);
+    });
+
+    expect.addAssertion('<ReactElement> with event <string> <object> <assertion?>', function (expect, subject, eventName, eventArgs, ...assertion) {
+        const renderer = createRenderer();
+        renderer.render(subject);
+        return expect(renderer, 'with event', eventName, eventArgs, ...assertion);
+    });
+
+    expect.addAssertion(`<ReactElement> with event (${REACT_EVENT_NAMES.join('|')}) <object> <assertion?>`, function (expect, subject, eventArgs) {
+        return expect(subject, 'with event', expect.alternations[0], eventArgs, ...assertion);
+    });
 
     // Add 'when rendered' to render with the shallow renderer
     expect.addAssertion('<ReactElement> when rendered <assertion?>', function (expect, subject) {

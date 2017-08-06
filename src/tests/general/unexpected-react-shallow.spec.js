@@ -2254,9 +2254,9 @@ describe('unexpected-react-shallow', () => {
 
         it('allows triggering multiple events with `and` and event args', () => {
 
-            expect(<ClickableComponent />, 'with event aliensLanded', { increment: 2 },
-                'and with event aliensLanded', { increment: 4 },
-                'and with event aliensLanded', { increment: 8 },
+            expect(<ClickableComponent />, 'with event', 'aliensLanded', { increment: 2 },
+                'and with event', 'aliensLanded', { increment: 4 },
+                'and with event', 'aliensLanded', { increment: 8 },
                 'to have rendered',
                 <div>
                     <span className="main-click">Main clicked 14</span>

@@ -330,7 +330,7 @@ describe('unexpected-react (test renderer)', function () {
           '    0',
           '  </button>',
           '</div>',
-          'with event \'click\' on <div><button /><button className="notavailabe" eventTarget={true} /></div> to have rendered <div><button className="one">0</button><button className="two">1</button></div>',
+          'with event click on <div><button /><button className="notavailabe" eventTarget={true} /></div> to have rendered <div><button className="one">0</button><button className="two">1</button></div>',
           '',
           'Could not find the target for the event. The best match was',
           '',

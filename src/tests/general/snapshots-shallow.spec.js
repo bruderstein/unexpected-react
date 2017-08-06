@@ -138,7 +138,7 @@ describe('snapshots', function () {
         '<button onClick={function bound onClick() { /* native code */ }}>',
         '  Clicked 1 times',
         '</button>',
-        "with event 'click' to match snapshot",
+        'with event click to match snapshot',
         '',
         '<button onClick={function bound onClick() { /* native code */ }}>',
         '  Clicked 1 times // -Clicked 1 times',
@@ -403,7 +403,7 @@ describe('snapshots', function () {
                     '<button onClick={function bound onClick() { /* native code */ }}>',
                     '  Clicked 1 times',
                     '</button>',
-                    'with event \'click\' to match snapshot',
+                    'with event click to match snapshot',
                     '',
                     'No snapshot available, but running with `--ci`'
                 ].join('\n'));

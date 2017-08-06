@@ -72,7 +72,7 @@
     "react-dom": "^15.5.4",
     "react-test-renderer": "^15.5.4",
     "sinon": "^1.17.6",
-    "unexpected": "^10.13.2",
+    "unexpected": "^10.32.1",
     "unexpected-documentation-site-generator": "^4.4.0",
     "unexpected-markdown": "^1.7.1",
     "unexpected-sinon": "^10.5.0"
