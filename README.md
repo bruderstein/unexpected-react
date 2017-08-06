@@ -15,6 +15,10 @@ See the blog post for an introduction: https://medium.com/@bruderstein/the-missi
 
 The full documentation with all the assertions: http://bruderstein.github.io/unexpected-react
 
+# Important note about Fiber (React v16) support
+
+Fiber support is currently being validated. You can `npm install unexpected-react@fiber` to get the latest version compatible with Fiber. Note that in a mocha jsdom environment you also need a [polyfill for `requestAnimationFrame`](https://gist.github.com/paulirish/1579671)
+
 # Features
 
 * Assert React component's output using the [shallow renderer](http://facebook.github.io/react/docs/test-utils.html#shallow-rendering)
@@ -275,6 +279,8 @@ const expect = require('unexpected')
 ## Emulating the DOM
 
 If you're using [Jest](https://facebook.github.io/jest/), you can skip this part, as it comes with built in jsdom support.
+
+For React v16 (using the test unexpected-react@fiber version), we recommend using [jsdom-global](https://npm.im/jsdom-global) and the [requireAnimationFrame polyfill](https://gist.github.com/paulirish/1579671) from Erik Möller, Paul Irish and Tino Zijdel. For previous versions, you can use the boilerplate presented here.
 
 The `emulateDom` file depends on whether you want to use [`domino`](https://npmjs.com/package/domino), or [`jsdom`](https://npmjs.com/package/jsdom).  If you're using Jest, jsdom is built in, so you can ignore this section.
 
