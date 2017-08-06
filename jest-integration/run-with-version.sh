@@ -13,21 +13,16 @@ USE_RELEASED_UNEXPECTED_REACT=no
 cd "$(dirname "$0")"
 
 cd baseTemplate
-rm -rf node_modules
+rm -rf node_modules yarn.lock
 yarn install
 yarn upgrade react@$1
 yarn upgrade react-dom@$1
-if [ $1 != "0.14.x" ]; then
-  yarn remove react-test-renderer
-else
-  yarn upgrade react-test-renderer@$1
+yarn upgrade react-test-renderer@$1
+
+if [[ $1 == 15.4* ]]; then
+  yarn add react-addons-test-utils@$1
 fi
 
-if [ $1 = "15.5.x" ]; then
-  yarn remove react-addons-test-utils
-else
-  yarn upgrade react-addons-test-utils@$1
-fi
 npm install ../../
 shift
 cd ..
