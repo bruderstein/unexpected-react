@@ -1,6 +1,6 @@
 {
   "name": "unexpected-react",
-  "version": "5.0.0-rc1",
+  "version": "5.0.0-rc2",
   "description": "Plugin for unexpected, to allow for assertions on the React.js virtual DOM, and the shallow and test renderers",
   "scripts": {
     "build": "babel src -d lib",
@@ -87,7 +87,7 @@
     "unexpected-htmllike": "^2.1.2",
     "unexpected-htmllike-jsx-adapter": "^1.0.1",
     "unexpected-htmllike-raw-adapter": "^1.0.0",
-    "unexpected-htmllike-reactrendered-adapter": "^2.0.1",
+    "unexpected-htmllike-reactrendered-adapter": "^3.0.0",
     "unexpected-htmllike-testrenderer-adapter": "^1.0.0"
   }
 }

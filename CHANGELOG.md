@@ -184,3 +184,12 @@ based on the `with all children`, `with all wrappers`, and `exactly` flags
 
 * Return the renderer output as the fulfillment value of the promise for `to render as` and `to have rendered`, allowing further assertions on the output after the main assertion (thanks @papandreou!)
 
+## v5.0.0-rc1
+
+* Initial support for React v16 (Fiber).
+
+## v5.0.0-rc2
+
+* Fix incorrect dependency for reactrendered adapter
+
+* Initial support for React v16 (Fiber).
