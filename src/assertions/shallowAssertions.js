@@ -102,7 +102,23 @@ function installInto(expect) {
         }
         return expect(subject, 'when rendered to have rendered [with all children] [with all wrappers] [with all classes] [with all attributes]', expected);
     });
-    
+
+    expect.addAssertion('<ReactElement> to [exactly] render [with all children] [with all wrappers] [with all classes] [with all attributes] as <array-like>', function (expect, subject, expected) {
+
+        const renderer = createRenderer();
+        renderer.render(subject);
+        return expect(renderer, 'to have [exactly] rendered ' +
+            '[with all children] [with all wrappers] [with all classes] [with all attributes]', expected);
+    });
+
+    expect.addAssertion('<ReactShallowRenderer> to have [exactly] rendered ' +
+        '[with all children] [with all wrappers] [with all classes] [with all attributes] <array-like>', function (expect, subject, expected) {
+        const output = subject.getRenderOutput();
+
+        return expect(output, 'to satisfy',
+            expected.map(element => expect.it('to have [exactly] rendered [with all children] [with all wrappers] [with all classes] [with all attributes]', element)))
+    });
+
     return assertionGenerator;
 } 
 

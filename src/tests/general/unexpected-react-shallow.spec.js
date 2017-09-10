@@ -2426,4 +2426,121 @@ describe('unexpected-react-shallow', () => {
         });
     });
 
+    describe('with component returning array', function () {
+        function TestArray() {
+            return [ <div className="foo bar">one</div>, <div>two</div> ];
+        }
+
+        describe('to render as', function () {
+
+            it('passes when it matches', function () {
+                expect(<TestArray />, 'to render as', [ <div className="foo bar">one</div>, <div>two</div> ]);
+            });
+
+            it('errors for each failing element', function () {
+                expect(
+                    () => expect(<TestArray />, 'to render as', [ <div className="baz foo">one</div>, <div>three</div> ]),
+                    'to throw',
+                    [
+                        'expected <TestArray />',
+                        'to render as [ <div className="baz foo">one</div>, <div>three</div> ]',
+                        '',
+                        '[',
+                        '  <div className="foo bar">one</div>, // should have rendered <div className="baz foo">one</div>',
+                        '                                      //',
+                        '                                      // <div className="foo bar" // missing class \'baz\'',
+                        '                                      // >',
+                        '                                      //   one',
+                        '                                      // </div>',
+                        '  <div>two</div> // should have rendered <div>three</div>',
+                        '                 //',
+                        '                 // <div>',
+                        '                 //   two // -two',
+                        '                 //       // +three',
+                        '                 // </div>',
+                        ']'
+                    ].join('\n'));
+            });
+
+            it('passes the flags for each element', function () {
+                expect(
+                    () => expect(<TestArray />, 'to render with all classes as', [ <div className="foo">one</div>, <div>two</div> ]),
+                    'to throw',
+                    [
+                        'expected <TestArray />',
+                        'to render with all classes as [ <div className="foo">one</div>, <div>two</div> ]',
+                        '',
+                        '[',
+                        '  <div className="foo bar">one</div>, // should have rendered with all classes <div className="foo">one</div>',
+                        '                                      //',
+                        '                                      // <div className="foo bar" // extra class \'bar\'',
+                        '                                      // >',
+                        '                                      //   one',
+                        '                                      // </div>',
+                        '  <div>two</div>',
+                        ']'
+                    ].join('\n'));
+            });
+
+        });
+
+        describe('to have rendered', function () {
+            let renderer;
+            beforeEach(function () {
+                renderer = createRenderer();
+                renderer.render(<TestArray />);
+            });
+
+            it('passes when it matches', function () {
+                expect(renderer, 'to have rendered', [ <div className="foo bar">one</div>, <div>two</div> ]);
+            });
+
+            it.skip('errors for each failing element', function () {
+                expect(
+                    () => expect(renderer, 'to have rendered', [ <div className="baz foo">one</div>, <div>three</div> ]),
+                    'to throw',
+                    [
+                        'expected <TestArray />',
+                        'to render as [ <div className="baz foo">one</div>, <div>three</div> ]',
+                        '',
+                        '[',
+                        '  <div className="foo bar">one</div>, // should have rendered <div className="baz foo">one</div>',
+                        '                                      //',
+                        '                                      // <div className="foo bar" // missing class \'baz\'',
+                        '                                      // >',
+                        '                                      //   one',
+                        '                                      // </div>',
+                        '  <div>two</div> // should have rendered <div>three</div>',
+                        '                 //',
+                        '                 // <div>',
+                        '                 //   two // -two',
+                        '                 //       // +three',
+                        '                 // </div>',
+                        ']'
+                    ].join('\n'));
+            });
+
+            it.skip('passes the flags for each element', function () {
+                expect(
+                    () => expect(renderer, 'to have rendered with all classes', [ <div className="foo">one</div>, <div>two</div> ]),
+                    'to throw',
+                    [
+                        'expected <TestArray />',
+                        'to render with all classes as [ <div className="foo">one</div>, <div>two</div> ]',
+                        '',
+                        '[',
+                        '  <div className="foo bar">one</div>, // should have rendered with all classes <div className="foo">one</div>',
+                        '                                      //',
+                        '                                      // <div className="foo bar" // extra class \'bar\'',
+                        '                                      // >',
+                        '                                      //   one',
+                        '                                      // </div>',
+                        '  <div>two</div>',
+                        ']'
+                    ].join('\n'));
+            });
+
+        });
+    });
+
 });

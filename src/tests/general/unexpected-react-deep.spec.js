@@ -1072,4 +1072,40 @@ describe('unexpected-react (deep rendering)', () => {
                 .then(customComp => expect(customComp, 'to be a', 'RenderedReactElement'));
         });
     });
+
+    describe('with component returning array', function () {
+        it('passes with a correct render', function () {
+            class TestArray extends React.Component {
+                render() {
+                    return [<div>one</div>, <div>two</div>];
+                }
+            }
+
+            expect(<TestArray />, 'to deeply render as', <TestArray><div>one</div><div>two</div></TestArray>);
+        });
+
+        it('renders the diff when one element fails', function () {
+            class TestArray extends React.Component {
+                render() {
+                    return [<div>one</div>, <div>two</div>];
+                }
+            }
+            expect(
+                () => expect(<TestArray />, 'to deeply render as', <TestArray><div>one</div><div>three</div></TestArray>),
+                'to throw',
+                [
+                    'expected <TestArray />',
+                    'to deeply render as <TestArray><div>one</div><div>three</div></TestArray>',
+                    '',
+                    '<TestArray>',
+                    '  <div>one</div>',
+                    '  <div>',
+                    '    two // -two',
+                    '        // +three',
+                    '  </div>',
+                    '</TestArray>'
+                ].join('\n')
+            );
+        });
+    });
 });
