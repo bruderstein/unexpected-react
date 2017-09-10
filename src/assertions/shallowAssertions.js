@@ -1,4 +1,3 @@
-import RenderHook from 'react-render-hook';
 import ReactElementAdapter from 'unexpected-htmllike-jsx-adapter';
 import React from 'react';
 import { createRenderer } from 'react-test-renderer/shallow';

@@ -1,8 +1,4 @@
-import RenderHook from 'react-render-hook';
-
 import types from './types/types';
-import domTypes from './types/dom-types';
-import * as deepAssertions from './assertions/deepAssertions';
 import * as shallowAssertions from './assertions/shallowAssertions';
 
 
@@ -14,9 +10,7 @@ module.exports = {
         expect.installPlugin(require('magicpen-prism'));
 
         types.installInto(expect);
-        domTypes.installInto(expect);
         shallowAssertions.installInto(expect);
-        deepAssertions.installInto(expect);
 
         expect.addAssertion('<ReactTestRenderer|ReactTestRendererOutput> to (match|satisfy) snapshot', function (expect) {
 
@@ -34,8 +28,8 @@ module.exports = {
 
         expect.addAssertion(
             [
-                '<ReactElement|ReactShallowRenderer|RenderedReactElement|ReactShallowRendererPendingEvent|RenderedReactElementPendingEvent> to match snapshot',
-                '<ReactElement|ReactShallowRenderer|RenderedReactElement|ReactShallowRendererPendingEvent|RenderedReactElementPendingEvent> to satisfy snapshot'
+                '<ReactElement|ReactShallowRenderer|ReactShallowRendererPendingEvent> to match snapshot',
+                '<ReactElement|ReactShallowRenderer|ReactShallowRendererPendingEvent> to satisfy snapshot'
             ],
             function (expect) {
                 expect.errorMode = 'bubble';
@@ -49,10 +43,8 @@ module.exports = {
                         return output;
                     }
                 });
-        });
+            });
     },
 
-    clearAll() {
-        RenderHook.clearAll();
-    }
+    clearAll() {}
 };

@@ -1,6 +1,7 @@
 import RenderHook from 'react-render-hook';
 
 import types from './types/types';
+import domTypes from './types/dom-types';
 import * as deepAssertions from './assertions/deepAssertions';
 import * as deepAgainstRawAssertions from './assertions/deepAgainstRawAssertions';
 import * as shallowAssertions from './assertions/shallowAssertions';
@@ -18,6 +19,7 @@ module.exports = {
     expect.installPlugin(require('magicpen-prism'));
     
     types.installInto(expect);
+    domTypes.installInto(expect);
     const mainAssertionGenerator = shallowAssertions.installInto(expect);
     shallowAgainstRawAssertions.installAsAlternative(expect, mainAssertionGenerator);
     
