@@ -193,3 +193,9 @@ based on the `with all children`, `with all wrappers`, and `exactly` flags
 * Fix incorrect dependency for reactrendered adapter
 
 * Initial support for React v16 (Fiber).
+
+## v5.0.0-rc3
+* Fix peer dependencies
+* Add react-native (shallow only) support `require('unexpected-react/react-native')` - thanks @janmonschke!
+
+
