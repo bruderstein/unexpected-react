@@ -39,8 +39,8 @@
     "react-test-renderer"
   ],
   "peerDependencies": {
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0"
+    "react": "^16.0.0-rc",
+    "react-test-renderer": "^16.0.0-rc"
   },
   "devDependencies": {
     "babel-cli": "6.10.1",
@@ -70,12 +70,12 @@
     "mock-fs": "^4.2.0",
     "object-assign": "^4.0.1",
     "prop-types": "^15.5.8",
-    "react": "16.0.0-beta.1",
+    "react": "16.0.0-rc",
     "react-create-class": "^1.0.0",
     "react-dom": "16.0.0-beta.1",
     "react-test-renderer": "16.0.0-beta.1",
     "sinon": "^1.17.6",
-    "unexpected": "^10.32.1",
+    "unexpected": "^10.35.0",
     "unexpected-documentation-site-generator": "^4.4.0",
     "unexpected-markdown": "^1.7.2",
     "unexpected-sinon": "^10.5.0"
@@ -85,9 +85,9 @@
     "magicpen-prism": "^2.2.1",
     "react-render-hook": "^1.0.0",
     "unexpected-htmllike": "^2.1.2",
-    "unexpected-htmllike-jsx-adapter": "^1.0.1",
-    "unexpected-htmllike-raw-adapter": "^1.0.0",
-    "unexpected-htmllike-reactrendered-adapter": "^3.0.0",
-    "unexpected-htmllike-testrenderer-adapter": "^1.0.0"
+    "unexpected-htmllike-jsx-adapter": "^1.0.2",
+    "unexpected-htmllike-raw-adapter": "^1.0.1",
+    "unexpected-htmllike-reactrendered-adapter": "^3.0.1",
+    "unexpected-htmllike-testrenderer-adapter": "^1.0.1"
   }
 }
