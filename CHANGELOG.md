@@ -198,4 +198,6 @@ based on the `with all children`, `with all wrappers`, and `exactly` flags
 * Fix peer dependencies
 * Add react-native (shallow only) support `require('unexpected-react/react-native')` - thanks @janmonschke!
 
+## v5.0.0-rc4
+* Bump unexpected-htmllike to 2.1.3 to fix missing assertion output on some assertions (errorMode was being overwritten)
 
