@@ -201,3 +201,5 @@ based on the `with all children`, `with all wrappers`, and `exactly` flags
 ## v5.0.0-rc4
 * Bump unexpected-htmllike to 2.1.3 to fix missing assertion output on some assertions (errorMode was being overwritten)
 
+## v5.0.0
+* Make peerDeps react 16 official
