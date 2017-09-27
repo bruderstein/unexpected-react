@@ -1,12 +1,21 @@
 import fs from 'fs'
-import matchers from 'jest-matchers';
-import jestSnapshot from 'jest-snapshot';
+
 import jsWriter from 'js-writer';
 import mkdirp from 'mkdirp';
 import path from 'path';
 import React from 'react';
 import RawAdapter from 'unexpected-htmllike-raw-adapter';
 import { loadSnapshot } from './snapshotLoader';
+
+let matchers;
+try {
+    matchers = require('jest-matchers');
+    if (!matchers || typeof matchers.getState !== 'function') {
+        throw new Error();
+    }
+} catch(e) {
+    matchers = require('expect');
+}
 
 
 // Serializable "unique" ID
