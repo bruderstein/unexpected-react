@@ -27,9 +27,13 @@
     {
       "assertionResults": [
         {
+          "ancestorTitles": [
+            "ClickCounter"
+          ],
           "failureMessages": [
             "UnexpectedError: \nexpected <button .../> to match snapshot\n\n<button className=\"foo bar\"\n   onClick={function bound onClick() { /* native code */ }} // expected function bound onClick() { /* native code */ }\n                                                            // to satisfy function onClick() { /* function body */ }\n                                                            //\n                                                            // -function bound onClick() { /* function body */ }\n                                                            // +function onClick() { /* function body */ }\n>\n  Clicked 0 times\n</button>\n"
           ],
+          "fullName": "ClickCounter renders with default props",
           "status": "failed",
           "title": "renders with default props"
         }
