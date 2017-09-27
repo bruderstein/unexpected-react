@@ -15,9 +15,9 @@ See the blog post for an introduction: https://medium.com/@bruderstein/the-missi
 
 The full documentation with all the assertions: http://bruderstein.github.io/unexpected-react
 
-# Important note about Fiber (React v16) support
+# Important note about React v16 support
 
-Fiber support is currently being validated. You can `npm install unexpected-react@fiber` to get the latest version compatible with Fiber. Note that in a mocha jsdom environment you also need a [polyfill for `requestAnimationFrame`](https://gist.github.com/paulirish/1579671)
+Note that in a mocha jsdom environment you also need a [polyfill for `requestAnimationFrame`](https://gist.github.com/paulirish/1579671)
 
 # Features
 
@@ -280,7 +280,7 @@ const expect = require('unexpected')
 
 If you're using [Jest](https://facebook.github.io/jest/), you can skip this part, as it comes with built in jsdom support.
 
-For React v16 (using the test unexpected-react@fiber version), we recommend using [jsdom-global](https://npm.im/jsdom-global) and the [requireAnimationFrame polyfill](https://gist.github.com/paulirish/1579671) from Erik Möller, Paul Irish and Tino Zijdel. For previous versions, you can use the boilerplate presented here.
+For React v16, we recommend using [jsdom-global](https://npm.im/jsdom-global) and the [requireAnimationFrame polyfill](https://gist.github.com/paulirish/1579671) from Erik Möller, Paul Irish and Tino Zijdel. For previous versions, you can use the boilerplate presented here.
 
 The `emulateDom` file depends on whether you want to use [`domino`](https://npmjs.com/package/domino), or [`jsdom`](https://npmjs.com/package/jsdom).  If you're using Jest, jsdom is built in, so you can ignore this section.
 
@@ -324,12 +324,13 @@ if (typeof document === 'undefined') {
 ```
 
 # React Compatibility
+v5.x.x is compatible with React v16 and up
 v4.x.x is compatible with React v15.5 and up
 v3.x.x is compatible with React v0.14.x and v15. Warning with v15.5, but supported
 v2.x.x is compatible with React v0.13.x and v0.14.x
 
-It is not planned to make further releases of the v2 branch, but if you still need 0.13 support,
-and are missing things from v3, please raise an issue.
+It is not planned to make further releases of the v2 and v3 branch, but if you still need 0.13 / 0.14 support,
+and are missing things from v4/5, please raise an issue.
 
 # Tests
 
