@@ -81,7 +81,7 @@
     "unexpected-sinon": "^10.5.0"
   },
   "dependencies": {
-    "js-writer": "^1.2.0",
+    "js-writer": "^1.3.0",
     "magicpen-prism": "^2.2.1",
     "react-render-hook": "^1.0.0",
     "unexpected-htmllike": "^2.1.3",

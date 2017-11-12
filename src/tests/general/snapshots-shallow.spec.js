@@ -545,4 +545,92 @@ describe('snapshots', function () {
       );
     });
   });
+
+
+  describe('with ReactElement as a prop', function () {
+      class RenderProp extends React.Component {
+          render() {
+              return <ClickCounter message={this.props.message} />;
+          }
+      }
+
+      it('stores a valid snapshot', function () {
+
+          initState({
+              testPath: 'withElements.spec.js',
+              testName: 'with elements',
+          });
+          renderer.render(<RenderProp message={<span className="foo bar">Magic</span>} />);
+          // Create the snapshot
+          expect(renderer, 'to match snapshot');
+
+          const snapshotPath = path.join(PATH_TO_TESTS, '__snapshots__/withElements.spec.unexpected-snap');
+          const snapshot = loadSnapshotMock(snapshotPath);
+          expect(snapshot, 'to satisfy', {
+              'with elements 1': {
+                  type: 'ClickCounter',
+                  props: {
+                      message: <span className="foo bar">Magic</span>
+                  },
+                  children: []
+              }
+          });
+      });
+
+      it('validates a re-render with a message displaying the prop correctly', function () {
+          initState({
+              testPath: 'withElements.spec.js',
+              testName: 'with elements',
+          });
+          renderer.render(<RenderProp message={<span className="foo bar">Magic</span>} />);
+          // Create the snapshot
+          expect(renderer, 'to match snapshot');
+          initState({
+              testPath: 'withElements.spec.js',
+              testName: 'with elements',
+          });
+
+          // Removed a class
+          renderer.render(<RenderProp message={<span className="bar">Magic</span>} />);
+
+          // Validate the snapshot
+          expect(() => expect(renderer, 'to match snapshot'), 'to throw',
+              [
+                  'expected <ClickCounter .../> to match snapshot',
+                  '',
+                  '<ClickCounter',
+                  '   message={<span className="bar">Magic</span>} // expected <span className="bar">Magic</span>',
+                  '                                                // to satisfy <span className="foo bar">Magic</span>',
+                  '                                                //',
+                  '                                                // <span className="bar" // missing class \'foo\'',
+                  '                                                // >',
+                  '                                                //   Magic',
+                  '                                                // </span>',
+                  '/>'
+              ].join('\n')
+          );
+      });
+
+      it('compares the prop with `to satisfy` also when it`s a ReactElement', function () {
+          initState({
+              testPath: 'withElements.spec.js',
+              testName: 'with elements',
+          });
+          renderer.render(<RenderProp message={<span className="bar foo">Magic</span>} />);
+          // Create the snapshot
+          expect(renderer, 'to match snapshot');
+          initState({
+              testPath: 'withElements.spec.js',
+              testName: 'with elements',
+          });
+
+          // switched class order
+          renderer.render(<RenderProp message={<span className="bar foo">Magic</span>} />);
+
+          // Validate the snapshot
+          expect(renderer, 'to match snapshot');
+      });
+
+
+  });
 });
