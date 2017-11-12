@@ -203,3 +203,6 @@ based on the `with all children`, `with all wrappers`, and `exactly` flags
 
 ## v5.0.0
 * Make peerDeps react 16 official
+
+## v5.0.1
+* Bump js-writer to fix issue serialising ReactElements in snapshots (thanks Aravind Ravi Sulekha for reporting)
