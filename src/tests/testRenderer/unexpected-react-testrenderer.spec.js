@@ -92,7 +92,17 @@ describe('unexpected-react (test renderer)', function () {
       const comp = ReactTestRenderer.create(<ClassComponent content={<span>hi</span>} />);
       expect(comp, 'to have rendered', <div className="class-component"><span>hi</span></div>);
     });
-    
+
+    it('works with strings', function () {
+      const comp = ReactTestRenderer.create(() => 'foo');
+      expect(comp, 'to have rendered', 'foo');
+    });
+
+    it('works with nulls', function () {
+      const comp = ReactTestRenderer.create(() => null);
+      expect(comp, 'to have rendered', null);
+    });
+
     it('highlights the error if the content does not match', function () {
   
       const comp = ReactTestRenderer.create(<ClassComponent content={<span>hi</span>} />);
