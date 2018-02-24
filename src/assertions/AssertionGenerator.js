@@ -105,9 +105,7 @@ AssertionGenerator.prototype._installEqualityAssertions = function (expect) {
       if (result.weight !== 0) {
         return expect.fail({
           diff: function (output, diff, inspect) {
-            return {
-              diff: output.append(testHtmlLike.render(result, output.clone(), diff, inspect))
-            };
+            return output.append(testHtmlLike.render(result, output.clone(), diff, inspect));
           }
         });
       }
@@ -149,9 +147,7 @@ AssertionGenerator.prototype._installEqualityAssertions = function (expect) {
         if (result.found) {
           expect.fail({
             diff: (output, diff, inspect) => {
-              return {
-                diff: output.error('but found the following match').nl().append(testHtmlLike.render(result.bestMatch, output.clone(), diff, inspect))
-              };
+              return output.error('but found the following match').nl().append(testHtmlLike.render(result.bestMatch, output.clone(), diff, inspect));
             }
           });
         }
@@ -161,9 +157,7 @@ AssertionGenerator.prototype._installEqualityAssertions = function (expect) {
       if (!result.found) {
         expect.fail({
           diff: function (output, diff, inspect) {
-            return {
-              diff: output.error('the best match was').nl().append(testHtmlLike.render(result.bestMatch, output.clone(), diff, inspect))
-            };
+            return output.error('the best match was').nl().append(testHtmlLike.render(result.bestMatch, output.clone(), diff, inspect));
           }
         });
       }
@@ -234,11 +228,9 @@ AssertionGenerator.prototype._installQueriedFor = function (expect) {
       if (!result.found) {
         expect.fail({
           diff: (output, diff, inspect) => {
-            const resultOutput = {
-              diff: output.error('`queried for` found no match.')
-            };
+            const resultOutput = output.error('`queried for` found no match.');
             if (result.bestMatch) {
-              resultOutput.diff.error('  The best match was')
+              resultOutput.error('  The best match was')
                 .nl()
                 .append(testHtmlLike.render(result.bestMatch, output.clone(), diff, inspect));
             }
