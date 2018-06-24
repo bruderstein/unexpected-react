@@ -8,6 +8,7 @@
   "numRuntimeErrorTestSuites": 0,
   "numTotalTestSuites": 1,
   "numTotalTests": 4,
+  "openHandles": [],
   "snapshot": {
     "added": 0,
     "didUpdate": false,
@@ -19,6 +20,7 @@
     "matched": 4,
     "total": 5,
     "unchecked": 0,
+    "uncheckedKeysByFile": [],
     "unmatched": 1,
     "updated": 0
   },
@@ -27,29 +29,49 @@
     {
       "assertionResults": [
         {
+          "ancestorTitles": [
+            "ClickCounter"
+          ],
           "failureMessages": [],
+          "fullName": "ClickCounter counts a single click",
+          "location": null,
           "status": "passed",
           "title": "counts a single click"
         },
         {
+          "ancestorTitles": [
+            "ClickCounter"
+          ],
           "failureMessages": [
             "UnexpectedError: \nexpected\n<button className=\"foo bar\" onClick={function bound onClick() { /* native code */ }}>\n  Clicked 4 times\n</button>\nwith event click with event click 'with event click' with event click 'to match snapshot'\n\n<button className=\"foo bar\" onClick={function bound onClick() { /* native code */ }}>\n  Clicked 4 times // -Clicked 4 times\n                  // +Clicked 3 times\n</button>\n"
           ],
+          "fullName": "ClickCounter counts multiple clicks",
+          "location": null,
           "status": "failed",
           "title": "counts multiple clicks"
         },
         {
+          "ancestorTitles": [
+            "ClickCounter"
+          ],
           "failureMessages": [],
+          "fullName": "ClickCounter passes multiple snapshots in a single test",
+          "location": null,
           "status": "passed",
           "title": "passes multiple snapshots in a single test"
         },
         {
+          "ancestorTitles": [
+            "ClickCounter"
+          ],
           "failureMessages": [],
+          "fullName": "ClickCounter renders with default props",
+          "location": null,
           "status": "passed",
           "title": "renders with default props"
         }
       ],
-      "message": "  ● ClickCounter › counts multiple clicks\n\n    UnexpectedError: \n    expected\n    <button className=\"foo bar\" onClick={function bound onClick() { /* native code */ }}>\n      Clicked 4 times\n    </button>\n    with event click with event click 'with event click' with event click 'to match snapshot'\n    \n    <button className=\"foo bar\" onClick={function bound onClick() { /* native code */ }}>\n      Clicked 4 times // -Clicked 4 times\n                      // +Clicked 3 times\n    </button>\n",
+      "message": "  ● ClickCounter › counts multiple clicks\n\n    UnexpectedError: \n    expected\n    <button className=\"foo bar\" onClick={function bound onClick() { /* native code */ }}>\n      Clicked 4 times\n    </button>\n    with event click with event click 'with event click' with event click 'to match snapshot'\n\n    <button className=\"foo bar\" onClick={function bound onClick() { /* native code */ }}>\n      Clicked 4 times // -Clicked 4 times\n                      // +Clicked 3 times\n    </button>\n\n      24 |   it('counts multiple clicks', function () {\n      25 |     const renderer = TestRenderer.create(<ClickCounter />);\n    > 26 |     expect(renderer,\n         |     ^\n      27 |       'with event click',\n      28 |       'with event click',\n      29 |       'with event click',\n",
       "name": "/src/__tests__/ClickCounter.spec.js",
       "status": "failed",
       "summary": ""

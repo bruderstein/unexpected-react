@@ -8,6 +8,7 @@
   "numRuntimeErrorTestSuites": 0,
   "numTotalTestSuites": 1,
   "numTotalTests": 1,
+  "openHandles": [],
   "snapshot": {
     "added": 0,
     "didUpdate": false,
@@ -19,6 +20,7 @@
     "matched": 0,
     "total": 1,
     "unchecked": 0,
+    "uncheckedKeysByFile": [],
     "unmatched": 1,
     "updated": 0
   },
@@ -34,11 +36,12 @@
             "UnexpectedError: \nexpected <button .../> to match snapshot\n\n<button className=\"foo bar\"\n   onClick={function bound onClick() { /* native code */ }} // expected function bound onClick() { /* native code */ }\n                                                            // to satisfy function onClick() { /* function body */ }\n                                                            //\n                                                            // -function bound onClick() { /* function body */ }\n                                                            // +function onClick() { /* function body */ }\n>\n  Clicked 0 times\n</button>\n"
           ],
           "fullName": "ClickCounter renders with default props",
+          "location": null,
           "status": "failed",
           "title": "renders with default props"
         }
       ],
-      "message": "  ● ClickCounter › renders with default props\n\n    UnexpectedError: \n    expected <button .../> to match snapshot\n    \n    <button className=\"foo bar\"\n       onClick={function bound onClick() { /* native code */ }} // expected function bound onClick() { /* native code */ }\n                                                                // to satisfy function onClick() { /* function body */ }\n                                                                //\n                                                                // -function bound onClick() { /* function body */ }\n                                                                // +function onClick() { /* function body */ }\n    >\n      Clicked 0 times\n    </button>\n",
+      "message": "  ● ClickCounter › renders with default props\n\n    UnexpectedError: \n    expected <button .../> to match snapshot\n\n    <button className=\"foo bar\"\n       onClick={function bound onClick() { /* native code */ }} // expected function bound onClick() { /* native code */ }\n                                                                // to satisfy function onClick() { /* function body */ }\n                                                                //\n                                                                // -function bound onClick() { /* function body */ }\n                                                                // +function onClick() { /* function body */ }\n    >\n      Clicked 0 times\n    </button>\n\n      14 | \n      15 |     const renderer = TestRenderer.create(<ClickCounter />);\n    > 16 |     expect(renderer, 'to match snapshot');\n         |     ^\n      17 |   });\n      18 | \n      19 |   // We've removed all other tests, as the onClick won't work without the binding\n",
       "name": "/src/__tests__/ClickCounter.spec.js",
       "status": "failed",
       "summary": ""

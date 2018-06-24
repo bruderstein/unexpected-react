@@ -8,6 +8,7 @@
   "numRuntimeErrorTestSuites": 0,
   "numTotalTestSuites": 1,
   "numTotalTests": 4,
+  "openHandles": [],
   "snapshot": {
     "added": 0,
     "didUpdate": false,
@@ -19,6 +20,7 @@
     "matched": 0,
     "total": 0,
     "unchecked": 0,
+    "uncheckedKeysByFile": [],
     "unmatched": 0,
     "updated": 0
   },
@@ -27,35 +29,55 @@
     {
       "assertionResults": [
         {
+          "ancestorTitles": [
+            "ClickCounter"
+          ],
           "failureMessages": [
             "UnexpectedError: \nexpected <ClickCounter /> when rendered\nTo use the `to satisfy snapshot` assertion with the shallow and full DOM renderers, require unexpected-react as `require('unexpected-react/jest');`\n"
           ],
+          "fullName": "ClickCounter renders with `when rendered to satisfy`",
+          "location": null,
           "status": "failed",
           "title": "renders with `when rendered to satisfy`"
         },
         {
+          "ancestorTitles": [
+            "ClickCounter"
+          ],
           "failureMessages": [
             "UnexpectedError: \nexpected <ClickCounter /> when rendered\nTo use the `to match snapshot` assertion with the shallow and full DOM renderers, require unexpected-react as `require('unexpected-react/jest');`\n"
           ],
+          "fullName": "ClickCounter renders with `when rendered`",
+          "location": null,
           "status": "failed",
           "title": "renders with `when rendered`"
         },
         {
+          "ancestorTitles": [
+            "ClickCounter"
+          ],
           "failureMessages": [
             "UnexpectedError: \nTo use the `to match snapshot` assertion with the shallow and full DOM renderers, require unexpected-react as `require('unexpected-react/jest');`\n"
           ],
+          "fullName": "ClickCounter renders with default props",
+          "location": null,
           "status": "failed",
           "title": "renders with default props"
         },
         {
+          "ancestorTitles": [
+            "ClickCounter"
+          ],
           "failureMessages": [
             "UnexpectedError: \nTo use the `to satisfy snapshot` assertion with the shallow and full DOM renderers, require unexpected-react as `require('unexpected-react/jest');`\n"
           ],
+          "fullName": "ClickCounter renders with default props with to satisfy",
+          "location": null,
           "status": "failed",
           "title": "renders with default props with to satisfy"
         }
       ],
-      "message": "  ● ClickCounter › renders with default props\n\n    UnexpectedError: \n    To use the `to match snapshot` assertion with the shallow and full DOM renderers, require unexpected-react as `require('unexpected-react/jest');`\n",
+      "message": "  ● ClickCounter › renders with default props\n\n    UnexpectedError: \n    To use the `to match snapshot` assertion with the shallow and full DOM renderers, require unexpected-react as `require('unexpected-react/jest');`\n\n      15 |     renderer.render(<ClickCounter />);\n      16 |     // This will fail as we've not included the unexpected-react/jest\n    > 17 |     expect(renderer, 'to match snapshot');\n         |     ^\n      18 |   });\n      19 | \n      20 |   it('renders with `when rendered`', function () {\n",
       "name": "/src/__tests__/ClickCounter.spec.js",
       "status": "failed",
       "summary": ""
