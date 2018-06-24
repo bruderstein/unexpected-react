@@ -316,7 +316,7 @@ describe('unexpected-react (deep rendering)', () => {
                 '  </div>\n' +
                 '</CustomComp>');
         });
-        
+
         it('matches an expect.it on JSX content', () => {
 
             const component = TestUtils.renderIntoDocument(<CustomComp className="bar" childCount={2} />);
@@ -356,7 +356,7 @@ describe('unexpected-react (deep rendering)', () => {
             expect(component, 'to have rendered', <div>{3}{6}</div>);
 
         });
-        
+
         it('matches a component that renders single numbers', () => {
 
             const NumberComponent = class NumberComponent extends React.Component {
@@ -528,7 +528,7 @@ describe('unexpected-react (deep rendering)', () => {
             const component = TestUtils.renderIntoDocument(<CustomComp className="bar" childCount={3} />);
             return expect(component, 'queried for', <div className={ expect.it('to eventually have value', 'bar')} />, 'to contain', <span className="2">2</span>);
         });
-        
+
         it('passes the located component as the resolution of the promise', () => {
 
             const component = TestUtils.renderIntoDocument(<CustomComp className="bar" childCount={3} />);
@@ -538,7 +538,7 @@ describe('unexpected-react (deep rendering)', () => {
                     expect(span, 'to satisfy', { className: '2' });
                 });
         });
-        
+
         it('passes the located component as the resolution of the promise when the query is async', () => {
 
             const component = TestUtils.renderIntoDocument(<CustomComp className="bar" childCount={3} />);
@@ -548,7 +548,7 @@ describe('unexpected-react (deep rendering)', () => {
                     expect(span, 'to satisfy', { className: '2' });
                 });
         });
-        
+
         it('uses `queryTarget` as the target element', () => {
 
             const component = TestUtils.renderIntoDocument(<CustomComp className="bar" childCount={3} />);
@@ -623,7 +623,7 @@ describe('unexpected-react (deep rendering)', () => {
                     <span className="main-click">Main clicked 1</span>
                     <span className="item-click">Item clicked 1</span>
                 </div>
-                    
+
             );
         });
 
@@ -636,7 +636,7 @@ describe('unexpected-react (deep rendering)', () => {
                 </div>);
 
         });
-        
+
         it('calls click on a sub component using the deep renderer', () => {
             const component = TestUtils.renderIntoDocument(<ClickableComponent />);
 
@@ -657,12 +657,12 @@ describe('unexpected-react (deep rendering)', () => {
                     <span className="item-click">Item clicked 3</span>
                 </div>);
         });
-        
+
         it('triggers multiple events with eventArgs', () => {
             const component = TestUtils.renderIntoDocument(<ClickableComponent />);
 
-            expect(component, 'with event', 'mouseDown', { mouseX: 2 }, 
-                'with event', 'mouseDown', { mouseX: 4 }, 
+            expect(component, 'with event', 'mouseDown', { mouseX: 2 },
+                'with event', 'mouseDown', { mouseX: 4 },
                 'to have rendered',
                 <div>
                     <span className="main-click">Main clicked 7</span>
@@ -672,12 +672,12 @@ describe('unexpected-react (deep rendering)', () => {
         it('calls click on a sub component with `to contain`', () => {
             const component = TestUtils.renderIntoDocument(<ClickableComponent />);
 
-            expect(component, 'with event', 'click', 'on', <span className="item-click" />, 
+            expect(component, 'with event', 'click', 'on', <span className="item-click" />,
                 'to contain',
                 <span className="item-click">Item clicked 2</span>
             );
         });
-        
+
         it('calls click on a sub component with `not to contain`', () => {
             const component = TestUtils.renderIntoDocument(<ClickableComponent />);
 
@@ -695,7 +695,7 @@ describe('unexpected-react (deep rendering)', () => {
                 <span className="item-click">Item clicked 1</span>
             );
         });
-        
+
         it('ignores extra classes by default in the `on` clause', () => {
 
             const component = TestUtils.renderIntoDocument(<ClickableComponent />);
@@ -714,7 +714,7 @@ describe('unexpected-react (deep rendering)', () => {
                 <span className="item-click">Item clicked 2</span>
             );
         });
-        
+
         it('fails with a helpful error when the event is not known', () => {
 
             const component = TestUtils.renderIntoDocument(<ClickableComponent />);
@@ -743,11 +743,11 @@ describe('unexpected-react (deep rendering)', () => {
                     <span>This is never checked</span>
                 </div>), 'to throw', /Could not find the target for the event. The best match was/);
         });
-        
+
         it('passes the resulting component as the resolution of the promise', () => {
 
             const component = TestUtils.renderIntoDocument(<ClickableComponent />);
-            
+
             return expect(component, 'with event', 'click')
                 .then(result => {
                     expect(result.state, 'to satisfy', { clickCount: 2 });
@@ -773,8 +773,8 @@ describe('unexpected-react (deep rendering)', () => {
                     expect(result.state, 'to satisfy', { itemClickCount: 2 });
                 });
         });
-        
-        
+
+
         it('passes the resulting component as the resolution of the promise when using event arguments and `on`', () => {
 
             const component = TestUtils.renderIntoDocument(<ClickableComponent />);
@@ -795,7 +795,7 @@ describe('unexpected-react (deep rendering)', () => {
                     expect(result.state, 'to satisfy', { clickCount: 12, itemClickCount: 11 });
                 });
         });
-        
+
         it('passes the resulting component as the resolution of the promise with multiple events and eventArgs', () => {
 
             const component = TestUtils.renderIntoDocument(<ClickableComponent />);
@@ -856,7 +856,7 @@ describe('unexpected-react (deep rendering)', () => {
                     );
                 }
             }
-            
+
             it('combines with queried for', () => {
 
                 const component = TestUtils.renderIntoDocument(<TodoList />);
@@ -883,7 +883,7 @@ describe('unexpected-react (deep rendering)', () => {
                         );
                     });
             });
-            
+
             it('combines with queried for using the result promise and the event promise', () => {
 
                 const component = TestUtils.renderIntoDocument(<TodoList />);
@@ -904,14 +904,14 @@ describe('unexpected-react (deep rendering)', () => {
             it('with event followed by queried for returns correct element', () => {
 
                 const component = TestUtils.renderIntoDocument(<TodoList />);
-                return expect(component, 
+                return expect(component,
                     'with event click', 'on', <TodoItem id={2}><div><button eventTarget /></div></TodoItem>,
                     'queried for', <TodoItem id={2} />)
                     .then(todoItem => {
                         expect(todoItem.state, 'to satisfy', { isCompleted: 'true' });
                     });
             });
-            
+
             it('with multiple events followed by queried for returns correct element', () => {
 
                 const component = TestUtils.renderIntoDocument(<TodoList />);
@@ -923,7 +923,7 @@ describe('unexpected-react (deep rendering)', () => {
                         expect(todoItem.state, 'to satisfy', { isCompleted: 'true' });
                     });
             });
-            
+
             it('with multiple events followed by queried for for a HTML element returns correct element', () => {
 
                 const component = TestUtils.renderIntoDocument(<TodoList />);
@@ -1107,5 +1107,36 @@ describe('unexpected-react (deep rendering)', () => {
                 ].join('\n')
             );
         });
+    });
+
+    describe('with React.Fragments', function () {
+        class TestComponent extends React.Component {
+            render () {
+                let children = (
+                        <React.Fragment>
+                            <li>one</li>
+                            <li>two</li>
+                        </React.Fragment>
+                );
+
+                if (this.props.includeEnd) {
+                    children = [children, <li>End</li>]
+                }
+                return (
+                    <ol>
+                        {children}
+                    </ol>
+                );
+            }
+        }
+
+        it('flattens the fragment', function () {
+            expect(<TestComponent />, 'to deeply render as', <ol><li>one</li><li>two</li></ol>);
+        });
+
+        it('flattens the fragment with other children', function () {
+            expect(<TestComponent includeEnd />, 'to deeply render as', <ol><li>one</li><li>two</li><li>End</li></ol>);
+        });
+
     });
 });
