@@ -206,3 +206,6 @@ based on the `with all children`, `with all wrappers`, and `exactly` flags
 
 ## v5.0.1
 * Bump js-writer to fix issue serialising ReactElements in snapshots (thanks Aravind Ravi Sulekha for reporting)
+
+## v5.0.2
+* Bump unexpected-htmllike-reactrendered-adapter for React 16.5 support
