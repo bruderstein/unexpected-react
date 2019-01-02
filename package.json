@@ -75,7 +75,7 @@
     "react-dom": "16.5.2",
     "react-test-renderer": "16.0.0",
     "sinon": "^1.17.6",
-    "unexpected": "^10.35.0",
+    "unexpected": "^11.0.0-4",
     "unexpected-documentation-site-generator": "^4.6.1",
     "unexpected-markdown": "^1.7.4",
     "unexpected-sinon": "^10.5.0"
