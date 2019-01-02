@@ -2,9 +2,10 @@
 
 require( './src/tests/helpers/emulateDom');
 
-global.unexpected = require('unexpected');
+global.unexpected = require('unexpected')
+    .clone()
+    .use(require('./src/unexpected-react'));
 unexpected.output.preferredWidth = 80;
-unexpected.use(require('./src/unexpected-react'));
 
 global.TestUtils = require('react-dom/test-utils');
 global.React = require('react');
