@@ -1,8 +1,9 @@
 /*global unexpected:true, React:true, TestRenderer:true, sinon:true*/
 
-global.unexpected = require('unexpected');
+global.unexpected = require('unexpected')
+    .clone()
+    .use(require('./src/test-renderer'));
 unexpected.output.preferredWidth = 80;
-unexpected.use(require('./src/test-renderer'));
 
 global.React = require('react');
 global.PropTypes = require('prop-types');
