@@ -209,3 +209,6 @@ based on the `with all children`, `with all wrappers`, and `exactly` flags
 
 ## v5.0.2
 * Bump unexpected-htmllike-reactrendered-adapter for React 16.5 support
+
+## v5.0.3
+* Bump unexpected-htmllike to 2.2.0 to update support for unexpected versions
