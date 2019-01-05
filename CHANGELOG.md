@@ -212,3 +212,7 @@ based on the `with all children`, `with all wrappers`, and `exactly` flags
 
 ## v5.0.3
 * Bump unexpected-htmllike to 2.2.0 to update support for unexpected versions
+
+## v5.0.4
+* Compatibility fixes for unexpected 11 (thanks @papandreou)
+
