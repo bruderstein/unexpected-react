@@ -1,8 +1,7 @@
 {
   "sourceMaps": true,
   "presets": [
-    "es2015",
-    "react"
-  ],
-  "plugins": "transform-object-rest-spread"
+    "@babel/preset-env",
+    "@babel/preset-react"
+  ]
 }
