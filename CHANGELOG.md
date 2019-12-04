@@ -216,3 +216,6 @@ based on the `with all children`, `with all wrappers`, and `exactly` flags
 ## v5.0.4
 * Compatibility fixes for unexpected 11 (thanks @papandreou)
 
+## v6.0.0
+* Compatibility for React 16.9. jest snapshot tests are still failing, but this adds support for React 16.9 and up, so releasing anyway with hopefully a fix later for snapshot tests
+

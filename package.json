@@ -1,6 +1,6 @@
 {
   "name": "unexpected-react",
-  "version": "5.0.4",
+  "version": "6.0.0",
   "description": "Plugin for unexpected, to allow for assertions on the React.js virtual DOM, and the shallow and test renderers",
   "scripts": {
     "build": "babel src -d lib",
@@ -39,8 +39,8 @@
     "react-test-renderer"
   ],
   "peerDependencies": {
-    "react": "^16.0.0",
-    "react-test-renderer": "^16.0.0"
+    "react": "^16.9.0",
+    "react-test-renderer": "^16.9.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.7.4",
@@ -73,7 +73,7 @@
     "react": "^16.12.0",
     "react-create-class": "^1.0.0",
     "react-dom": "^16.12.0",
-    "react-test-renderer": "16.0.0",
+    "react-test-renderer": "^16.12.0",
     "sinon": "^1.17.6",
     "unexpected": "^11.0.0-4",
     "unexpected-documentation-site-generator": "^4.6.1",
