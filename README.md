@@ -482,14 +482,14 @@ component, and leaves out the `<span>` children of the `<Text>` components. The 
 the `<App>` wrapper component, and the `<Text>` wrapper component.
 
 
-## Stateless components
+## Function components
 
-Because [stateless components](https://facebook.github.io/react/docs/reusable-components.html#stateless-functions) can't be instantiated, `renderIntoDocument` won't return an instance back. 
+Because [function components](https://reactjs.org/docs/components-and-props.html#function-and-class-components) can't be instantiated, `renderIntoDocument` won't return an instance back. 
 Using the shallow renderer works as shown in the first example. 
 For full rendering, use the `when deeply rendered` to render the component
 
 ```js
-expect(<StatelessComponent name="Daniel" />, 
+expect(<FunctionComponent name="Daniel" />, 
   'when deeply rendered', 
   'to have rendered',
   <div>Hello, Daniel!</div>);

@@ -942,8 +942,8 @@ describe('unexpected-react (deep rendering)', () => {
 
     describe('when deeply rendered', function () {
 
-        const Stateless = function (props) {
-            return <div className="stateless-ftw">Yay</div>;
+        const Function = function (props) {
+            return <div className="function-ftw">Yay</div>;
         };
 
         it('renders a class component', function () {
@@ -954,39 +954,38 @@ describe('unexpected-react (deep rendering)', () => {
             );
         });
 
-        it('renders a stateless component', function () {
+        it('renders a function component', function () {
 
-            expect(<Stateless />, 'when deeply rendered', 'to have exactly rendered', <Stateless><div className="stateless-ftw">Yay</div></Stateless>);
+            expect(<Function />, 'when deeply rendered', 'to have exactly rendered', <Function><div className="function-ftw">Yay</div></Function>);
         });
 
-        it('errors when a stateless component render does not match', function () {
+        it('errors when a function component render does not match', function () {
 
-            expect(() => expect(<Stateless />, 'when deeply rendered', 'to have exactly rendered',
-                <Stateless>
-                    <div className="stateless-broken">Yay</div>
-                </Stateless>), 'to throw',
+            expect(() => expect(<Function />, 'when deeply rendered', 'to have exactly rendered',
+                <Function>
+                    <div className="function-broken">Yay</div>
+                </Function>), 'to throw',
             [
-                'expected <Stateless />',
-                'when deeply rendered to have exactly rendered <Stateless><div className="stateless-broken">Yay</div></Stateless>',
+                'expected <Function />',
+                'when deeply rendered to have exactly rendered <Function><div className="function-broken">Yay</div></Function>',
                 '',
-                '<Stateless>',
-                '  <div',
-                '     className="stateless-ftw" // expected \'stateless-ftw\' to equal \'stateless-broken\'',
-                '                               //',
-                '                               // -stateless-ftw',
-                '                               // +stateless-broken',
+                '<Function>',
+                '  <div className="function-ftw" // expected \'function-ftw\' to equal \'function-broken\'',
+                '                                //',
+                '                                // -function-ftw',
+                '                                // +function-broken',
                 '  >',
                 '    Yay',
                 '  </div>',
-                '</Stateless>'
+                '</Function>'
             ].join('\n'));
         });
     });
 
     describe('to deeply render as', function () {
 
-        const Stateless = function (props) {
-            return <div className="stateless-ftw">Yay</div>;
+        const Function = function (props) {
+            return <div className="function-ftw">Yay</div>;
         };
 
         it('renders a class component', function () {
@@ -996,26 +995,26 @@ describe('unexpected-react (deep rendering)', () => {
             );
         });
 
-        it('renders a stateless component', function () {
+        it('renders a function component', function () {
 
-            expect(<Stateless />, 'to deeply render as', <Stateless><div className="stateless-ftw">Yay</div></Stateless>);
+            expect(<Function />, 'to deeply render as', <Function><div className="function-ftw">Yay</div></Function>);
         });
 
-        it('errors when a stateless component render does not match', function () {
-            expect(() => expect(<Stateless />, 'to deeply render as',
-                <Stateless>
-                    <div className="stateless-broken">Yay</div>
-                </Stateless>), 'to throw',
+        it('errors when a function component render does not match', function () {
+            expect(() => expect(<Function />, 'to deeply render as',
+                <Function>
+                    <div className="function-broken">Yay</div>
+                </Function>), 'to throw',
                 [
-                    'expected <Stateless />',
-                    'to deeply render as <Stateless><div className="stateless-broken">Yay</div></Stateless>',
+                    'expected <Function />',
+                    'to deeply render as <Function><div className="function-broken">Yay</div></Function>',
                     '',
-                    '<Stateless>',
-                    '  <div className="stateless-ftw" // missing class \'stateless-broken\'',
+                    '<Function>',
+                    '  <div className="function-ftw" // missing class \'function-broken\'',
                     '  >',
                     '    Yay',
                     '  </div>',
-                    '</Stateless>'
+                    '</Function>'
                 ].join('\n'));
         });
 
