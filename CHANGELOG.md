@@ -221,3 +221,6 @@ based on the `with all children`, `with all wrappers`, and `exactly` flags
 
 ## v6.0.1
 * Bump the peer deps to include react 16.9
+
+## v6.0.2
+* Bump dependencies
