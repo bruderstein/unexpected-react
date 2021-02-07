@@ -20,8 +20,9 @@ function installInto(expect) {
 
         identify: function (value) {
             return React.isValidElement(value) ||
+                value === null ||
+                typeof value === 'string' ||
                 (typeof value === 'object' &&
-                value !== null &&
                 (typeof value.type === 'function' || typeof value.type === 'string') &&
                 typeof value.hasOwnProperty === 'function' &&
                 value.hasOwnProperty('props') &&
