@@ -8,6 +8,7 @@ export default [
     'blur',
     'canPlay',
     'canPlayThrough',
+    'change',
     'click',
     'contextMenu',
     'copy',
