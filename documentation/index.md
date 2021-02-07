@@ -423,25 +423,25 @@ component, and leaves out the `<span>` children of the `<Text>` components. The 
 the `<App>` wrapper component, and the `<Text>` wrapper component.
 
 
-## Stateless components
-Because [stateless components](https://facebook.github.io/react/docs/reusable-components.html#stateless-functions) can't be instantiated, `renderIntoDocument` won't return an instance back. 
+## Function components
+Because [function components](https://reactjs.org/docs/components-and-props.html#function-and-class-components) can't be instantiated, `renderIntoDocument` won't return an instance back. 
 Using the shallow renderer works as shown in the first example. 
 For full rendering, they can be tested with a wrapper component as such:
 
 ```js
-class StatelessWrapper extends React.Component {
+class FunctionWrapper extends React.Component {
   render() {
     return (this.props.children);
   }
 }
 
-var StatelessComponent = function (props) {
+var FunctionComponent = function (props) {
   return (
     <div>{ props.name }</div>
   )
 }
 
-var component = TestUtils.renderIntoDocument(<StatelessWrapper><StatelessComponent name="Daniel" /></StatelessWrapper>);
+var component = TestUtils.renderIntoDocument(<FunctionWrapper><FunctionComponent name="Daniel" /></FunctionWrapper>);
 ```
 
 ## Cleaning up

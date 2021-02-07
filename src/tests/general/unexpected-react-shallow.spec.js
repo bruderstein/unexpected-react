@@ -2359,7 +2359,7 @@ describe('unexpected-react-shallow', () => {
                 });
         });
 
-        it('renders a stateless component', function () {
+        it('renders a function component', function () {
             expect(<FunctionComp className="test"/>, 'when rendered', 'to have rendered', <div className="test" />) ;
         });
 

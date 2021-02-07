@@ -76,7 +76,7 @@ function installInto(expect) {
     checkAttached(expect);
   });
 
-  class StatelessWrapper extends React.Component {
+  class FunctionWrapper extends React.Component {
       render() {
           return this.props.children;
       }
@@ -87,8 +87,8 @@ function installInto(expect) {
       if (subject.type && subject.type.prototype && typeof subject.type.prototype.render === 'function') {
           component = TestUtils.renderIntoDocument(subject);
       } else {
-          // Stateless component
-          component = TestUtils.renderIntoDocument(<StatelessWrapper>{subject}</StatelessWrapper>);
+          // Function component
+          component = TestUtils.renderIntoDocument(<FunctionWrapper>{subject}</FunctionWrapper>);
           component = RenderHook.findComponent(component);
           if (component) {
               component = component && component.data.children[0] && RenderHook.findInternalComponent(component.data.children[0]);
@@ -96,7 +96,7 @@ function installInto(expect) {
               expect.errorMode = 'nested';
               expect.fail({
                   message(output) {
-                      return output.error('Cannot find rendered stateless component. Are you sure you passed a real component to `when deeply rendered`');
+                      return output.error('Cannot find rendered function component. Are you sure you passed a real component to `when deeply rendered`');
                   }
               });
           }

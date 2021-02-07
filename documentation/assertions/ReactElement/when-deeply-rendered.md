@@ -1,7 +1,7 @@
 
 You can render a component with the full DOM renderer directly with the `when deeply rendered` assertion.
 
-This works with both stateful and stateless (functional) components, which can be easier than creating a manual wrapper and manually rendering into the DOM with `TestUtils.renderIntoDocument(...)` or `ReactDOM.render(...)`
+This works with both class and function components, which can be easier than creating a manual wrapper and manually rendering into the DOM with `TestUtils.renderIntoDocument(...)` or `ReactDOM.render(...)`
 
 Say you have these components:
 ```js
@@ -22,7 +22,7 @@ const Pages = (props) => {
 
 ```
 
-You can check the rendering directly using the `when deeply rendered` assertion, saving you from creating stateless wrappers and rendering into the DOM by hand:
+You can check the rendering directly using the `when deeply rendered` assertion, saving you from creating function component wrappers and rendering into the DOM by hand:
 ```js
 expect(<Pages count={3} />, 
     'when deeply rendered', 

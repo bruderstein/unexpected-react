@@ -19,7 +19,7 @@ function installInto(expect) {
             return (typeof value === 'object' &&
                 value !== null &&
                 (value._reactInternalInstance || value._reactInternalComponent) &&
-                (typeof value.setState === 'function' || typeof value.updater === 'object' /* stateless components */));
+                (typeof value.setState === 'function' || typeof value.updater === 'object' /* function components */));
         },
 
         inspect(value, depth, output, inspect) {
