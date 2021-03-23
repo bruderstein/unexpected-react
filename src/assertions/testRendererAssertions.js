@@ -1,3 +1,4 @@
+import { act } from 'react-test-renderer';
 import ReactElementAdapter from 'unexpected-htmllike-jsx-adapter';
 import TestRendererAdapter from 'unexpected-htmllike-testrenderer-adapter';
 import * as TestRendererTypeWrapper from '../types/test-renderer-type-wrapper';
@@ -21,7 +22,7 @@ function installInto(expect) {
         }
       });
     }
-    handler(eventArgs);
+    act(() => handler(eventArgs));
     return renderer;
   }
   
